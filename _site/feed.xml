@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+<title type="text">#justcodingthings</title>
+<generator uri="https://github.com/mojombo/jekyll">Jekyll</generator>
+<link rel="self" type="application/atom+xml" href="/feed.xml" />
+<link rel="alternate" type="text/html" href="" />
+<updated>2015-03-26T22:42:48+06:00</updated>
+<id>/</id>
+<author>
+  <name>Egor Chiglintsev</name>
+  <uri>/</uri>
+  
+</author>
+
+
+<entry>
+  <title type="html"><![CDATA[Putting more "C" in your Objective-C]]></title>
+ <link rel="alternate" type="text/html" href="/putting-more-c-in-your-objective-c/" />
+  <id>/putting-more-c-in-your-objective-c</id>
+  <updated>2015-03-26T00:00:00-00:00</updated>
+  <published>2015-03-26T00:00:00+06:00</published>
+  
+  <author>
+    <name>Egor Chiglintsev</name>
+    <uri></uri>
+    <email></email>
+  </author>
+  <content type="html">
+    &lt;p&gt;I like Objective-C. I’ve been writing Objective-C code for almost 6 years now and I can surely say
+that I’m comfortable with the language and that it provides everything I need to make awesome apps.
+But nothing is perfect of course.&lt;/p&gt;
+
+&lt;p&gt;The dynamic nature of the language can be a woe at some times. One of such things is lack of proper
+private methods in Objective-C. Whether you like it or not, whatever you call your method, it could
+be overridden in a subclass even if you don’t really want it to be overridden. More so, if your
+method is not listed in the header file, someone could override your ‘private’ hidden method even
+without realizing it. Who knows what will happen in that case. Hopefully your app will crash
+fast and early.&lt;/p&gt;
+
+&lt;p&gt;I have a small silly practical reason to talk about it right now. I’ve been creating a lot of
+&lt;code&gt;IB_DESIGNABLE&lt;/code&gt; views recently and therefore as a responsible person I have to override two
+initializers&lt;sup id=&quot;fnref:1&quot;&gt;&lt;a href=&quot;#fn:1&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt; for each of them:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-objc&quot; data-lang=&quot;objc&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// if someone wants to create such view in code&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;instancetype&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;initWithFrame:&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;CGRect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;frame&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// will be called when loading from a xib or storyboard&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;instancetype&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;initWithCoder:&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;NSCoder&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;aDecoder&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Often the code that goes in these initializers is actually the same. It creates some subviews or
+maybe sets up some initial internal state of the view - whatever. So I create a method which
+actually does all the setup and is called by both of these initializers:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-objc&quot; data-lang=&quot;objc&quot;&gt;&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;private_setup&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// Create subviews, set up state etc.&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;I prefix the name of this method with &lt;code&gt;private_&lt;/code&gt; to notify myself and my teammates that this
+method should not be exposed to the outside world and is actually private implementation detail
+of my class.&lt;/p&gt;
+
+&lt;p&gt;It gets kind of ugly when I’m trying to subclass such a view. I want then to have another common
+setup logic specific to the subclass, but I cannot actually use the name private_setup anymore.
+Otherwise it would override the logic of the superclass initialization and I won’t be able to call
+super since the method is not exposed anywhere.&lt;/p&gt;
+
+&lt;p&gt;This is actually not a real problem. I can instantly name at least two possible solutions to
+that which aren’t even hard to do:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;The most obvious one is to expose some kind of setup method, tag it with &lt;code&gt;NS_REQUIRES_SUPER&lt;/code&gt;
+and call it a day. It is probably the simplest one to go with, but I’m really in a mood to dig
+deeper today. What if someone would call this method manually? Since it is exposed, someone might
+just do that. It also may become kind of confusing. Instead of knowing about the two initializers
+of the class we also should keep in mind the setup method and always remember when it gets called
+and whether it is safe to use other methods or properties of this class from this method etc. etc.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Give the ‘private’ method a more complex class-dependent name that is less likely to be overridden
+by mistake: &lt;code&gt;private_MyAwesomeIBDesignableViewClass_setup&lt;/code&gt; for example. And then in subclass
+use something like &lt;code&gt;private_MyEvenMoreAwesomeIBDesignableViewClassSubclass_setup&lt;/code&gt;.
+How’s that sound? Ugly, I know.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Both these solutions work and both are kind of OK, but I want more. I want actual private methods
+for my classes which could not possibly be ever called by anyone else and which won’t name clash so
+I could use simple identifiers like &lt;code&gt;private_setup&lt;/code&gt;. Can Objective-C help me with that?&lt;/p&gt;
+
+&lt;p&gt;Apparently Objective-C does not, but plain old C probably will.&lt;/p&gt;
+
+&lt;p&gt;I’ve ended up using this kind of construct:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-objc&quot; data-lang=&quot;objc&quot;&gt;&lt;span class=&quot;k&quot;&gt;@implementation&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;MyView&lt;/span&gt;
+
+&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;instancetype&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;initWithFrame:&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;CGRect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;frame&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;super&lt;/span&gt; &lt;span class=&quot;nl&quot;&gt;initWithFrame&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;frame&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;nil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;private_setup&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+
+&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;instancetype&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;initWithCoder:&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;NSCoder&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;coder&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;super&lt;/span&gt; &lt;span class=&quot;nl&quot;&gt;initWithCoder&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;coder&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;nil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;private_setup&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;private_setup&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;MyView&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// Here we do the common initialization.&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// Using `self` as an explicit variable in a C function instead of&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// using an Objective-C method provides almost no inconvenience except&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// that if you&amp;#39;re accessing ivars, you have to write self-&amp;gt;_ivarName&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// instead of just _ivarName.&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;@end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;So a static C function which accepts &lt;code&gt;self&lt;/code&gt; as a parameter (any other parameters can be added as
+needed) does pretty much exactly what’s needed in terms of privacy and non-overridability.&lt;/p&gt;
+
+&lt;p&gt;I know a couple of people who probably would say that this kind of code is even more ugly than the
+variants I’ve listed before (I’m looking at you &lt;a href=&quot;http://twitter.com/stkhapugin&quot;&gt;@stkhapugin&lt;/a&gt;), but
+I’m quite fond with it at the moment. It does everything I wanted to and does not require any
+obscure runtime or preprocessor magic to implement. I call it a win.&lt;/p&gt;
+&lt;div class=&quot;footnotes&quot;&gt;
+  &lt;ol&gt;
+    &lt;li id=&quot;fn:1&quot;&gt;
+      &lt;p&gt;The designated initializer for an &lt;code&gt;UIView&lt;/code&gt; subclass is of course the &lt;code&gt;initWithFrame:&lt;/code&gt; one, but
+  when loading the view from a storyboard or a xib it won’t be called in favor of the &lt;code&gt;initWithCoder:&lt;/code&gt;. &lt;a href=&quot;#fnref:1&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/div&gt;
+
+    &lt;p&gt;&lt;a href=&quot;/putting-more-c-in-your-objective-c/&quot;&gt;Putting more &quot;C&quot; in your Objective-C&lt;/a&gt; was originally published by Egor Chiglintsev at &lt;a href=&quot;&quot;&gt;#justcodingthings&lt;/a&gt; on March 26, 2015.&lt;/p&gt;
+  </content>
+</entry>
+
+</feed>
