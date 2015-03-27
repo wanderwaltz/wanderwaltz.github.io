@@ -4,10 +4,7 @@ title: Putting more "C" in your Objective-C
 description: "Where I ramble about inability to create 'true' private methods for Objective-C classes."
 modified: 2015-03-26
 tags: [objective-c, c, coding style, private, UIView, initializers]
-<!-- image:
-  feature: abstract-10.jpg
-  credit: dargadgetz
-  creditlink: http://www.dargadgetz.com/ios-7-abstract-wallpaper-pack-for-iphone-5-and-ipod-touch-retina/ -->
+excerpt_separator: <!--more-->
 ---
 
 I like Objective-C. I've been writing Objective-C code for almost 6 years now and I can surely say
@@ -15,7 +12,11 @@ that I'm comfortable with the language and that it provides everything I need to
 But nothing is perfect of course.
 
 The dynamic nature of the language can be a woe at some times. One of such things is lack of proper
-private methods in Objective-C. Whether you like it or not, whatever you call your method, it could
+private methods in Objective-C.
+
+<!--more-->
+
+Whether you like it or not, whatever you call your method, it could
 be overridden in a subclass even if you don't really want it to be overridden. More so, if your
 method is not listed in the header file, someone could override your 'private' hidden method even
 without realizing it. Who knows what will happen in that case. Hopefully your app will crash
@@ -52,9 +53,9 @@ method should not be exposed to the outside world and is actually private implem
 of my class.
 
 It gets kind of ugly when I'm trying to subclass such a view. I want then to have another common
-setup logic specific to the subclass, but I cannot actually use the name private_setup anymore.
+setup logic specific to the subclass, but I cannot actually use the name `private_setup` anymore.
 Otherwise it would override the logic of the superclass initialization and I won't be able to call
-super since the method is not exposed anywhere.
+`super` since the method is not exposed anywhere.
 
 This is actually not a real problem. I can instantly name at least two possible solutions to
 that which aren't even hard to do:
@@ -63,7 +64,7 @@ that which aren't even hard to do:
   and call it a day. It is probably the simplest one to go with, but I'm really in a mood to dig
   deeper today. What if someone would call this method manually? Since it is exposed, someone might
   just do that. It also may become kind of confusing. Instead of knowing about the two initializers
-  of the class we also should keep in mind the setup method and always remember when it gets called
+  of the class we also should keep in mind the `setup` method and always remember when it gets called
   and whether it is safe to use other methods or properties of this class from this method etc. etc.
 
 - Give the 'private' method a more complex class-dependent name that is less likely to be overridden
