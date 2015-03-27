@@ -6,14 +6,14 @@ modified: 2015-03-26
 tags: [objective-c, c, coding style, private, UIView, initializers]
 excerpt_separator: <!--more-->
 ---
-
+<p>
 I like Objective-C. I've been writing Objective-C code for almost 6 years now and I can surely say
 that I'm comfortable with the language and that it provides everything I need to make awesome apps.
 But nothing is perfect of course.
-
+<br/><br/>
 The dynamic nature of the language can be a woe at some times. One of such things is lack of proper
 private methods in Objective-C.
-
+</p>
 <!--more-->
 
 Whether you like it or not, whatever you call your method, it could
