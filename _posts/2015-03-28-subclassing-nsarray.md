@@ -17,9 +17,8 @@ There is nothing new under the sun and [@mikeash](https://twitter.com/mikeash) h
 
 To have a semi-realistic sample to work with, let's build a lazy-mapped array and integrate it into `NSArray` cluster.
 
-Lazy mapping spec
------------------
-
+Define 'Lazy'
+-------------
 So suppose we want to perform a certain transform or mapping to the elements of a given `NSArray`. The mapping itself will be represented as a mapper block:
 
 {% highlight objc %}
