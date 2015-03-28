@@ -1,70 +1,30 @@
-title:            "#justcodingthings"
-# description:      Describe your website here.
-disqus_shortname: justcodingthings
-reading_time:     true
-words_per_minute: 200
-# Your site's domain goes here (eg: //mmistakes.github.io, http://mademistakes.com, etc)
-# When testing locally leave blank or use http://localhost:4000
-url:              http://wanderwaltz.github.io
+title: "#justcodingthings"
+author: "Egor Chiglintsev"
+description: "Yet another tech blog related to various coding stuff I encounter in my everyday life."
+more: "Read"
+url: "http://wanderwaltz.github.io/about"
 
-# Owner/author information
-owner:
-  name:           Egor Chiglintsev
-  avatar:         avatar.jpg
-  bio:            "iOS developer since June 2009"
-  # email:          egor.chiglintsev@gmail.com
-  # Social networking links used in footer. Update and remove as you like.
-  twitter:        wanderwaltz
-  # facebook:       wanderwaltz
-  github:         wanderwaltz
-  # stackexchange:  wanderwaltz
-  linkedin:       chiglintsev
-  rss:            wanderwaltz.github.io/feed.xml
-  #instagram:
-  #flickr:
-  #tumblr:
-  # google plus id, include the '+', eg +mmistakes
-  #google_plus:    +yourid
+comments:
+    disqus: "justcodingthings"
 
-# Background image to be tiled on all pages
-background:
+style:
+    padding: 33%
+    anchor: "#46f"
+    serif-heading: true
+    nav: "#181818"
+    description: "white"
+    article:
+        odd: "#ffffff"
+        even: "#ffffff"
 
-# Analytics and webmaster tools stuff goes here
-# google_analytics:
-# google_verify:
-# https://ssl.bing.com/webmaster/configure/verify/ownership Option 2 content= goes here
-# bing_verify:
-
-# http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-timezone:    Asia/Novosibirsk
-future:      true
-highlighter: pygments
-markdown:    kramdown
-gems:
-  - jekyll-sitemap
 sass:
   sass_dir: _sass
   style: compressed
 
-# https://github.com/mojombo/jekyll/wiki/Permalinks
-permalink:   /:categories/:title/
+links:
+  - github: "https://github.com/wanderwaltz/"
+  - twitter: "https://twitter.com/wanderwaltz/"
+  - rss: "http://wanderwaltz.github.io/feed.xml"
 
-# Amount of post to show on home page
-paginate: 10
-
-kramdown:
-  auto_ids: true
-  footnote_nr: 1
-  entity_output: as_char
-  toc_levels: 1..6
-  use_coderay: true
-
-  coderay:
-    coderay_line_numbers: nil
-    coderay_line_numbers_start: 1
-    coderay_tab_width: 4
-    coderay_bold_every: 10
-    coderay_css: class
-
-include: [".htaccess"]
-exclude: ["lib", "config.rb", "Capfile", "config", "Gemfile", "Gemfile.lock", "README.md", "LICENSE", "log", "Rakefile", "Rakefile.rb", "tmp", "less", "*.sublime-project", "*.sublime-workspace", "test", "spec", "Gruntfile.js", "package.json", "node_modules"]
+excerpt_separator: "<!--more-->"
+defaults: [{scope: {path: ""}, values: {layout: "default"}}, {scope: {path: "", type: "posts"}, values: {comments: true}}]

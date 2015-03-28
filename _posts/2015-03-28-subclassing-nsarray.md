@@ -1,10 +1,8 @@
 ---
-layout: post
 title: Subclassing NSArray
 description: "Where I talk about how one creates a proper NSArray subclass."
 modified: 2015-03-26
 tags: [objective-c, NSArray, class cluster, inheritance, lazy, map, blocks]
-excerpt_separator: <!--more-->
 ---
 Creating custom collections is rarely necessary nowadays. Most of the time you can safely go with the collection classes provided by the standard library you're working with and not bother with the implementation details. What would be the reason to write a custom collection anyway?
 
@@ -12,7 +10,7 @@ Creating custom collections is rarely necessary nowadays. Most of the time you c
 - **Changing the collection interface?** Well that could be done via categories or composition. You don't really need to subclass `NSArray` or `NSDictionary` to change their interface if you want to.
 
 I cannot come up with another reasons to subclass Foundation collections right now, but to be honest, here at [#justcodingthings](http://wanderwaltz.github.io) we don't actually need a reason to do something. We do it because we can and that's the only reason we need.
-
+<!--more-->
 There is nothing new under the sun and [@mikeash](https://twitter.com/mikeash) has already discussed this topic in his [Friday Q&A](https://mikeash.com/pyblog/friday-qa-2010-03-12-subclassing-class-clusters.html), but I still thought I'd reiterate it once more at least for the reason of providing another example of the technique.
 
 To have a semi-realistic sample to work with, let's build a lazy-mapped array and integrate it into `NSArray` cluster.
@@ -189,7 +187,8 @@ Then we implement `NSMutableCopying` and `NSCoding` as following:
 
 - (id)mutableCopyWithZone:(NSZone *)zone
 {
-    // A neat trick which will automatically map every value when creating the copy
+    // A neat trick which will automatically map every value
+    // when creating the copy
     return [[NSMutableArray alloc] initWithArray: self];
 }
 
