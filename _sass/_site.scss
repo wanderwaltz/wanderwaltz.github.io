@@ -1,0 +1,35 @@
+.inline-list {
+  list-style: none;
+  margin-left: 0;
+  padding-left: 0;
+  li {
+    list-style-type: none;
+    display: inline;
+  }
+}
+
+$base-color : #747474;
+
+.tag {
+    text-transform: lowercase;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px;
+    @include rounded(3px);
+    background-color: lighten($base-color,50);
+    span {
+      color: #808080;
+      float: left;
+      padding: 2px 6px;
+    }
+    .count {
+      background-color: lighten($base-color,48);
+      @include border-radius(3px,3px,0,0);
+    }
+    &:hover {
+      background-color: lighten($base-color,48);
+      span {
+        color: #404040;
+      }
+    }
+  }

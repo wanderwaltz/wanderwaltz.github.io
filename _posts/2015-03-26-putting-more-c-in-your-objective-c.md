@@ -2,7 +2,7 @@
 title: Putting more "C" in your Objective-C
 description: "Where I ramble about inability to create 'true' private methods for Objective-C classes."
 modified: 2015-03-26
-tags: [objective-c, c, coding style, private, UIView, initializers]
+tags: [Objective-C, C, Coding Style, Private, UIView, Initializers]
 ---
 I like Objective-C. I've been writing Objective-C code for almost 6 years now and I can surely say
 that I'm comfortable with the language and that it provides everything I need to make awesome apps.

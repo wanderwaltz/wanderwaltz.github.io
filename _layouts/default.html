@@ -4,10 +4,23 @@ layout: blank
     <article>
       <header>
         <h2><a href="{{ page.url | prepend: site.baseurl }}">{{ page.title }}</a></h2>
-        <p>{% if page.author %}{{ page.author }} • {% endif %}{% if page.date %}<time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%b %-d, %Y" }}</time>{% endif %}{% if page.categories %} • {{ page.categories | array_to_sentence_string }}{% endif %}</p>
+        <p>{% if page.author %}{{ page.author }} • {% endif %}{% if page.date %}<time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%b %-d, %Y" }}</time>{% endif %}{% if page.categories %} {{ page.categories | array_to_sentence_string }}{% endif %}</p>
       </header>
       <div>
 {{ content }}
+      <div>
+        {% if page.tags %}
+          {% assign tags_list = page.tags | sort %}
+          <ul class="inline-list">
+            {% for item in (0..tags_list.size) %}
+              {% unless forloop.last %}
+                {% capture this_word %}{{ tags_list[item] | strip_newlines }}{% endcapture %}
+                  <li><a href="{{ "/tags" | prepent: site.baseurl}}#{{this_word}}" class="tag"><span class="term">{{ this_word }}</span></a></li>
+                {% endunless %}
+              {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
       </div>
       {% if site.comments.isso and page.comments %}
       <div id="isso-thread"></div>
