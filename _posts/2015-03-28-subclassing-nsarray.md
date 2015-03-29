@@ -209,4 +209,4 @@ Then we implement `NSMutableCopying` and `NSCoding` as following:
 }
 {% endhighlight %}
 
-And that's actually it. Our `CCMappedArray` is ready and working. The code for this class can be found [here](https://github.com/wanderwaltz/ContainersCollection). I've added some unit tests for `CCMappedArray` as well. I think the topic of unit testing `NSArray` subclasses kind of deserves its own post, so I'll probably return to it at some point in the future.
+And that's actually it. Our `CCMappedArray` is ready and working. The code for this class can be found [here](https://github.com/wanderwaltz/ContainersCollection). I've added some unit tests for `CCMappedArray` as well.
