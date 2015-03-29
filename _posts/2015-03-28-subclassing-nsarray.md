@@ -11,6 +11,7 @@ Creating custom collections is rarely necessary nowadays. Most of the time you c
 
 I cannot come up with another reasons to subclass Foundation collections right now, but to be honest, here at [#justcodingthings](http://wanderwaltz.github.io) we don't actually need a reason to do something. We do it because we can and that's the only reason we need.
 <!--more-->
+
 There is nothing new under the sun and [@mikeash](https://twitter.com/mikeash) has already discussed this topic in his [Friday Q&A](https://mikeash.com/pyblog/friday-qa-2010-03-12-subclassing-class-clusters.html), but I still thought I'd reiterate it once more at least for the reason of providing another example of the technique.
 
 To have a semi-realistic sample to work with, let's build a lazy-mapped array and integrate it into `NSArray` cluster.
@@ -69,7 +70,7 @@ Since we know we'll be subclassing `NSArray`, let's dive into the [documentation
 
 >Any subclass of `NSArray` must override the primitive instance methods `count` and `objectAtIndex:`. These methods must operate on the backing store that you provide for the elements of the collection.
 
->You might want to implement an initializer for your subclass that is suited to the backing store that the subclass is managing. If you do, your initializer must invoke one of the designated initializers of the `NSArray` class, either init or `initWithObjects:count:`. The `NSArray` class adopts the `NSCopying`, `NSMutableCopying`, and `NSCoding` protocols; if you want instances of your own custom subclass created from copying or coding, override the methods in these protocols.
+>You might want to implement an initializer for your subclass that is suited to the backing store that the subclass is managing. If you do, your initializer must invoke one of the designated initializers of the `NSArray` class, either `init` or `initWithObjects:count:`. The `NSArray` class adopts the `NSCopying`, `NSMutableCopying`, and `NSCoding` protocols; if you want instances of your own custom subclass created from copying or coding, override the methods in these protocols.
 
 So we'll have to deal with the following:
 
