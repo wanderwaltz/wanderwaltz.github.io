@@ -14,7 +14,7 @@ Because of that I often think of learning some technology completely orthogonal 
 
 But should I for example learn some JavaScript instead?
 
-Why JS? Well it just came in mind because of the public [React Native](http://facebook.github.io/react-native/) release. Facebook started to push a lot of open source stuff lately. Not sure why they again decided to go away from native into a JS-powered cross-platform (they already had some bad experience with that before I believe), but they should have some reasons behind it. Facebook's [ComponentKit](http://componentkit.org/) is another framework released by Facebook, which also won't work with Swift ('cause CPP).
+Why JS? Well it just came in mind because of the public [React Native](http://facebook.github.io/react-native/) release. Facebook started to push a lot of open source stuff lately. Not sure why they again decided to go away from native into a JS-powered cross-platform (I believe they already had some bad experience with that before), but they should have some reasons behind it. Facebook's [ComponentKit](http://componentkit.org/) is another framework released by Facebook, which also won't work with Swift ('cause CPP).
 
 To be clear, this is not a post about bashing Swift. I don't really have a reason to do it[^2]. It is about me being unsure I want to invest in Apple-only technology anymore. What if I decide one day that I don't want to be iOS developer? What would I do then?
 
