@@ -5,7 +5,7 @@ comments: false
 ---
 
 {% capture site_tags %}{% for tag in site.tags %}{{ tag | first }}{% unless forloop.last %},{% endunless %}{% endfor %}{% endcapture %}
-{% assign tags_list = site_tags | split:',' | sort %}
+{% assign tags_list = site_tags | split:',' | sort case_sensitive:false %}
 
 <ul class="inline-list">
   {% for item in (0..site.tags.size) %}{% unless forloop.last %}
