@@ -2,7 +2,7 @@
 title: Subclassing NSArray
 description: "Where I talk about how one creates a proper NSArray subclass."
 modified: 2015-03-26
-tags: [Objective-C, NSArray, Class Cluster, Inheritance, Lazy, Map, Blocks]
+tags: [Objective-C, NSArray, Class Cluster, Inheritance, Map, Blocks]
 ---
 Creating custom collections is rarely necessary nowadays. Most of the time you can safely go with the collection classes provided by the standard library you're working with and not bother with the implementation details. What would be the reason to write a custom collection anyway?
 
@@ -14,9 +14,9 @@ I cannot come up with another reasons to subclass Foundation collections right n
 
 There is nothing new under the sun and [@mikeash](https://twitter.com/mikeash) has already discussed this topic in his [Friday Q&A](https://mikeash.com/pyblog/friday-qa-2010-03-12-subclassing-class-clusters.html), but I still thought I'd reiterate it once more at least for the reason of providing another example of the technique.
 
-To have a semi-realistic sample to work with, let's build a lazy-mapped array and integrate it into `NSArray` cluster.
+To have a semi-realistic sample to work with, let's build a dynamically mapped array and integrate it into `NSArray` cluster.
 
-Define 'Lazy'
+Define 'Dynamically mapped'
 -------------
 So suppose we want to perform a certain transform or mapping to the elements of a given `NSArray`. The mapping itself will be represented as a mapper block:
 
@@ -26,7 +26,7 @@ id (^mapper)(id object, NSUInteger index) {
 }
 {% endhighlight %}
 
-So each time we access `array[i]` we will actually receive the result of `mapper(array[i], i)`. There are some questions open to discussion of course. What will we do if the block returns `nil` for some of the elements? To be consistent with `NSArray` API we should not return `nil` probably since that is not expected for `NSArrays`. I suggest we transform `nil`s to `NSNull` instances automatically.
+So each time we access `array[i]` we will actually receive the result of `mapper(array[i], i)`. There are some questions open to discussion of course. What will we do if the block returns `nil` for some of the elements? To be consistent with `NSArray` API we should not return `nil` since that is not expected for `NSArrays`. I suggest we transform `nil`s to `NSNull` instances automatically.
 
 What will the mapping interface look like? I suppose something like that will do nicely:
 
@@ -39,9 +39,9 @@ NSArray *mappedArray =
 XCTAssertEqualObjects(mappedArray[1], @4, @""); // @[@2, @4, @6]
 {% endhighlight %}
 
-The goal is to get a proper `NSArray` instance which does evaluate the mapping lazily i.e. it does not invoke the mapper block at the point of creation, but keeps it and invokes it when we try to access a certain element[^1].
+The goal is to get a proper `NSArray` instance which does not invoke the mapper block at the point of creation, but keeps it and invokes it when we try to access a certain element[^1].
 
-[^1]: We could also memoise the result of the mapping and return the mapped value immediately when trying to access the same element for the second time, but this optimization is probably out of the scope of this post.
+[^1]: We could also think of a lazy mapping and memoise the mapped value to return it immediately when trying to access the same element for the second time, but this is probably out of the scope of this post.
 
 We'll be creating a `CCMappedArray`[^2] with the following interface:
 
@@ -77,7 +77,7 @@ So we'll have to deal with the following:
 - **Primitive instance methods.** It's actually almost trivial to implement these in our case. More on that below.
 - **Designated initializers.** Right, so creating our custom `initWithArray:mapper:` initializer won't be enough, since because of subclassing `NSArray` it would be possible to invoke all other initializers of this class on our `CCMappedArray`. So all of the `[CCMappedArray array]`, `[CCMappedArray arrayWithArray: other]` etc should also work.
 - **`NSCopying`** is simple and easily doable.
-- **`NSMutableCopying`** is a bit trickier if we want to keep the lazy mapping. For simplicity I suggest we just return a plain old `NSMutableArray` and lose the mapper block in process (we'll have to apply the mapper to all elements while copying of course).
+- **`NSMutableCopying`** is a bit trickier if we want to keep the dynamic mapping. For simplicity I suggest we just return a plain old `NSMutableArray` and lose the mapper block in process (we'll have to apply the mapper to all elements while copying of course).
 - **`NSCoding`** will also lose the mapper block since there is no way to encode/decode it.
 
 Implementation
