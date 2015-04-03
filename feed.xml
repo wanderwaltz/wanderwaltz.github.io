@@ -10,9 +10,8 @@ layout: null
 <updated>{{ site.time | date_to_xmlschema }}</updated>
 <id>{{ site.url }}/</id>
 <author>
-  <name>{{ site.owner.name }}</name>
+  <name>{{ site.author }}</name>
   <uri>{{ site.url }}/</uri>
-  {% if site.owner.email %}<email>{{ site.owner.email }}</email>{% endif %}
 </author>
 {% for post in site.posts limit:20 %}
 
