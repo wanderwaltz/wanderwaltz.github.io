@@ -35,17 +35,48 @@ $base-color : #747474;
   }
 
 .photo {
-
+  padding: 10px 10px 20px 10px;
+  background: #fff;
+  border: 1px solid #ddd;
+  box-shadow: 0px 2px 15px #ddd;
+  -moz-box-shadow: 0px 2px 15px #ddd;
+  -webkit-transform: rotate(-2deg);
 }
 
 
 .float-right {
   float: right;
   right: 0;
-  padding: 10px 10px 25px 10px;
-  background: #fff;
-  border: 1px solid #ddd;
-  box-shadow: 0px 2px 15px #ddd;
-  -moz-box-shadow: 0px 2px 15px #ddd;
-  -webkit-transform: rotate(-2deg);
+}
+
+
+.no-border {
+  border-style: none;
+}
+
+table, .no-border {
+  th {
+    @extend .no-border;
+  }
+
+  td {
+    @extend .no-border;
+  }
+}
+
+table, .curriculum-vitae {
+  th {
+    @extend .no-border;
+    vertical-align: top;
+  }
+
+  td {
+    @extend .no-border;
+    vertical-align: top;
+
+    &.date {
+      font-weight: 400;
+      white-space: nowrap;
+    }
+  }
 }
