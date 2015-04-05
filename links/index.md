@@ -5,9 +5,14 @@ title: Links
 Gamedev
 -------
 - [GameDev.net forums](http://www.gamedev.net/index)
+- [NES emulation](http://wiki.nesdev.com/w/index.php/Nesdev_Wiki)
 - [r/gamedev](http://reddit.com/r/gamedev)
 - [Red Blob Games](http://www.redblobgames.com/) from Amit Patel
 - [Three Hundred Mechanics](http://www.squidi.net/three/) by Sean Howard
+
+**Resources**
+:    [King's Bounty (1990)](http://shrines.rpgclassics.com/genesis/kingbounty/index.shtml), unit stats, villain stats,
+     spell lists, manual, etc.
 
 Programming Languages
 ---------------------
