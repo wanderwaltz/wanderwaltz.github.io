@@ -4,7 +4,7 @@ description: "Where I build a composition-based object inheritance mechanism in 
 modified: 2015-04-05
 tags: [Objective-C, Runtime, Inheritance, Composition, Forwarding, NSProxy, Object-Oriented, Principles]
 ---
-[They](http://blogs.perl.org/users/sid_burn/2014/03/inheritance-is-bad-code-reuse-part-1.html) [say](http://blog.berniesumption.com/software/inheritance-is-evil-and-must-be-destroyed/) [inheritance](http://simpleprogrammer.com/2010/01/15/inheritance-is-inherently-evil/) [is](http://stackoverflow.com/questions/11056943/deep-class-inheritance-hierarchy-bad-idea) [bad](http://codingdelight.com/2014/01/16/favor-composition-over-inheritance-part-1/). Yes, there are really 5 different links in the previous sentence.
+[They](http://blogs.perl.org/users/sid_burn/2014/03/inheritance-is-bad-code-reuse-part-1.html) [say](http://blog.berniesumption.com/software/inheritance-is-evil-and-must-be-destroyed/) [inheritance](http://simpleprogrammer.com/2010/01/15/inheritance-is-inherently-evil/) [is](http://stackoverflow.com/questions/11056943/deep-class-inheritance-hierarchy-bad-idea) [bad](http://codingdelight.com/2014/01/16/favor-composition-over-inheritance-part-1/). Yes, there really are 5 different links in the previous sentence.
 
 The links I've provided may not be the most trustworthy sources on the subject (as the matter of fact, I've entered 'inheritance is bad' in the Google prompt and used the top results just to provide a couple of examples). Jokes aside, there is a lot of info out there about the reasons to prefer composition over inheritance in most cases.
 
