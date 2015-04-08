@@ -56,15 +56,20 @@ This page is basically a backup of my browser's bookmarks list.
     for C99 and C11
 
 ### Erlang
+- [awesome-erlang](https://github.com/drobakowski/awesome-erlang), a curated list of awesome Erlang
+     libraries, resources and shiny things.
 - [Erlang Programming Language](http://www.erlang.org/)
 
 ### JavaScript
 
-- [awesome-javascript](https://github.com/sorrycc/awesome-javascript)
+- [awesome-javascript](https://github.com/sorrycc/awesome-javascript), a collection of awesome
+     browser-side JavaScript libraries, resources and shiny things.
 - [TypeScript](http://www.typescriptlang.org/), a typed superset of JavaScript that
     compiles to plain JavaScript
 
 ### Scala
+- [awesome-scala](https://github.com/lauris/awesome-scala), a community driven list of useful Scala
+    libraries, frameworks and software.
 - [Programming in Scala, First Edition](http://www.artima.com/pins1ed/) by Martin Odersky, Lex
     Spoon, and Bill Venners
 
