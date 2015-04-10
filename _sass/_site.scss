@@ -80,3 +80,19 @@ table, .curriculum-vitae {
     }
   }
 }
+
+
+#markdown-toc {
+  padding: 16px 16px 16px 16px;
+  border: 1px solid #ddd;
+  box-shadow: 0px 4px 2px #ddd;
+  font-size: 0.75em;
+  line-height: 1.5em;
+  display: inline-block;
+
+  li {
+    list-style-type: none;
+    padding: 0px;
+    margin: 0px;
+  }
+}

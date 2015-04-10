@@ -6,10 +6,8 @@ gamedev a lot while studying in the university, but don't do it that much nowada
 
 This page is basically a backup of my browser's bookmarks list.
 
-<hr/>
 * auto-build-toc
 {:toc}
-<hr/>
 
 ## Blogs
 
