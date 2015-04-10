@@ -39,6 +39,12 @@ This page is basically a backup of my browser's bookmarks list.
 - [cocos2d-x](http://www.cocos2d-x.org/)
 - [kiwi.js](http://www.kiwijs.org/)
 
+### Procedural Generation
+- [Chris Pound's Language Machines](http://generators.christopherpound.com/), notably the Language
+    Confluxer algorithm gives some neat results. I've actually implemented it [once](https://github.com/wanderwaltz/Blogdemos/blob/master/Language%20Confluxer/Ruby/language.rb) in Ruby, and the
+    names generated based on the provided dataset were actually pretty nice. I think there is room
+    for improvement and maybe I'll try to figure it out someday.
+
 ### Resources
 - [2d Game Art for Programmers](http://2dgameartforprogrammers.blogspot.com), "Life is too short
     to make bad art"
