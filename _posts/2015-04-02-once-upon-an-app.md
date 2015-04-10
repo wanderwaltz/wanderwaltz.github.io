@@ -1,7 +1,7 @@
 ---
 title: Once upon an App
 description: "Where I talk about an app I've been making two times already and I'm probably going for the third one."
-modified: 2015-04-02
+date: 2015-04-02
 tags: [Delphi, Objective-C, Windows, iOS, iPad, MMPI, JSON]
 ---
 I was making this one app for a long time already. An app for a single user. Not really a promising venture, one might say. But this is personal. It's an app for my father which helps him do his job and which he asked me to make for him when I was still going to school.

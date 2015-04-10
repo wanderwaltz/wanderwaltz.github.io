@@ -1,7 +1,7 @@
 ---
 title: Subclassing NSArray
 description: "Where I talk about how one creates a proper NSArray subclass."
-modified: 2015-03-26
+date: 2015-03-28
 tags: [Objective-C, NSArray, Class Cluster, Inheritance, Map, Blocks]
 ---
 Creating custom collections is rarely necessary nowadays. Most of the time you can safely go with the collection classes provided by the standard library you're working with and not bother with the implementation details. What would be the reason to write a custom collection anyway?

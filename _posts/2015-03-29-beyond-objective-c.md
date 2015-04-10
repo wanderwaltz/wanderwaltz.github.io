@@ -1,7 +1,7 @@
 ---
 title: Beyond Objective-C
 description: "Where I twaddle about necessity of getting familiar with multiple platforms/languages."
-modified: 2015-03-29
+date: 2015-03-29
 tags: [Objective-C, Swift, JavaScript, React, Native, Facebook]
 ---
 They say Objective-C is dead. A new king named Swift is rising and Objective-C days are counted. Well that's probably true. It may be not completely true right now, but one day it will be. I surely need to familiarize myself with Swift a little bit more so I will know what I'm doing already when there would be no choice to write in it.
