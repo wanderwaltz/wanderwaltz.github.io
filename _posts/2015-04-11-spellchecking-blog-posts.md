@@ -4,7 +4,7 @@ description: "Where Microsoft Word is not as helpful as it wants to be."
 date: 2015-04-11 02:47:00 +0600
 tags: [Word, Spellchecking, Blog]
 ---
-English is not my native language. You probably noticed that already. To make the posts in this blog a bit less cringe worthy, I check the spelling and grammar of the text I write using Microsoft Word. The problem is that Word is not really tailored to work with programming-related texts and code samples.
+English is not my native language. You've probably noticed that already. To make the posts in this blog a bit less cringe worthy, I check the spelling and grammar of the text I write using Microsoft Word. The problem is that Word is not really tailored to work with programming-related texts and code samples.
 <!--more-->
 
 <figure class="float-center">
