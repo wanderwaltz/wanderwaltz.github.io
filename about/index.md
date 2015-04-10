@@ -4,7 +4,7 @@ comments: false
 modified: 2015-03-26
 ---
 <figure class="photo float-right">
-  <img src="{{ site.url }}/images/avatar.jpg" alt="" width="200" height="200">
+  <img src="/images/avatar.jpg" alt="" width="200" height="200">
 </figure>
 
 <span style="white-space: nowrap;"> About something or other.</span>
