@@ -20,6 +20,7 @@ This page is basically a backup of my browser's bookmarks list.
 - [c2.com](http://c2.com/cgi/wiki), a wiki focused on people, projects and patterns in software
     development
 - [Coding Horror](http://blog.codinghorror.com/) by Jeff Atwood
+- [Nick's Blog (Damn Cool Algorithms)](http://blog.notdot.net/tag/damn-cool-algorithms) by Nick Johnsonz
 - [Sutter's Mill](http://herbsutter.com), Herb Sutter on software, hardware and concurrency
 
 <hr/>

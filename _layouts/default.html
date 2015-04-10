@@ -3,7 +3,13 @@ layout: blank
 ---
     <article>
       <header>
-        <h2><a href="{{ page.url | prepend: site.baseurl }}">{{ page.title }}</a></h2>
+        <h2>
+          {% if page.external_url %}
+            <a href="{{ page.external_url }}"><i class="fa fa-bookmark-o"></i> {{ page.title }}</a>
+          {% else %}
+            <a href="{{ page.url | prepend: site.baseurl }}">{{ page.title }}</a>
+          {% endif %}
+        </h2>
         <p>{% if page.author %}{{ page.author }} • {% endif %}{% if page.date %}<time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%b %-d, %Y" }}</time>{% endif %}{% if page.categories.size > 0 %} • {{ page.categories | array_to_sentence_string }}{% endif %}</p>
       </header>
       <div>
