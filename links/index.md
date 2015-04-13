@@ -12,6 +12,8 @@ This page is basically a backup of my browser's bookmarks list.
 ## Blogs
 
 ### Mac/iOS Development
+- [App Store Review Guidelines History](http://www.appstorereviewguidelineshistory.com) with
+    a nice diff interface
 - [NSBlog](https://mikeash.com/pyblog/) by Mike Ash
 - [NSHipster](http://nshipster.com/) by Mattt Thompson
 - [objc.io](http://www.objc.io/) by Chris Eidhof, Daniel Eggert, and Florian Kugler
