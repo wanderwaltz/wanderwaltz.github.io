@@ -60,6 +60,7 @@ This page is basically a backup of my browser's bookmarks list.
 ### C/C++
 - [awesome-cpp](http://fffaraz.github.io/awesome-cpp/), a curated list of awesome C/C++
     frameworks, libraries, resources, and shiny things
+- [Cello](http://libcello.org), higher level programming in C.
 - [P99](http://p99.gforge.inria.fr/p99-html/index.html), preprocessor macros and functions
     for C99 and C11
 
