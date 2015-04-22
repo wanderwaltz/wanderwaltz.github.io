@@ -1,7 +1,7 @@
 ---
 title: Writing Swift wrappers for C libraries
 description: "Where I talk about my first experience in writing Swift code."
-date: 2015-04-11 02:30:00 +0600
+date: 2015-04-11 02:30:00
 tags: [C, Swift, Squirrel, Framework, Type Inference, Types]
 ---
 
