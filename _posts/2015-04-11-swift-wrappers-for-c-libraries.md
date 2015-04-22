@@ -195,3 +195,9 @@ Swift baby steps. I'm so proud of myself.
 I've really enjoyed solving this particular problem. It is completely different from what I usually do while writing Objective-C code. I've actually been coding the SwiftSquirrel project at nighttime for the whole last week. That did not go well with getting up and going for work the next days, but it was a lot of fun.
 
 I've already had a couple more problems to scratch my head over, but I'll probably talk about them some other time.
+
+### Followup posts
+
+- [Binding Swift funcs]({% post_url 2015-04-22-binding-swift-funcs %}) describes the non-trivial approach required to use Swift funcs as native Squirrel closures.
+
+<br/>

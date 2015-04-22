@@ -1,7 +1,7 @@
 ---
 title: "Binding Swift funcs"
 description: "Where I talk about my implementation of Squirrel bindings for Swift funcs"
-date: 2015-04-22 23:12:00 +0600
+date: 2015-04-22 23:12:00
 tags: [Squirrel, Swift, Functions, Binding, Objective-C]
 ---
 I've already talked about my [quest]({% post_url 2015-04-11-swift-wrappers-for-c-libraries %}) to learn me some Swift. Having implemented basic Swift wrappers for Squirrel tables and arrays, the time has come to move on to the fun stuff: binding functions.
