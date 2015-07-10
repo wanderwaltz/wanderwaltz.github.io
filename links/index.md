@@ -25,6 +25,9 @@ This page is basically a backup of my browser's bookmarks list.
 - [Nick's Blog (Damn Cool Algorithms)](http://blog.notdot.net/tag/damn-cool-algorithms) by Nick
     Johnsonz. Has not been updated for a long time, but the articles are still pretty damn cool.
 - [Sutter's Mill](http://herbsutter.com), Herb Sutter on software, hardware and concurrency
+- [Yegor Bugayenko's Blog](http://www.yegor256.com), a personal, very opinionated programming-related
+    blog. It often seems that the author is just trolling, and as a result, comment sections are
+    pure gold.
 
 <hr/>
 ## Gamedev
