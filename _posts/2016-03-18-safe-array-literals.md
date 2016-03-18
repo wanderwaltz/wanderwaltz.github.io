@@ -2,6 +2,7 @@
 title: Safe NSArray literals
 description: "A way to ensure nil safety for NSArray literals."
 date: 2016-03-18 22:20:00 +0600
+updated: 2016-03-19 04:34:00 +0600
 tags: [Objective-C, NSArray, Literals, Nil, Safety]
 ---
 While Swift is a new panacea an a go-to solution for all things programming, we still have to
@@ -181,10 +182,10 @@ simpler:
 
 {% highlight objc %}
 #define $array(...)                        \
-    ([YPArraySafeLiteral arrayWithObjects: \
-        [YPArraySafeLiteral class],        \
+    ([NSArraySafeLiteral arrayWithObjects: \
+        [NSArraySafeLiteral class],        \
         __VA_ARGS__,                       \
-        [YPArraySafeLiteral class]])
+        [NSArraySafeLiteral class]])
 {% endhighlight %}
 
 Here I'm using the class pointer as the list terminator, which should suffice for the most use
