@@ -4,6 +4,8 @@ description: "Yet another tech blog related to various coding stuff I encounter 
 more: "Read"
 url: "http://wanderwaltz.github.io"
 
+markdown: kramdown
+
 comments:
     disqus: "justcodingthings"
 
