@@ -6,19 +6,20 @@ layout: default
   <h1 class="post-title">{{ page.title }}</h1>
   <span class="post-date">{{ page.date | date_to_string }}</span>
   {{ content }}
-</div>
 
-{% if page.tags %}
-  {% assign tags_list = page.tags | sort %}
-  <ul class="inline-list">
-    {% for item in (0..tags_list.size) %}
-      {% unless forloop.last %}
-        {% capture this_word %}{{ tags_list[item] | strip_newlines }}{% endcapture %}
-          <li><a href="{{ "/tags/" }}#{{this_word}}" class="tag"><span class="term">{{ this_word }}</span></a></li>
-        {% endunless %}
-      {% endfor %}
-  </ul>
-{% endif %}
+  {% if page.tags %}
+    {% assign tags_list = page.tags | sort %}
+    <ul class="inline-list">
+      {% for item in (0..tags_list.size) %}
+        {% unless forloop.last %}
+          {% capture this_word %}{{ tags_list[item] | strip_newlines }}{% endcapture %}
+            <li><a href="{{ "/tags/" }}#{{this_word}}" class="tag"><span class="term">{{ this_word }}</span></a></li>
+          {% endunless %}
+        {% endfor %}
+    </ul>
+  {% endif %}
+
+</div>
 
 <div class="related">
   <h2>Related Posts</h2>
