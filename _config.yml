@@ -6,6 +6,7 @@ gems:
  - jekyll-paginate
  - jekyll-gist
  - jekyll-feed
+ - jekyll-sitemap
 
 comments:
   disqus: "justcodingthings"
@@ -15,6 +16,9 @@ sass:
 
 feed:
   path: feed.xml
+
+include:
+ - .nojekyll
 
 
 # Permalinks
