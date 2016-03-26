@@ -2,13 +2,14 @@
 layout: page
 title: Links
 ---
+{% sidebar %}
+  {{ page.content | toc }}
+{% endsidebar %}
+
 Here I list websites, articles and books, which I find interesting and worth looking into. I was into
 gamedev a lot while studying in the university, but don't do it that much nowadays.
 
 This page is basically a backup of my browser's bookmarks list.
-
-* auto-build-toc
-{:toc}
 
 ## Blogs
 
