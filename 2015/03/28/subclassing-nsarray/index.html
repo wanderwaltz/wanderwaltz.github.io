@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <link type="application/atom+xml" rel="alternate" href="/feed.xml" title="" />
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Subclassing NSArray &middot; Just Coding Things
+    
+  </title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/hyde.css">
+  <link rel="stylesheet" href="/public/css/main.css">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+                                 <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+</head>
+
+
+  <body>
+
+    <div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <h1>
+        <a href="/">
+          Just Coding Things
+        </a>
+      </h1>
+      <p class="lead">Yet another tech blog related to various coding stuff I encounter in my everyday life.</p>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a class="sidebar-nav-item" href="/">Home</a>
+
+      
+
+      
+      
+        
+          
+        
+      
+        
+          
+            <a class="sidebar-nav-item" href="/about/">About</a>
+          
+        
+      
+        
+          
+            <a class="sidebar-nav-item" href="/archive/">Archive</a>
+          
+        
+      
+        
+          
+        
+      
+        
+          
+            <a class="sidebar-nav-item" href="/tags/">Tags</a>
+          
+        
+      
+        
+          
+            <a class="sidebar-nav-item" href="/links/">Links</a>
+          
+        
+      
+        
+      
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+    </nav>
+
+    <p>&copy; 2016. All rights reserved.</p>
+  </div>
+</div>
+
+
+    <div class="content container">
+      <div class="post">
+  <h1 class="post-title">Subclassing NSArray</h1>
+  <span class="post-date">28 Mar 2015</span>
+  <p>Creating custom collections is rarely necessary nowadays. Most of the time you can safely go with the collection classes provided by the standard library you’re working with and not bother with the implementation details. What would be the reason to write a custom collection anyway?</p>
+
+<ul>
+  <li><strong>Performance?</strong> I’d say that you go with the standard collections and rewrite them if and only if you’re completely sure that it’s the collection that is your bottleneck and not anything else. Give me a profiler-proven reason to do that.</li>
+  <li><strong>Changing the collection interface?</strong> Well that could be done via categories or composition. You don’t really need to subclass <code>NSArray</code> or <code>NSDictionary</code> to change their interface if you want to.</li>
+</ul>
+
+<p>I cannot come up with another reasons to subclass Foundation collections right now, but to be honest, here at <a href="http://wanderwaltz.github.io">#justcodingthings</a> we don’t actually need a reason to do something. We do it because we can and that’s the only reason we need.
+<!--more--></p>
+
+<p>There is nothing new under the sun and <a href="https://twitter.com/mikeash">@mikeash</a> has already discussed this topic in his <a href="https://mikeash.com/pyblog/friday-qa-2010-03-12-subclassing-class-clusters.html">Friday Q&amp;A</a>, but I still thought I’d reiterate it once more at least for the reason of providing another example of the technique.</p>
+
+<p>To have a semi-realistic sample to work with, let’s build a dynamically mapped array and integrate it into <code>NSArray</code> cluster.</p>
+
+<h2 id="define-dynamically-mapped">Define ‘dynamically mapped’</h2>
+<p>So suppose we want to perform a certain transform or mapping to the elements of a given <code>NSArray</code>. The mapping itself will be represented as a mapper block:</p>
+
+<figure class="highlight"><pre><code class="language-objc" data-lang="objc"><span class="kt">id</span> <span class="p">(</span><span class="o">^</span><span class="n">mapper</span><span class="p">)(</span><span class="kt">id</span> <span class="n">object</span><span class="p">,</span> <span class="bp">NSUInteger</span> <span class="n">index</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// return transformed object</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>So each time we access <code>array[i]</code> we will actually receive the result of <code>mapper(array[i], i)</code>. There are some questions open to discussion of course. What will we do if the block returns <code>nil</code> for some of the elements? To be consistent with <code>NSArray</code> API we should not return <code>nil</code> since that is not expected for <code>NSArrays</code>. I suggest we transform <code>nil</code>s to <code>NSNull</code> instances automatically.</p>
+
+<p>What will the mapping interface look like? I suppose something like that will do nicely:</p>
+
+<figure class="highlight"><pre><code class="language-objc" data-lang="objc"><span class="bp">NSArray</span> <span class="o">*</span><span class="n">originalArray</span> <span class="o">=</span> <span class="l">@[</span><span class="mi">@1</span><span class="p">,</span> <span class="mi">@2</span><span class="p">,</span> <span class="mi">@3</span><span class="l">]</span><span class="p">;</span>
+<span class="bp">NSArray</span> <span class="o">*</span><span class="n">mappedArray</span> <span class="o">=</span>
+    <span class="p">[</span><span class="n">originalArray</span> <span class="nl">arrayByApplyingMapping</span><span class="p">:</span> <span class="o">^</span><span class="p">(</span><span class="kt">id</span> <span class="n">object</span><span class="p">,</span> <span class="bp">NSUInteger</span> <span class="n">index</span><span class="p">){</span>
+        <span class="k">return</span> <span class="l">@(</span><span class="p">[</span><span class="n">object</span> <span class="n">integerValue</span><span class="p">]</span><span class="o">*</span><span class="mi">2</span><span class="l">)</span><span class="p">;</span>
+    <span class="p">}];</span>
+<span class="n">XCTAssertEqualObjects</span><span class="p">(</span><span class="n">mappedArray</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">@4</span><span class="p">,</span> <span class="s">@&quot;&quot;</span><span class="p">);</span> <span class="c1">// @[@2, @4, @6]</span></code></pre></figure>
+
+<p>The goal is to get a proper <code>NSArray</code> instance which does not invoke the mapper block at the point of creation, but keeps it and invokes it when we try to access a certain element<sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup>.</p>
+
+<p>We’ll be creating a <code>CCMappedArray</code><sup id="fnref:2"><a href="#fn:2" class="footnote">2</a></sup> with the following interface:</p>
+
+<figure class="highlight"><pre><code class="language-objc" data-lang="objc"><span class="k">@interface</span> <span class="nc">CCMappedArray</span> : <span class="bp">NSArray</span>
+
+<span class="p">-</span> <span class="p">(</span><span class="kt">instancetype</span><span class="p">)</span><span class="nf">initWithArray:</span><span class="p">(</span><span class="bp">NSArray</span> <span class="o">*</span><span class="p">)</span><span class="nv">originalArray</span>
+        <span class="nf">mapper:</span><span class="p">(</span><span class="kt">id</span> <span class="p">(</span><span class="o">^</span><span class="p">)(</span><span class="kt">id</span> <span class="n">object</span><span class="p">,</span> <span class="bp">NSUInteger</span> <span class="n">index</span><span class="p">))</span><span class="nv">block</span> <span class="n">NS_DESIGNATED_INITIALIZER</span><span class="p">;</span>
+
+<span class="k">@end</span></code></pre></figure>
+
+<p>And we’ll also need a category on <code>NSArray</code>:</p>
+
+<figure class="highlight"><pre><code class="language-objc" data-lang="objc"><span class="k">@interface</span> <span class="bp">NSArray</span><span class="nl">(CCMappedArray)</span>
+
+<span class="p">-</span> <span class="p">(</span><span class="bp">NSArray</span> <span class="o">*</span><span class="p">)</span><span class="nf">arrayByApplyingMapping:</span><span class="p">(</span><span class="kt">id</span><span class="p">(</span><span class="o">^</span><span class="p">)(</span><span class="kt">id</span> <span class="n">object</span><span class="p">,</span> <span class="bp">NSUInteger</span> <span class="n">index</span><span class="p">))</span><span class="nv">mapper</span><span class="p">;</span>
+
+<span class="k">@end</span></code></pre></figure>
+
+<p>Since we know we’ll be subclassing <code>NSArray</code>, let’s dive into the <a href="https://developer.apple.com/library/mac/documentation/Cocoa/Reference/Foundation/Classes/NSArray_Class/">documentation</a> and look what we’ll have to actually do to achieve our goal.</p>
+
+<blockquote>
+  <p>Any subclass of <code>NSArray</code> must override the primitive instance methods <code>count</code> and <code>objectAtIndex:</code>. These methods must operate on the backing store that you provide for the elements of the collection.</p>
+</blockquote>
+
+<blockquote>
+  <p>You might want to implement an initializer for your subclass that is suited to the backing store that the subclass is managing. If you do, your initializer must invoke one of the designated initializers of the <code>NSArray</code> class, either <code>init</code> or <code>initWithObjects:count:</code>. The <code>NSArray</code> class adopts the <code>NSCopying</code>, <code>NSMutableCopying</code>, and <code>NSCoding</code> protocols; if you want instances of your own custom subclass created from copying or coding, override the methods in these protocols.</p>
+</blockquote>
+
+<p>So we’ll have to deal with the following:</p>
+
+<ul>
+  <li><strong>Primitive instance methods.</strong> It’s actually almost trivial to implement these in our case. More on that below.</li>
+  <li><strong>Designated initializers.</strong> Right, so creating our custom <code>initWithArray:mapper:</code> initializer won’t be enough, since because of subclassing <code>NSArray</code> it would be possible to invoke all other initializers of this class on our <code>CCMappedArray</code>. So all of the <code>[CCMappedArray array]</code>, <code>[CCMappedArray arrayWithArray: other]</code> etc should also work.</li>
+  <li><strong><code>NSCopying</code></strong> is simple and easily doable.</li>
+  <li><strong><code>NSMutableCopying</code></strong> is a bit trickier if we want to keep the dynamic mapping. For simplicity I suggest we just return a plain old <code>NSMutableArray</code> and lose the mapper block in process (we’ll have to apply the mapper to all elements while copying of course).</li>
+  <li><strong><code>NSCoding</code></strong> will also lose the mapper block since there is no way to encode/decode it.</li>
+</ul>
+
+<h2 id="implementation">Implementation</h2>
+
+<p>The category implementation is trivial:</p>
+
+<figure class="highlight"><pre><code class="language-objc" data-lang="objc"><span class="k">@implementation</span> <span class="bp">NSArray</span><span class="nl">(CCMappedArray)</span>
+
+<span class="p">-</span> <span class="p">(</span><span class="bp">NSArray</span> <span class="o">*</span><span class="p">)</span><span class="nf">arrayByApplyingMapping:</span><span class="p">(</span><span class="kt">id</span><span class="p">(</span><span class="o">^</span><span class="p">)(</span><span class="kt">id</span> <span class="n">object</span><span class="p">,</span> <span class="bp">NSUInteger</span> <span class="n">index</span><span class="p">))</span><span class="nv">mapper</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="p">[[</span><span class="n">CCMappedArray</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithArray</span><span class="p">:</span> <span class="nb">self</span>
+                                         <span class="nl">mapper</span><span class="p">:</span> <span class="n">mapper</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="k">@end</span></code></pre></figure>
+
+<p>Although there is no reason to create a <code>CCMappedArray</code> without a mapper block, we still won’t check the parameter for <code>nil</code> value here and leave this to the <code>CCMappedArray</code> itself if we find it necessary.</p>
+
+<p>Now let’s get to the interesting part. We’ll probably need to store the references to the original array and the mapper block in the <code>CCMappedArray</code>, so we add these properties in the class extension:</p>
+
+<figure class="highlight"><pre><code class="language-objc" data-lang="objc"><span class="k">@interface</span> <span class="nc">CCMappedArray</span><span class="p">()</span>
+<span class="k">@property</span> <span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span> <span class="k">strong</span><span class="p">,</span> <span class="k">readonly</span><span class="p">)</span> <span class="bp">NSArray</span> <span class="o">*</span><span class="n">originalArray</span><span class="p">;</span>
+<span class="k">@property</span> <span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span> <span class="k">copy</span><span class="p">,</span> <span class="k">readonly</span><span class="p">)</span> <span class="kt">id</span> <span class="p">(</span><span class="o">^</span><span class="n">mapper</span><span class="p">)(</span><span class="kt">id</span><span class="p">,</span> <span class="bp">NSUInteger</span><span class="p">);</span>
+<span class="k">@end</span></code></pre></figure>
+
+<p>Now our designated initializer will look like this:</p>
+
+<figure class="highlight"><pre><code class="language-objc" data-lang="objc"><span class="p">-</span> <span class="p">(</span><span class="kt">instancetype</span><span class="p">)</span><span class="nf">initWithArray:</span><span class="p">(</span><span class="bp">NSArray</span> <span class="o">*</span><span class="p">)</span><span class="nv">originalArray</span>
+                       <span class="nf">mapper:</span><span class="p">(</span><span class="kt">id</span> <span class="p">(</span><span class="o">^</span><span class="p">)(</span><span class="kt">id</span> <span class="n">object</span><span class="p">,</span> <span class="bp">NSUInteger</span> <span class="n">index</span><span class="p">))</span><span class="nv">block</span>
+<span class="p">{</span>
+    <span class="nb">self</span> <span class="o">=</span> <span class="p">[</span><span class="nb">super</span> <span class="n">init</span><span class="p">];</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nb">self</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">_originalArray</span> <span class="o">=</span> <span class="p">[</span><span class="n">originalArray</span> <span class="k">copy</span><span class="p">];</span>
+        <span class="n">_mapper</span> <span class="o">=</span> <span class="p">[</span><span class="n">block</span> <span class="k">copy</span><span class="p">];</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="nb">self</span><span class="p">;</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Note how we’re using <code>[originalArray copy]</code> there - for simplicity we want to only work with immutable arrays, although it’s pretty simple to expand the implementation to work with mutable arrays too<sup id="fnref:3"><a href="#fn:3" class="footnote">3</a></sup>.</p>
+
+<p>We also need to override the designated initializers of the <code>NSArray</code> class:</p>
+
+<figure class="highlight"><pre><code class="language-objc" data-lang="objc"><span class="p">-</span> <span class="p">(</span><span class="kt">instancetype</span><span class="p">)</span><span class="nf">init</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="p">[</span><span class="nb">self</span> <span class="nl">initWithArray</span><span class="p">:</span> <span class="l">@[]</span> <span class="nl">mapper</span><span class="p">:</span> <span class="nb">nil</span><span class="p">];</span>
+<span class="p">}</span>
+
+
+<span class="p">-</span> <span class="p">(</span><span class="kt">instancetype</span><span class="p">)</span><span class="nf">initWithObjects:</span><span class="p">(</span><span class="k">const</span> <span class="kt">id</span> <span class="p">[])</span><span class="nv">objects</span>
+                          <span class="nf">count:</span><span class="p">(</span><span class="bp">NSUInteger</span><span class="p">)</span><span class="nv">count</span>
+<span class="p">{</span>
+    <span class="bp">NSArray</span> <span class="o">*</span><span class="n">array</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">NSArray</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithObjects</span><span class="p">:</span> <span class="n">objects</span> <span class="nl">count</span><span class="p">:</span> <span class="n">count</span><span class="p">];</span>
+    <span class="k">return</span> <span class="p">[</span><span class="nb">self</span> <span class="nl">initWithArray</span><span class="p">:</span> <span class="n">array</span> <span class="nl">mapper</span><span class="p">:</span> <span class="nb">nil</span><span class="p">];</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Note that both these initializers do not have a mapper block essentially making the returned <code>CCMappedArray</code> a useless wrapper over the original <code>NSArray</code>. It’s OK since initializing <code>CCMappedArray</code> using the standard <code>NSArray</code> initializers is not really intended.</p>
+
+<p>Now let’s get to primitive methods of the <code>NSArray</code>. We don’t change the count of the original array<sup id="fnref:4"><a href="#fn:4" class="footnote">4</a></sup>,
+so the <code>count</code> method just returns the original count:</p>
+
+<figure class="highlight"><pre><code class="language-objc" data-lang="objc"><span class="p">-</span> <span class="p">(</span><span class="bp">NSUInteger</span><span class="p">)</span><span class="nf">count</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="nb">self</span><span class="p">.</span><span class="n">originalArray</span><span class="p">.</span><span class="n">count</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="p">-</span> <span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nf">objectAtIndex:</span><span class="p">(</span><span class="bp">NSUInteger</span><span class="p">)</span><span class="nv">index</span>
+<span class="p">{</span>
+    <span class="kt">id</span> <span class="n">object</span> <span class="o">=</span> <span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">originalArray</span> <span class="nl">objectAtIndex</span><span class="p">:</span> <span class="n">index</span><span class="p">];</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">self</span><span class="p">.</span><span class="n">mapper</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">object</span> <span class="o">=</span> <span class="nb">self</span><span class="p">.</span><span class="n">mapper</span><span class="p">(</span><span class="n">object</span><span class="p">,</span> <span class="n">index</span><span class="p">)</span> <span class="o">?:</span> <span class="p">[</span><span class="bp">NSNull</span> <span class="n">null</span><span class="p">];</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">object</span><span class="p">;</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Without a mapper block our array represents an identity mapping.</p>
+
+<p>Let’s continue with <code>NSCopying</code>. Note that we actually work with immutable arrays only so we never have to actually copy anything:</p>
+
+<figure class="highlight"><pre><code class="language-objc" data-lang="objc"><span class="p">-</span> <span class="p">(</span><span class="kt">instancetype</span><span class="p">)</span><span class="nf">copyWithZone:</span><span class="p">(</span><span class="n">NSZone</span> <span class="o">*</span><span class="p">)</span><span class="nv">zone</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="nb">self</span><span class="p">;</span> <span class="c1">// Immutable objects do not need to be copied</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Then we implement <code>NSMutableCopying</code> and <code>NSCoding</code> as following:</p>
+
+<figure class="highlight"><pre><code class="language-objc" data-lang="objc"><span class="cp">#pragma mark - &lt;NSMutableCopying&gt;</span>
+
+<span class="p">-</span> <span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nf">mutableCopyWithZone:</span><span class="p">(</span><span class="n">NSZone</span> <span class="o">*</span><span class="p">)</span><span class="nv">zone</span>
+<span class="p">{</span>
+    <span class="c1">// A neat trick which will automatically map every value</span>
+    <span class="c1">// when creating the copy</span>
+    <span class="k">return</span> <span class="p">[[</span><span class="bp">NSMutableArray</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithArray</span><span class="p">:</span> <span class="nb">self</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="cp">#pragma mark - &lt;NSCoding&gt;</span>
+
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">encodeWithCoder:</span><span class="p">(</span><span class="bp">NSCoder</span> <span class="o">*</span><span class="p">)</span><span class="nv">aCoder</span>
+<span class="p">{</span>
+    <span class="bp">NSArray</span> <span class="o">*</span><span class="n">array</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">NSArray</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithArray</span><span class="p">:</span> <span class="nb">self</span><span class="p">];</span>
+    <span class="p">[</span><span class="n">array</span> <span class="nl">encodeWithCoder</span><span class="p">:</span> <span class="n">aCoder</span><span class="p">];</span>
+<span class="p">}</span>
+
+
+<span class="p">-</span> <span class="p">(</span><span class="kt">instancetype</span><span class="p">)</span><span class="nf">initWithCoder:</span><span class="p">(</span><span class="bp">NSCoder</span> <span class="o">*</span><span class="p">)</span><span class="nv">aDecoder</span>
+<span class="p">{</span>
+    <span class="bp">NSArray</span> <span class="o">*</span><span class="n">array</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">NSArray</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithCoder</span><span class="p">:</span> <span class="n">aDecoder</span><span class="p">];</span>
+    <span class="k">return</span> <span class="p">[</span><span class="nb">self</span> <span class="nl">initWithArray</span><span class="p">:</span> <span class="n">array</span> <span class="nl">mapper</span><span class="p">:</span> <span class="nb">nil</span><span class="p">];</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>And that’s actually it. Our <code>CCMappedArray</code> is ready and working. The code for this class can be found <a href="https://github.com/wanderwaltz/ContainersCollection">here</a>. I’ve added some unit tests for <code>CCMappedArray</code> as well.</p>
+<div class="footnotes">
+  <ol>
+    <li id="fn:1">
+      <p>We could also think of a lazy mapping and memoise the mapped value to return it immediately when trying to access the same element for the second time, but this is probably out of the scope of this post. <a href="#fnref:1" class="reversefootnote">&#8617;</a></p>
+    </li>
+    <li id="fn:2">
+      <p>Prefix <code>CC</code> stands for ‘Containers Collection’ which is a name of a <a href="https://github.com/wanderwaltz/ContainersCollection">github project</a> where mapped array is implemented as well as some other collection-like classes. <a href="#fnref:2" class="reversefootnote">&#8617;</a></p>
+    </li>
+    <li id="fn:3">
+      <p>Altough to keep the <code>NSMutableArray</code> contract intact we would need to be sure that setting elements of the array after it has been mapped would not apply the mapping block again. So we would need to store the indexes of the ‘automatic’ mapped elements and the indexes of the elements set explicitly by the user of the class and process these elements accordingly. <a href="#fnref:3" class="reversefootnote">&#8617;</a></p>
+    </li>
+    <li id="fn:4">
+      <p>I’ve seen and worked with an implementation of <code>NSArray</code> mapping using a category on <code>NSArray</code> which applied the given block to the receiver immediately and returned the mapped <code>NSArray</code>. This implementation handled <code>nil</code> returned from the block differently, essentially removing elements mapped to <code>nil</code> from the result. This would change the count of the elements within the resulting array. With our current implementation this would result in unnecessary complications so we replace <code>nil</code> results with <code>NSNull</code>s and keep the count intact. <a href="#fnref:4" class="reversefootnote">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+
+  
+    
+    <ul class="inline-list">
+      
+        
+          
+            <li><a href="/tags/#Blocks" class="tag"><span class="term">Blocks</span></a></li>
+          
+        
+        
+          
+            <li><a href="/tags/#Class Cluster" class="tag"><span class="term">Class Cluster</span></a></li>
+          
+        
+        
+          
+            <li><a href="/tags/#Inheritance" class="tag"><span class="term">Inheritance</span></a></li>
+          
+        
+        
+          
+            <li><a href="/tags/#Map" class="tag"><span class="term">Map</span></a></li>
+          
+        
+        
+          
+            <li><a href="/tags/#NSArray" class="tag"><span class="term">NSArray</span></a></li>
+          
+        
+        
+          
+            <li><a href="/tags/#Objective-C" class="tag"><span class="term">Objective-C</span></a></li>
+          
+        
+        
+        
+    </ul>
+  
+
+</div>
+
+<div class="related">
+  <h2>Related Posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2015/04/05/artificial-inheritance/">
+            Artificial Inheritance
+            <small>05 Apr 2015</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2016/03/18/safe-array-literals/">
+            Safe NSArray literals
+            <small>18 Mar 2016</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2015/04/23/binding-swift-funcs/">
+            Binding Swift funcs
+            <small>23 Apr 2015</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+    </div>
+
+  </body>
+</html>

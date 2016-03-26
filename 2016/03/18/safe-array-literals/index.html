@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <link type="application/atom+xml" rel="alternate" href="/feed.xml" title="" />
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Safe NSArray literals &middot; Just Coding Things
+    
+  </title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/hyde.css">
+  <link rel="stylesheet" href="/public/css/main.css">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+                                 <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+</head>
+
+
+  <body>
+
+    <div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <h1>
+        <a href="/">
+          Just Coding Things
+        </a>
+      </h1>
+      <p class="lead">Yet another tech blog related to various coding stuff I encounter in my everyday life.</p>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a class="sidebar-nav-item" href="/">Home</a>
+
+      
+
+      
+      
+        
+          
+        
+      
+        
+          
+            <a class="sidebar-nav-item" href="/about/">About</a>
+          
+        
+      
+        
+          
+            <a class="sidebar-nav-item" href="/archive/">Archive</a>
+          
+        
+      
+        
+          
+        
+      
+        
+          
+            <a class="sidebar-nav-item" href="/tags/">Tags</a>
+          
+        
+      
+        
+          
+            <a class="sidebar-nav-item" href="/links/">Links</a>
+          
+        
+      
+        
+      
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+    </nav>
+
+    <p>&copy; 2016. All rights reserved.</p>
+  </div>
+</div>
+
+
+    <div class="content container">
+      <div class="post">
+  <h1 class="post-title">Safe NSArray literals</h1>
+  <span class="post-date">18 Mar 2016</span>
+  <p>While Swift is a new panacea an a go-to solution for all things programming, we still have to
+maintain our years’-old Objective-C codebases. And that comes with a bag of old problems, which
+every Objective-C programmer has encountered once in their life.</p>
+
+<p>Consider an <code>NSArray</code>. Capable of containing any object type, it does not handle <code>nil</code>
+all that well. Constructing an <code>NSArray</code> of objects using an array literal like this:</p>
+
+<figure class="highlight"><pre><code class="language-objc" data-lang="objc"><span class="bp">NSArray</span> <span class="o">*</span><span class="n">arr</span> <span class="o">=</span> <span class="l">@[</span><span class="n">object1</span><span class="p">,</span> <span class="n">object2</span><span class="p">,</span> <span class="n">object3</span><span class="l">]</span><span class="p">;</span></code></pre></figure>
+
+<p>is concise and convenient, but it comes with a cost. If any of the object references is actually
+<code>nil</code>, we’ll have a crash in our hands. We don’t really want this to happen, right?
+<!--more--></p>
+
+<h1 id="the-problem">The Problem</h1>
+
+<p>I really want to write code like this:</p>
+
+<figure class="highlight"><pre><code class="language-objc" data-lang="objc"><span class="p">[</span><span class="nb">self</span> <span class="nl">presentActions</span><span class="p">:</span> <span class="l">@[</span>
+    <span class="p">[</span><span class="n">LikeAction</span> <span class="n">new</span><span class="p">],</span>
+    <span class="p">[</span><span class="n">DislikeAction</span> <span class="n">new</span><span class="p">],</span>
+    <span class="p">[</span><span class="n">ShareAction</span> <span class="n">new</span><span class="p">]</span>
+<span class="l">]</span><span class="p">];</span></code></pre></figure>
+
+<p>without worrying about accidentally getting <code>nil</code> in one of these object references. Here I’ve just
+constructed them, but what their initializers may fail?<sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup> What if I don’t really know where the
+objects come from (as if I got them from elsewhere as method parameters)?</p>
+
+<p><strong>Solution #1: Explicit <code>nil</code> checks</strong> One obvious alternative is to <code>nil</code>-check all of the objects
+before adding them to the array, but it is much uglier:</p>
+
+<figure class="highlight"><pre><code class="language-objc" data-lang="objc"><span class="bp">NSMutableArray</span> <span class="o">*</span><span class="n">actions</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">NSMutableArray</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+
+<span class="n">LikeAction</span> <span class="o">*</span><span class="n">likeAction</span> <span class="o">=</span> <span class="p">[</span><span class="n">LikeAction</span> <span class="n">new</span><span class="p">];</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="n">likeAction</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">)</span> <span class="p">{</span>
+    <span class="p">[</span><span class="n">actions</span> <span class="nl">addObject</span><span class="p">:</span> <span class="n">likeAction</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="n">DislikeAction</span> <span class="o">*</span><span class="n">dislikeAction</span> <span class="o">=</span> <span class="p">[</span><span class="n">DislikeAction</span> <span class="n">new</span><span class="p">];</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="n">dislikeAction</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">)</span> <span class="p">{</span>
+    <span class="p">[</span><span class="n">actions</span> <span class="nl">addObject</span><span class="p">:</span> <span class="n">dislikeAction</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="n">ShareAction</span> <span class="o">*</span><span class="n">shareAction</span> <span class="o">=</span> <span class="p">[</span><span class="n">ShareAction</span> <span class="n">new</span><span class="p">];</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="n">shareAction</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">)</span> <span class="p">{</span>
+    <span class="p">[</span><span class="n">actions</span> <span class="nl">addObject</span><span class="p">:</span> <span class="n">shareAction</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="p">[</span><span class="nb">self</span> <span class="nl">presentActions</span><span class="p">:</span> <span class="n">actions</span><span class="p">];</span></code></pre></figure>
+
+<p>This solution adds a lot of cognitive strain on the potential code reader. Instead of focusing on
+the simple “instantiate some actions and present them” logic, we create a bunch of temporary
+variables, complement each one with a <code>nil</code>-chekcing condition and completely obscure the point
+of the whole thing.</p>
+
+<p>One can argue that we should have a non-failable initializers of the objects in question and there
+would be no problem in the first place, but unfortunately this is not always possible.</p>
+
+<p><strong>Solution #2: Implicit nil checks</strong> Trying to minimize possible <code>nil</code>-related crashes, we’ve added
+a category on <code>NSMutableArray</code>, which provides a method for safely adding a nullable object by just
+ignoring the <code>nil</code> values.</p>
+
+<p>The code becomes much simpler:</p>
+
+<figure class="highlight"><pre><code class="language-objc" data-lang="objc"><span class="bp">NSMutableArray</span> <span class="o">*</span><span class="n">actions</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">NSMutableArray</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+
+<span class="p">[</span><span class="n">actions</span> <span class="nl">addMaybe</span><span class="p">:</span> <span class="p">[</span><span class="n">LikeAction</span> <span class="n">new</span><span class="p">]];</span>
+<span class="p">[</span><span class="n">actions</span> <span class="nl">addMaybe</span><span class="p">:</span> <span class="p">[</span><span class="n">DislikeAction</span> <span class="n">new</span><span class="p">]];</span>
+<span class="p">[</span><span class="n">actions</span> <span class="nl">addMaybe</span><span class="p">:</span> <span class="p">[</span><span class="n">ShareAction</span> <span class="n">new</span><span class="p">]];</span>
+
+<span class="p">[</span><span class="nb">self</span> <span class="nl">presentActions</span><span class="p">:</span> <span class="n">actions</span><span class="p">];</span></code></pre></figure>
+
+<p>Well, it’s simpler, but not simple enough. I don’t really like to have a temporary array variable,
+which only purpose is to be passed to the method invocation right after it is instantiated.</p>
+
+<p><strong>Solution #3: Defaulting</strong> Another possible solution is to default all the possible <code>nil</code> values to
+a certain guaranteed non-nil object:</p>
+
+<figure class="highlight"><pre><code class="language-objc" data-lang="objc"><span class="p">[</span><span class="nb">self</span> <span class="nl">presentActions</span><span class="p">:</span> <span class="l">@[</span>
+    <span class="p">[</span><span class="n">LikeAction</span> <span class="n">new</span><span class="p">]</span> <span class="o">?:</span> <span class="p">[</span><span class="bp">NSNull</span> <span class="n">null</span><span class="p">],</span>
+    <span class="p">[</span><span class="n">DislikeAction</span> <span class="n">new</span><span class="p">]</span> <span class="o">?:</span> <span class="p">[</span><span class="bp">NSNull</span> <span class="n">null</span><span class="p">],</span>
+    <span class="p">[</span><span class="n">ShareAction</span> <span class="n">new</span><span class="p">]</span> <span class="o">?:</span> <span class="p">[</span><span class="bp">NSNull</span> <span class="n">null</span><span class="p">]</span>
+<span class="l">]</span><span class="p">];</span></code></pre></figure>
+
+<p>This is also too syntactically heavy for my taste and also requires the <code>presentActions:</code> method
+to know about this defaulting behavior and properly handle the <code>NSNull</code> instance passed instead
+of the expected action object.</p>
+
+<p>There has to be a better way.</p>
+
+<h2 id="the-solution-custom-literals">The Solution: Custom literals</h2>
+
+<p>What if we could come up with a custom array literal implementation, which skips <code>nil</code> values
+automagically? Preempting myself a bit, I’ll show how the solution I’ve ended up with looks like:</p>
+
+<figure class="highlight"><pre><code class="language-objc" data-lang="objc"><span class="p">[</span><span class="nb">self</span> <span class="nl">presentActions</span><span class="p">:</span> <span class="err">$</span><span class="n">array</span><span class="p">(</span>
+    <span class="p">[</span><span class="n">LikeAction</span> <span class="n">new</span><span class="p">],</span>
+    <span class="p">[</span><span class="n">DislikeAction</span> <span class="n">new</span><span class="p">],</span>
+    <span class="p">[</span><span class="n">ShareAction</span> <span class="n">new</span><span class="p">]</span>
+<span class="p">)];</span></code></pre></figure>
+
+<p>It’s almost as simple as the default <code>@[]</code> syntax and provides almost no additional cognitive strain
+on the reader.</p>
+
+<p>Implementation is also simple enough. Consider the following class:</p>
+
+<figure class="highlight"><pre><code class="language-objc" data-lang="objc"><span class="k">@interface</span> <span class="nc">NSArraySafeLiteral</span> : <span class="bp">NSObject</span>
+
+<span class="p">+</span> <span class="p">(</span><span class="bp">NSArray</span> <span class="o">*</span><span class="p">)</span><span class="nf">arrayWithObjects:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">terminator</span><span class="p">,</span> <span class="p">...;</span>
+
+<span class="k">@end</span></code></pre></figure>
+
+<p>Here we’re using variable argument list for passing the objects. Usually these lists are
+<code>nil</code>-terminated (there’s even a <code>NS_REQUIRES_NIL_TERMINATION</code> attribute, which triggers a compiler
+check for that), but since we want to allow <code>nil</code> values inside our argument list, we have to
+provide some other object as the list terminator.</p>
+
+<p>Implementation of this class is rather straightforward:</p>
+
+<figure class="highlight"><pre><code class="language-objc" data-lang="objc"><span class="k">@implementation</span> <span class="nc">NSArraySafeLiteral</span>
+
+<span class="p">+</span> <span class="p">(</span><span class="bp">NSArray</span> <span class="o">*</span><span class="p">)</span><span class="nf">arrayWithObjects:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">terminator</span><span class="p">,</span> <span class="p">...</span>
+<span class="p">{</span>
+    <span class="n">NSParameterAssert</span><span class="p">(</span><span class="n">terminator</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">);</span>
+
+    <span class="bp">NSMutableArray</span> <span class="o">*</span><span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NSMutableArray</span> <span class="n">new</span><span class="p">];</span>
+
+    <span class="kt">va_list</span> <span class="n">args</span><span class="p">;</span>
+    <span class="n">va_start</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">terminator</span><span class="p">);</span>
+
+    <span class="kt">id</span> <span class="n">_Nullable</span> <span class="n">nextObject</span> <span class="o">=</span> <span class="n">va_arg</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="kt">id</span><span class="p">);</span>
+
+    <span class="k">while</span> <span class="p">(</span><span class="n">nextObject</span> <span class="o">!=</span> <span class="n">terminator</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">nextObject</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">)</span> <span class="p">{</span>
+          <span class="p">[</span><span class="n">result</span> <span class="nl">addObject</span><span class="p">:</span> <span class="n">nextObject</span><span class="p">];</span>
+        <span class="p">}</span>
+        <span class="n">nextObject</span> <span class="o">=</span> <span class="n">va_arg</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="kt">id</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">va_end</span><span class="p">(</span><span class="n">args</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">@end</span></code></pre></figure>
+
+<p>Note that we still have a mutable array and may need to copy it to make it immutable, but it is
+probably an optional precaution since the method interface does not state anything about the
+result’s mutability.</p>
+
+<p>The only step left is to provide a helper macro, which will make <code>NSArraySafeLiteral</code> a little bit
+simpler:</p>
+
+<figure class="highlight"><pre><code class="language-objc" data-lang="objc"><span class="cp">#define $array(...)                        \</span>
+<span class="cp">    ([NSArraySafeLiteral arrayWithObjects: \</span>
+<span class="cp">        [NSArraySafeLiteral class],        \</span>
+<span class="cp">        __VA_ARGS__,                       \</span>
+<span class="cp">        [NSArraySafeLiteral class]])</span></code></pre></figure>
+
+<p>Here I’m using the class pointer as the list terminator, which should suffice for the most use
+cases, but any other known static object can be used instead.</p>
+
+<p>Now the syntax</p>
+
+<figure class="highlight"><pre><code class="language-objc" data-lang="objc"><span class="p">[</span><span class="nb">self</span> <span class="nl">presentActions</span><span class="p">:</span> <span class="err">$</span><span class="n">array</span><span class="p">(</span>
+    <span class="p">[</span><span class="n">LikeAction</span> <span class="n">new</span><span class="p">],</span>
+    <span class="p">[</span><span class="n">DislikeAction</span> <span class="n">new</span><span class="p">],</span>
+    <span class="p">[</span><span class="n">ShareAction</span> <span class="n">new</span><span class="p">]</span>
+<span class="p">)];</span></code></pre></figure>
+
+<p>becomes possible and works like a charm skipping all the nasty <code>nil</code> values. I call it a win.</p>
+<div class="footnotes">
+  <ol>
+    <li id="fn:1">
+      <p>Well, yes, we have to decide what to actually do with these possible <code>nil</code> objects if we
+  encounter one of these. In our codebases the most frequent case is to just skip them, so this
+  is the scenario I’m considering. <a href="#fnref:1" class="reversefootnote">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+
+  
+    
+    <ul class="inline-list">
+      
+        
+          
+            <li><a href="/tags/#Literals" class="tag"><span class="term">Literals</span></a></li>
+          
+        
+        
+          
+            <li><a href="/tags/#NSArray" class="tag"><span class="term">NSArray</span></a></li>
+          
+        
+        
+          
+            <li><a href="/tags/#Nil" class="tag"><span class="term">Nil</span></a></li>
+          
+        
+        
+          
+            <li><a href="/tags/#Objective-C" class="tag"><span class="term">Objective-C</span></a></li>
+          
+        
+        
+          
+            <li><a href="/tags/#Safety" class="tag"><span class="term">Safety</span></a></li>
+          
+        
+        
+        
+    </ul>
+  
+
+</div>
+
+<div class="related">
+  <h2>Related Posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2015/03/28/subclassing-nsarray/">
+            Subclassing NSArray
+            <small>28 Mar 2015</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2015/04/05/artificial-inheritance/">
+            Artificial Inheritance
+            <small>05 Apr 2015</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2015/04/11/swift-wrappers-for-c-libraries/">
+            Writing Swift wrappers for C libraries
+            <small>11 Apr 2015</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+    </div>
+
+  </body>
+</html>

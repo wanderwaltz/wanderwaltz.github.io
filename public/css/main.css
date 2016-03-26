@@ -1,0 +1,70 @@
+.hidden {
+  display: none;
+  visibility: hidden; }
+
+.visuallyhidden.focusable:active,
+.visuallyhidden.focusable:focus {
+  position: static;
+  clip: auto;
+  height: auto;
+  width: auto;
+  margin: 0;
+  overflow: visible; }
+
+.inline-list {
+  list-style: none;
+  margin-left: 0;
+  padding-left: 0; }
+  .inline-list li {
+    list-style-type: none;
+    display: inline; }
+
+.tag {
+  text-transform: lowercase;
+  display: inline-block;
+  font-size: small;
+  margin: 4px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  background-color: #f4f4f4; }
+  .tag span {
+    color: #808080;
+    float: left;
+    padding: 2px 6px; }
+  .tag .count {
+    background-color: #eeeeee;
+    -webkit-border-top-right-radius: 3px;
+    -webkit-border-bottom-right-radius: 3px;
+    -webkit-border-bottom-left-radius: 0;
+    -webkit-border-top-left-radius: 0;
+    -moz-border-radius-topright: 3px;
+    -moz-border-radius-bottomright: 3px;
+    -moz-border-radius-bottomleft: 0;
+    -moz-border-radius-topleft: 0;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+    -webkit-background-clip: padding-box;
+    -moz-background-clip: padding;
+    background-clip: padding-box; }
+  .tag:hover {
+    background-color: #eeeeee; }
+    .tag:hover span {
+      color: #404040; }
+
+.photo {
+  padding: 10px 10px 20px 10px;
+  background: #fff;
+  border: 1px solid #ddd;
+  box-shadow: 0px 2px 15px #ddd;
+  -moz-box-shadow: 0px 2px 15px #ddd;
+  -webkit-transform: rotate(-2deg); }
+
+.float-right {
+  float: right;
+  right: 0; }
+
+.float-center {
+  text-align: center; }

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <link type="application/atom+xml" rel="alternate" href="/feed.xml" title="" />
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Just Coding Things &middot; A Jekyll theme
+    
+  </title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/hyde.css">
+  <link rel="stylesheet" href="/public/css/main.css">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+                                 <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+</head>
+
+
+  <body>
+
+    <div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <h1>
+        <a href="/">
+          Just Coding Things
+        </a>
+      </h1>
+      <p class="lead">Yet another tech blog related to various coding stuff I encounter in my everyday life.</p>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a class="sidebar-nav-item active" href="/">Home</a>
+
+      
+
+      
+      
+        
+          
+        
+      
+        
+          
+            <a class="sidebar-nav-item" href="/about/">About</a>
+          
+        
+      
+        
+          
+            <a class="sidebar-nav-item" href="/archive/">Archive</a>
+          
+        
+      
+        
+          
+        
+      
+        
+          
+            <a class="sidebar-nav-item" href="/tags/">Tags</a>
+          
+        
+      
+        
+          
+            <a class="sidebar-nav-item" href="/links/">Links</a>
+          
+        
+      
+        
+      
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+    </nav>
+
+    <p>&copy; 2016. All rights reserved.</p>
+  </div>
+</div>
+
+
+    <div class="content container">
+      <div class="posts">
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="/2016/03/18/safe-array-literals/">
+        Safe NSArray literals
+      </a>
+    </h1>
+
+    <span class="post-date">18 Mar 2016</span>
+
+    <p>While Swift is a new panacea an a go-to solution for all things programming, we still have to
+maintain our years’-old Objective-C codebases. And that comes with a bag of old problems, which
+every Objective-C programmer has encountered once in their life.</p>
+
+<p>Consider an <code>NSArray</code>. Capable of containing any object type, it does not handle <code>nil</code>
+all that well. Constructing an <code>NSArray</code> of objects using an array literal like this:</p>
+
+<figure class="highlight"><pre><code class="language-objc" data-lang="objc"><span class="bp">NSArray</span> <span class="o">*</span><span class="n">arr</span> <span class="o">=</span> <span class="l">@[</span><span class="n">object1</span><span class="p">,</span> <span class="n">object2</span><span class="p">,</span> <span class="n">object3</span><span class="l">]</span><span class="p">;</span></code></pre></figure>
+
+<p>is concise and convenient, but it comes with a cost. If any of the object references is actually
+<code>nil</code>, we’ll have a crash in our hands. We don’t really want this to happen, right?</p>
+
+
+
+    
+    <footer>
+      <p><a href="/2016/03/18/safe-array-literals/">Read &raquo;</a></p>
+    </footer>
+    
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="/2015/04/23/binding-swift-funcs/">
+        Binding Swift funcs
+      </a>
+    </h1>
+
+    <span class="post-date">23 Apr 2015</span>
+
+    <p>I’ve already talked about my <a href="/2015/04/11/swift-wrappers-for-c-libraries/">quest</a> to learn me some Swift. Having implemented basic Swift wrappers for Squirrel tables and arrays, the time has come to move on to the fun stuff: binding functions.</p>
+
+<p>Squirrel allows binding native functions having the <code>SQFUNCTION</code> signature which is as following:</p>
+
+<figure class="highlight"><pre><code class="language-objc" data-lang="objc"><span class="k">typedef</span> <span class="nf">SQInteger</span> <span class="p">(</span><span class="o">*</span><span class="n">SQFUNCTION</span><span class="p">)(</span><span class="n">HSQUIRRELVM</span><span class="p">);</span></code></pre></figure>
+
+<p>Working with C function pointers in Swift? Oh boy, this gonna be good!</p>
+
+
+
+    
+    <footer>
+      <p><a href="/2015/04/23/binding-swift-funcs/">Read &raquo;</a></p>
+    </footer>
+    
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="/2015/04/11/swift-wrappers-for-c-libraries/">
+        Writing Swift wrappers for C libraries
+      </a>
+    </h1>
+
+    <span class="post-date">11 Apr 2015</span>
+
+    <p>I’ve been kind of bashing Swift recently because of the current buggy state of the tools (SourceKit service and Swift compiler crashes are the most notable offenders). But I have to admit that as a language Swift has become much more usable then it was the last time I’ve touched it. I still encounter weird seemingly unrelated compilation error messages but (thanks to Stack Overflow and all the people who already encountered something similar) I usually can decipher the errors and either fix them or mourn for things that cannot be fixed.</p>
+
+<p>Swift interaction with C code was actually a pleasant surprise for me. I’ve decided to practice Swift a bit by creating a wrapper/bindings library for <a href="http://squirrel-lang.org/">Squirrel</a> language. Squirrel is written in C++, but has C API so it should be simple to import it and use in Swift code. I’ve never actually thought it would be that easy.</p>
+
+
+
+    
+    <footer>
+      <p><a href="/2015/04/11/swift-wrappers-for-c-libraries/">Read &raquo;</a></p>
+    </footer>
+    
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="/2015/04/11/spellchecking-blog-posts/">
+        Spellchecking blog posts
+      </a>
+    </h1>
+
+    <span class="post-date">11 Apr 2015</span>
+
+    <p>English is not my native language. You’ve probably noticed that already. To make the posts in this blog a bit less cringe worthy, I check the spelling and grammar of the text I write using Microsoft Word. The problem is that Word is not really tailored to work with programming-related texts and code samples.</p>
+
+
+
+    
+    <footer>
+      <p><a href="/2015/04/11/spellchecking-blog-posts/">Read &raquo;</a></p>
+    </footer>
+    
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="/2015/04/11/damn-cool-algorithms/">
+        Damn Cool Algorithms
+      </a>
+    </h1>
+
+    <span class="post-date">11 Apr 2015</span>
+
+    <p>I’ve stumbled upon an interesting looking <a href="http://blog.notdot.net/">blog</a> today. It has not been
+updated for a long time now, but the articles posted there seem to be a pretty good read nevertheless.
+I recon I should add this one to the <a href="links">links</a> page.</p>
+
+
+    
+  </div>
+  
+</div>
+
+<div class="pagination">
+  
+    <a class="pagination-item older" href="/page2">Older</a>
+  
+  
+    <span class="pagination-item newer">Newer</span>
+  
+</div>
+    </div>
+
+  </body>
+</html>

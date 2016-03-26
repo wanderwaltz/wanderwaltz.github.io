@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <link type="application/atom+xml" rel="alternate" href="/feed.xml" title="" />
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Binding Swift funcs &middot; Just Coding Things
+    
+  </title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/hyde.css">
+  <link rel="stylesheet" href="/public/css/main.css">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+                                 <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+</head>
+
+
+  <body>
+
+    <div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <h1>
+        <a href="/">
+          Just Coding Things
+        </a>
+      </h1>
+      <p class="lead">Yet another tech blog related to various coding stuff I encounter in my everyday life.</p>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a class="sidebar-nav-item" href="/">Home</a>
+
+      
+
+      
+      
+        
+          
+        
+      
+        
+          
+            <a class="sidebar-nav-item" href="/about/">About</a>
+          
+        
+      
+        
+          
+            <a class="sidebar-nav-item" href="/archive/">Archive</a>
+          
+        
+      
+        
+          
+        
+      
+        
+          
+            <a class="sidebar-nav-item" href="/tags/">Tags</a>
+          
+        
+      
+        
+          
+            <a class="sidebar-nav-item" href="/links/">Links</a>
+          
+        
+      
+        
+      
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+    </nav>
+
+    <p>&copy; 2016. All rights reserved.</p>
+  </div>
+</div>
+
+
+    <div class="content container">
+      <div class="post">
+  <h1 class="post-title">Binding Swift funcs</h1>
+  <span class="post-date">23 Apr 2015</span>
+  <p>I’ve already talked about my <a href="/2015/04/11/swift-wrappers-for-c-libraries/">quest</a> to learn me some Swift. Having implemented basic Swift wrappers for Squirrel tables and arrays, the time has come to move on to the fun stuff: binding functions.</p>
+
+<p>Squirrel allows binding native functions having the <code>SQFUNCTION</code> signature which is as following:</p>
+
+<figure class="highlight"><pre><code class="language-objc" data-lang="objc"><span class="k">typedef</span> <span class="nf">SQInteger</span> <span class="p">(</span><span class="o">*</span><span class="n">SQFUNCTION</span><span class="p">)(</span><span class="n">HSQUIRRELVM</span><span class="p">);</span></code></pre></figure>
+
+<p>Working with C function pointers in Swift? Oh boy, this gonna be good!
+<!--more--></p>
+
+<h2 id="what-the-hell-do-you-want-to-achieve-anyway">What the hell do you want to achieve anyway?</h2>
+
+<p>The goal is simple. I would like to create an <code>SQClosure</code> class, which would be initialized with a Swift function like this:</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="k">let</span> <span class="n">closure</span> <span class="o">=</span> <span class="n">SQClosure</span><span class="p">(</span><span class="nl">vm</span><span class="p">:</span> <span class="n">squirrel</span><span class="p">)</span> <span class="p">{</span> <span class="p">(</span><span class="nl">x</span><span class="p">:</span> <span class="n">Int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Int</span> <span class="k">in</span>
+  <span class="k">return</span> <span class="n">x</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>And then it could be used as a valid Squirrel object and called from the Squirrel code.</p>
+
+<p>That’s not that a big thing to dream of. <a href="http://scrat.sourceforge.net/">SQRat</a>, a Squirrel binding utility for C++, does that easily with templates (although it has been written a long time before lambdas appeared on the C++ horizon, so these are not supported AFAIK).</p>
+
+<p>How does one achieve this sorcery? It could be done with a certain amount of boilerplate code and some clever templates, at least in C++.</p>
+
+<p>So the in the core of the binding mechanism lies the following API:</p>
+
+<figure class="highlight"><pre><code class="language-c" data-lang="c"><span class="kt">void</span> <span class="nf">sq_newclosure</span><span class="p">(</span><span class="n">HSQUIRRELVM</span> <span class="n">v</span><span class="p">,</span><span class="n">SQFUNCTION</span> <span class="n">func</span><span class="p">,</span><span class="n">SQUnsignedInteger</span> <span class="n">nfreevars</span><span class="p">);</span></code></pre></figure>
+
+<p>Here you pass the Squirrel VM handle, an <code>SQFUNCTION</code> pointer and number of free variables to bind to the function<sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup>.</p>
+
+<p>After that you have your freshly bound native closure in the Squirrel VM stack and can set it as a value for a table slot, use it as a parameter for another function or whatever.</p>
+
+<p>When this function is called from the Squirrel code, the native C <code>SQFUNCTION</code> will get called with the Squirrel VM as the only parameter. All parameters passed from Squirrel code will already be pushed to the VM stack waiting to be read and processed.</p>
+
+<p>Pretty simple, right? Apparently not if we’re accessing Squirrel from Swift.</p>
+
+<h2 id="trouble-ahead">Trouble ahead</h2>
+
+<p>Googling “swift c function pointer” yields the following <a href="https://developer.apple.com/library/ios/documentation/Swift/Conceptual/BuildingCocoaApps/InteractingWithCAPIs.html">result</a>:</p>
+
+<blockquote>
+  <p>C function pointers are imported into Swift as <code>CFunctionPointer&lt;Type&gt;</code>, where <code>Type</code> is a Swift function type. For example, a function pointer that has the type <code>int (*)(void)</code> in C is imported into Swift as <code>CFunctionPointer&lt;() -&gt; Int32&gt;</code>.</p>
+</blockquote>
+
+<p>So we delve deeper and look into the mysterious <code>CFunctionPointer</code> template… to find almost nothing (less relevant code omitted).</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="c1">/// The family of C function pointer types.</span>
+<span class="c1">///</span>
+<span class="c1">/// In imported APIs, `T` is a Swift function type such as</span>
+<span class="c1">/// `(Int)-&gt;String`.</span>
+<span class="c1">///</span>
+<span class="c1">/// Though not directly useful in Swift, `CFunctionPointer&lt;T&gt;` can be</span>
+<span class="c1">/// used to safely pass a C function pointer, received from one C or</span>
+<span class="c1">/// Objective-C API, to another C or Objective-C API.</span>
+<span class="k">struct</span> <span class="n">CFunctionPointer</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="o">:</span> <span class="n">Equatable</span><span class="p">,</span> <span class="n">Hashable</span><span class="p">,</span> <span class="n">NilLiteralConvertible</span> <span class="p">{</span>
+<span class="p">...</span>
+<span class="k">init</span><span class="p">()</span>
+<span class="k">init</span><span class="p">(</span><span class="n">_</span> <span class="nl">value</span><span class="p">:</span> <span class="n">COpaquePointer</span><span class="p">)</span>
+<span class="p">...</span>
+<span class="p">}</span>
+
+<span class="k">extension</span> <span class="nl">CFunctionPointer</span> <span class="p">:</span> <span class="n">DebugPrintable</span> <span class="p">{</span>
+<span class="p">...</span>
+<span class="p">}</span>
+
+<span class="k">extension</span> <span class="nl">CFunctionPointer</span> <span class="p">:</span> <span class="n">CVarArgType</span> <span class="p">{</span>
+<span class="p">...</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Nothing really useful so far. It seems we won’t be able to create <code>CFunctionPointers</code> from Swift code ourselves and surely we won’t be able to pass Swift funcs as C functions to the Squirrel API.</p>
+
+<h2 id="objective-c-to-the-rescue">Objective-C to the rescue!</h2>
+
+<p>Well it seems we won’t be able to avoid Objective-C code in our Swift framework completely. Since we cannot reasonably provide <code>SQFUNCTIONs</code> to the Squirrel API from Swift, it seems to be the only possible solution to do it from Objective-C.</p>
+
+<p>Why not ‘Objective’ and not just ‘C’ you ask? Because we’ll be binding Objective-C blocks.</p>
+
+<p>The idea is actually pretty simple. First we introduce a ‘Swift binder’ block type, which has a signature similar to <code>SQFUNCTION</code>:</p>
+
+<figure class="highlight"><pre><code class="language-objc" data-lang="objc"><span class="k">typedef</span> <span class="nf">SQInteger</span> <span class="p">(</span><span class="o">^</span><span class="n">private_block_SwiftFuncBinder</span><span class="p">)(</span><span class="n">HSQUIRRELVM</span> <span class="n">vm</span><span class="p">);</span></code></pre></figure>
+
+<p>Then we use a single <code>SQFUNCTION</code> for all our bindings, which expects the block passed to it as a free variable and just forwards the <code>HSQUIRRELVM</code> param to the said block. One of the possible implementations looks like this:</p>
+
+<figure class="highlight"><pre><code class="language-objc" data-lang="objc"><span class="n">SQInteger</span> <span class="nf">SwiftSquirrel_Private_SQFUNC_SwiftFuncBinder</span><span class="p">(</span><span class="n">HSQUIRRELVM</span> <span class="n">vm</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">private_block_SwiftFuncBinder</span> <span class="n">block</span> <span class="o">=</span> <span class="nb">nil</span><span class="p">;</span>
+
+    <span class="n">SQInteger</span> <span class="n">result</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">SQ_SUCCEEDED</span><span class="p">(</span><span class="n">sq_getuserpointer</span><span class="p">(</span><span class="n">vm</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">block</span><span class="p">)))</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">block</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">block</span><span class="p">(</span><span class="n">vm</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Here we’re using the <code>SQUserPointer</code> type (which actually is just a <code>void*</code>) to pass the block to the bound function. The binding call uses a helper function and looks like this:</p>
+
+<figure class="highlight"><pre><code class="language-objc" data-lang="objc"><span class="kt">void</span> <span class="nf">SwiftSquirrel_Private_createNativeClosureWithBlock</span><span class="p">(</span><span class="n">HSQUIRRELVM</span> <span class="n">vm</span><span class="p">,</span>
+        <span class="n">SQInteger</span> <span class="p">(</span><span class="o">^</span><span class="n">block</span><span class="p">)(</span><span class="n">HSQUIRRELVM</span><span class="p">))</span>
+<span class="p">{</span>
+    <span class="c1">// TODO: block is never released;</span>
+    <span class="c1">// reimplement with user data &amp; add release hook</span>
+    <span class="n">sq_pushuserpointer</span><span class="p">(</span><span class="n">vm</span><span class="p">,</span> <span class="p">[</span><span class="n">block</span> <span class="k">copy</span><span class="p">]);</span> <span class="c1">// File is compiled without ARC</span>
+    <span class="n">sq_newclosure</span><span class="p">(</span><span class="n">vm</span><span class="p">,</span> <span class="n">SwiftSquirrel_Private_SQFUNC_SwiftFuncBinder</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>The single free variable will be on top of the Squirrel VM stack when calling the native function.</p>
+
+<p>Notice that this code has a flaw. The block is leaked on the native closure creation. It happens because the user pointer itself is a simplified version of a ‘user data’ concept in Squirrel and it is considered a value type and therefore has no destruction facility built in. We obviously have to release the block when the closure is destroyed, so <code>SQUserPointer</code> is probably not a good way to go.</p>
+
+<p>The comment in the last code snippet hints that using <code>sq_newuserdata</code> API would probably help. I’ve left this note for myself, but have not actually tried it yet. User data can have release hooks - additional functions, which are called when the corresponding Squirrel object is destroyed<sup id="fnref:2"><a href="#fn:2" class="footnote">2</a></sup>. These should prove helpful for releasing our blocks when needed.</p>
+
+<p>Now we have a binding API with an overly verbose name <code>SwiftSquirrel_Private_createNativeClosureWithBlock</code>, which no longer accepts a C function pointer, but an Objective-C block instead. This one can be used from Swift rather straightforwardly:</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="n">public</span> <span class="k">class</span> <span class="nl">SQClosure</span><span class="p">:</span> <span class="n">SQObject</span> <span class="p">{</span>
+    <span class="n">internal</span> <span class="k">init</span><span class="p">(</span><span class="nl">vm</span><span class="p">:</span> <span class="n">SquirrelVM</span><span class="p">,</span> <span class="nl">name</span><span class="p">:</span> <span class="n">String</span><span class="o">?</span><span class="p">,</span>
+      <span class="nl">impl</span><span class="p">:</span> <span class="p">@</span><span class="n">objc_block</span><span class="p">(</span><span class="n">HSQUIRRELVM</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SQInteger</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nb">super</span><span class="p">.</span><span class="k">init</span><span class="p">(</span><span class="nl">vm</span><span class="p">:</span> <span class="n">vm</span><span class="p">)</span>
+
+        <span class="k">let</span> <span class="n">top</span> <span class="o">=</span> <span class="n">vm</span><span class="p">.</span><span class="n">stack</span><span class="p">.</span><span class="n">top</span>
+
+        <span class="c1">// The hard part: create the native closure;</span>
+        <span class="c1">// it is pushed on top of the Squirrel VM stack</span>
+        <span class="n">SwiftSquirrel_Private_createNativeClosureWithBlock</span><span class="p">(</span><span class="n">vm</span><span class="p">.</span><span class="n">vm</span><span class="p">,</span> <span class="n">impl</span><span class="p">)</span>
+
+        <span class="c1">// Get the stack object into the obj var which is defined</span>
+        <span class="c1">// in the SQObject class</span>
+        <span class="n">sq_getstackobj</span><span class="p">(</span><span class="n">vm</span><span class="p">.</span><span class="n">vm</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">obj</span><span class="p">)</span>
+
+        <span class="c1">// Increase reference count of the Squirrel object by 1</span>
+        <span class="c1">// so it lives while the SQClosure is alive</span>
+        <span class="n">sq_addref</span><span class="p">(</span><span class="n">vm</span><span class="p">.</span><span class="n">vm</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">obj</span><span class="p">)</span>
+
+        <span class="c1">// Provide a readable name for the newly created closure so it</span>
+        <span class="c1">// can be printed in the call stack info if needed</span>
+        <span class="k">if</span> <span class="k">let</span> <span class="n">closureName</span> <span class="o">=</span> <span class="n">name</span> <span class="p">{</span>
+            <span class="k">let</span> <span class="p">(</span><span class="n">length</span><span class="p">,</span> <span class="n">cName</span><span class="p">)</span> <span class="o">=</span> <span class="n">closureName</span><span class="p">.</span><span class="n">toSquirrelString</span><span class="p">()</span>
+            <span class="n">sq_setnativeclosurename</span><span class="p">(</span><span class="n">vm</span><span class="p">.</span><span class="n">vm</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">cName</span><span class="p">)</span>
+        <span class="p">}</span>
+
+        <span class="n">vm</span><span class="p">.</span><span class="n">stack</span><span class="p">.</span><span class="n">top</span> <span class="o">=</span> <span class="n">top</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>A little bit of this and that is going on here: we’re also keeping a strong reference to the Squirrel object representing newly created closure, adding a readable name to it for debugging purposes etc. But the general idea should be more or less clear. We’ve bound an Objective-C block to Squirrel and it is callable from inside the Squirrel scripts.</p>
+
+<h2 id="now-what">Now what?</h2>
+
+<p>We can bind simple functions using the API we’ve created. For example this is a function binding which adds two integers together:</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="n">SQClosure</span><span class="p">(</span><span class="nl">vm</span><span class="p">:</span> <span class="n">vm</span><span class="p">,</span> <span class="nl">name</span><span class="p">:</span> <span class="nb">nil</span><span class="p">,</span> <span class="nl">impl</span><span class="p">:</span> <span class="p">{</span> <span class="n">sqvm</span> <span class="k">in</span>
+  <span class="k">let</span> <span class="n">vm</span> <span class="o">=</span> <span class="n">SquirrelVM</span><span class="p">.</span><span class="n">associated</span><span class="p">(</span><span class="nl">vm</span><span class="p">:</span> <span class="n">sqvm</span><span class="p">)</span> <span class="c1">// get SquirrelVM associated with a given HSQUIRRELVM</span>
+  <span class="k">let</span> <span class="n">a</span> <span class="o">=</span> <span class="n">vm</span><span class="p">.</span><span class="n">stack</span><span class="p">[</span><span class="mi">2</span><span class="p">].</span><span class="n">asInteger</span><span class="o">!</span> <span class="c1">// read the first parameter from the stack</span>
+  <span class="k">let</span> <span class="n">b</span> <span class="o">=</span> <span class="n">vm</span><span class="p">.</span><span class="n">stack</span><span class="p">[</span><span class="mi">3</span><span class="p">].</span><span class="n">asInteger</span><span class="o">!</span> <span class="c1">// read the second parameter from the stack</span>
+  <span class="n">vm</span><span class="p">.</span><span class="n">stack</span> <span class="o">&lt;&lt;</span> <span class="n">SQValue</span><span class="p">.</span><span class="n">Int</span><span class="p">(</span><span class="n">a</span><span class="o">+</span><span class="n">b</span><span class="p">)</span> <span class="c1">// push the sum back to the stack</span>
+  <span class="k">return</span> <span class="mi">1</span><span class="p">;</span> <span class="c1">// 1 indicates that Squirrel should pop the result value; 0 for void functions</span>
+<span class="p">})</span></code></pre></figure>
+
+<p>But that’s not really what we wanted initially. At least it is not completely what we wanted. It would be more convenient to do the same thing by calling something like that:</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="n">SQClosure</span><span class="p">(</span><span class="nl">vm</span><span class="p">:</span> <span class="n">squirrel</span><span class="p">)</span> <span class="p">{</span> <span class="p">(</span><span class="nl">x</span><span class="p">:</span> <span class="n">Int</span><span class="p">,</span> <span class="nl">y</span><span class="p">:</span> <span class="n">Int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Int</span> <span class="k">in</span>
+  <span class="k">return</span> <span class="n">x</span><span class="o">+</span><span class="n">y</span><span class="p">;</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Is that possible? Kind of. But this is a topic of a future post.</p>
+<div class="footnotes">
+  <ol>
+    <li id="fn:1">
+      <p>I don’t really know if the ‘free variable’ term is commonly used in this meaning. Squirrel API documentation defines free variables as following: <em>“A free variable is a variable external from the function scope as is not a local variable or parameter of the function. Free variables reference a local variable from a outer scope”.</em> So basically ‘free variables’ are captured variables from an outer scope, which are actually the reason why the Squirrel closures are closures. When binding a native function you can pass external free variables using the provided API. <a href="#fnref:1" class="reversefootnote">&#8617;</a></p>
+    </li>
+    <li id="fn:2">
+      <p>Squirrel utilizes memory-counted model similar to the Objective-C with ARC enabled: there are strong and weak references between Squirrel objects, and when the reference count of an object becomes zero, it gets immediately destroyed. Although I remember there some APIs related to garbage collection so there may be other options. <a href="#fnref:2" class="reversefootnote">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+
+  
+    
+    <ul class="inline-list">
+      
+        
+          
+            <li><a href="/tags/#Binding" class="tag"><span class="term">Binding</span></a></li>
+          
+        
+        
+          
+            <li><a href="/tags/#Functions" class="tag"><span class="term">Functions</span></a></li>
+          
+        
+        
+          
+            <li><a href="/tags/#Objective-C" class="tag"><span class="term">Objective-C</span></a></li>
+          
+        
+        
+          
+            <li><a href="/tags/#Squirrel" class="tag"><span class="term">Squirrel</span></a></li>
+          
+        
+        
+          
+            <li><a href="/tags/#Swift" class="tag"><span class="term">Swift</span></a></li>
+          
+        
+        
+        
+    </ul>
+  
+
+</div>
+
+<div class="related">
+  <h2>Related Posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2015/04/11/swift-wrappers-for-c-libraries/">
+            Writing Swift wrappers for C libraries
+            <small>11 Apr 2015</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2015/03/28/subclassing-nsarray/">
+            Subclassing NSArray
+            <small>28 Mar 2015</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2015/04/05/artificial-inheritance/">
+            Artificial Inheritance
+            <small>05 Apr 2015</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+    </div>
+
+  </body>
+</html>

@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <link type="application/atom+xml" rel="alternate" href="/feed.xml" title="" />
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Just Coding Things &middot; A Jekyll theme
+    
+  </title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/hyde.css">
+  <link rel="stylesheet" href="/public/css/main.css">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+                                 <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+</head>
+
+
+  <body>
+
+    <div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <h1>
+        <a href="/">
+          Just Coding Things
+        </a>
+      </h1>
+      <p class="lead">Yet another tech blog related to various coding stuff I encounter in my everyday life.</p>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a class="sidebar-nav-item" href="/">Home</a>
+
+      
+
+      
+      
+        
+          
+        
+      
+        
+          
+            <a class="sidebar-nav-item" href="/about/">About</a>
+          
+        
+      
+        
+          
+            <a class="sidebar-nav-item" href="/archive/">Archive</a>
+          
+        
+      
+        
+          
+        
+      
+        
+          
+            <a class="sidebar-nav-item" href="/tags/">Tags</a>
+          
+        
+      
+        
+          
+            <a class="sidebar-nav-item" href="/links/">Links</a>
+          
+        
+      
+        
+      
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+    </nav>
+
+    <p>&copy; 2016. All rights reserved.</p>
+  </div>
+</div>
+
+
+    <div class="content container">
+      <div class="posts">
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="/2015/04/05/artificial-inheritance/">
+        Artificial Inheritance
+      </a>
+    </h1>
+
+    <span class="post-date">05 Apr 2015</span>
+
+    <p><a href="http://blogs.perl.org/users/sid_burn/2014/03/inheritance-is-bad-code-reuse-part-1.html">They</a> <a href="http://blog.berniesumption.com/software/inheritance-is-evil-and-must-be-destroyed/">say</a> <a href="http://simpleprogrammer.com/2010/01/15/inheritance-is-inherently-evil/">inheritance</a> <a href="http://stackoverflow.com/questions/11056943/deep-class-inheritance-hierarchy-bad-idea">is</a> <a href="http://codingdelight.com/2014/01/16/favor-composition-over-inheritance-part-1/">bad</a>. Yes, there really are 5 different links in the previous sentence.</p>
+
+<p>The links I’ve provided may not be the most trustworthy sources on the subject (as the matter of fact, I’ve entered ‘inheritance is bad’ in the Google prompt and used the top results just to provide a couple of examples). Jokes aside, there is a lot of info out there about the reasons to prefer composition over inheritance in most cases.</p>
+
+<p>As with all of such statements you don’t blindly follow the rule. Inheritance is a tool, and as a software engineer you should know when and where to use your tools.</p>
+
+<p>I’m using composition for building complex objects a lot these days. One of the patterns I’ve been using lately is adding Objective-C protocol conformance to specific objects (i.e. not classes, but individual instances) with the help of wrapper (or decorator) objects. To simplify the interaction with these wrappers I’m using the message forwarding mechanism, which allows me treating the wrapper object in the same way as the original object, but with the benefits of the added protocol.</p>
+
+<p>Now starting with that in mind I’ve come up with an interesting little runtime construct, which utilizes composition and message forwarding to implement multiple inheritance-like behavior on instance level.</p>
+
+
+
+    
+    <footer>
+      <p><a href="/2015/04/05/artificial-inheritance/">Read &raquo;</a></p>
+    </footer>
+    
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="/2015/04/02/once-upon-an-app/">
+        Once upon an App
+      </a>
+    </h1>
+
+    <span class="post-date">02 Apr 2015</span>
+
+    <p>I was making this one app for a long time already. An app for a single user. Not really a promising venture, one might say. But this is personal. It’s an app for my father which helps him do his job and which he asked me to make for him when I was still going to school.</p>
+
+<p>The app is actually pretty simple. It’s an implementation of a customized <a href="https://en.wikipedia.org/wiki/Minnesota_Multiphasic_Personality_Inventory">Minnesota Multiphasic Personality Inventory</a>) test (MMPI for shortness) which involves the user answering 500+ yes/no questions and a lot of tedious but otherwise simple math to calculate the results.</p>
+
+<p>Before the app, father was calculating these results manually, which required comparing the answers list with a bunch of template tables, calculate means, standard deviations and all that statistical stuff, which is rather simple in formulae, but is tedious to compute by hand. I was aiming to be a programmer from my early days and it’s no surprise that my father asked me to make this app for him.</p>
+
+<p>Well, I’ve made it. Two times from scratch already. And I think I’m going for the third.</p>
+
+
+
+    
+    <footer>
+      <p><a href="/2015/04/02/once-upon-an-app/">Read &raquo;</a></p>
+    </footer>
+    
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="/2015/04/01/that-awkward-moment/">
+        That awkward moment when `git rebase --continue`
+      </a>
+    </h1>
+
+    <span class="post-date">01 Apr 2015</span>
+
+    <p>…suddenly opens vi to update a commit message and you don’t really know how to save the file and exit the goddamn editor.</p>
+
+<p>No, really, I should probably learn me some vi because it is kind of ridiculous to go to <a href="http://stackoverflow.com/questions/11828270/how-to-exit-the-vim-editor">Stack Overflow</a> each time that happens in search for the magical keystroke. Another question is why my GUI git <a href="https://www.atlassian.com/software/sourcetree/overview">client of choice</a> does not handle this situation and does not allow entering the commit message in the user interface anyway.</p>
+
+
+
+    
+    <footer>
+      <p><a href="/2015/04/01/that-awkward-moment/">Read &raquo;</a></p>
+    </footer>
+    
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="/2015/03/29/beyond-objective-c/">
+        Beyond Objective-C
+      </a>
+    </h1>
+
+    <span class="post-date">29 Mar 2015</span>
+
+    <p>They say Objective-C is dead. A new king named Swift is rising and Objective-C days are counted. Well that’s probably true. It may be not completely true right now, but one day it will be. I surely need to familiarize myself with Swift a little bit more so I will know what I’m doing already when there would be no choice to write in it.</p>
+
+<p>What’s bothering me still is that Swift is Apple-specific in the same way that Objective-C has always been. Learning Swift more, getting used to it will bind you tighter to the Apple platform (it does not matter, Mac OS or iOS). You still will have almost no experience on any other platforms or technologies.</p>
+
+
+
+    
+    <footer>
+      <p><a href="/2015/03/29/beyond-objective-c/">Read &raquo;</a></p>
+    </footer>
+    
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="/2015/03/28/subclassing-nsarray/">
+        Subclassing NSArray
+      </a>
+    </h1>
+
+    <span class="post-date">28 Mar 2015</span>
+
+    <p>Creating custom collections is rarely necessary nowadays. Most of the time you can safely go with the collection classes provided by the standard library you’re working with and not bother with the implementation details. What would be the reason to write a custom collection anyway?</p>
+
+<ul>
+  <li><strong>Performance?</strong> I’d say that you go with the standard collections and rewrite them if and only if you’re completely sure that it’s the collection that is your bottleneck and not anything else. Give me a profiler-proven reason to do that.</li>
+  <li><strong>Changing the collection interface?</strong> Well that could be done via categories or composition. You don’t really need to subclass <code>NSArray</code> or <code>NSDictionary</code> to change their interface if you want to.</li>
+</ul>
+
+<p>I cannot come up with another reasons to subclass Foundation collections right now, but to be honest, here at <a href="http://wanderwaltz.github.io">#justcodingthings</a> we don’t actually need a reason to do something. We do it because we can and that’s the only reason we need.</p>
+
+
+
+    
+    <footer>
+      <p><a href="/2015/03/28/subclassing-nsarray/">Read &raquo;</a></p>
+    </footer>
+    
+  </div>
+  
+</div>
+
+<div class="pagination">
+  
+    <a class="pagination-item older" href="/page3">Older</a>
+  
+  
+    
+      <a class="pagination-item newer" href="/">Newer</a>
+    
+  
+</div>
+    </div>
+
+  </body>
+</html>
