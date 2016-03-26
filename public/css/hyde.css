@@ -67,6 +67,8 @@ html {
     bottom: 0;
     width: 18rem;
     text-align: left;
+    height: 100%;
+    overflow: auto;
   }
 }
 
