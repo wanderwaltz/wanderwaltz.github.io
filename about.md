@@ -1,4 +1,5 @@
 ---
+layout: page
 title: About
 comments: false
 modified: 2015-03-26

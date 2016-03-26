@@ -1,5 +1,9 @@
 source 'https://rubygems.org'
 
-gem 'github-pages'
-gem 'sass'
+gem 'jekyll'
 gem 'jekyll-sitemap'
+gem 'jekyll-paginate'
+gem 'jekyll-gist'
+gem 'jekyll-sass'
+gem 'classifier-reborn'
+gem 'pygments.rb'

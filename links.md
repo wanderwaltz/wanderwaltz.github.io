@@ -1,4 +1,5 @@
 ---
+layout: page
 title: Links
 ---
 Here I list websites, articles and books, which I find interesting and worth looking into. I was into

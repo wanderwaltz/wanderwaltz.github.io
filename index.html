@@ -1,25 +1,43 @@
 ---
-layout: blank
+layout: default
+title: Home
 ---
-    {% for page in site.posts %}
-    <article>
-      <header>
-        <h2>
-          {% if page.external_url %}
-            <a href="{{ page.external_url }}"><i class="fa fa-bookmark-o small"></i> {{ page.title }}</a>
-          {% else %}
-            <a href="{{ page.url | prepend: site.baseurl }}">{{ page.title }}</a>
-          {% endif %}
-        </h2>
-        <p>{% if page.author %}{{ page.author }} • {% endif %}{% if page.date %}<time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%b %-d, %Y" }}</time>{% endif %}{% if page.categories.size > 0 %} • {{ page.categories | array_to_sentence_string }}{% endif %}</p>
-      </header>
-      <div>
-{{ page.excerpt }}
-      </div>
-      {% unless page.external_url %}
-      <footer>
-        <p><a href="{{ page.url | prepend: site.baseurl }}">{{ site.more }} &raquo;</a></p>
-      </footer>
-      {% endunless %}
-    </article>
-    {% endfor %}
+
+<div class="posts">
+  {% for post in paginator.posts %}
+  <div class="post">
+    <h1 class="post-title">
+      <a href="{{ post.url }}">
+        {{ post.title }}
+      </a>
+    </h1>
+
+    <span class="post-date">{{ post.date | date_to_string }}</span>
+
+    {{ post.excerpt }}
+
+    {% unless post.external_url %}
+    <footer>
+      <p><a href="{{ post.url }}">{{ site.more }} &raquo;</a></p>
+    </footer>
+    {% endunless %}
+  </div>
+  {% endfor %}
+</div>
+
+<div class="pagination">
+  {% if paginator.next_page %}
+    <a class="pagination-item older" href="{{ site.baseurl }}page{{paginator.next_page}}">Older</a>
+  {% else %}
+    <span class="pagination-item older">Older</span>
+  {% endif %}
+  {% if paginator.previous_page %}
+    {% if paginator.page == 2 %}
+      <a class="pagination-item newer" href="{{ site.baseurl }}">Newer</a>
+    {% else %}
+      <a class="pagination-item newer" href="{{ site.baseurl }}page{{paginator.previous_page}}">Newer</a>
+    {% endif %}
+  {% else %}
+    <span class="pagination-item newer">Newer</span>
+  {% endif %}
+</div>

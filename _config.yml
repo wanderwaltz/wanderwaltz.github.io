@@ -1,32 +1,40 @@
-title: "#justcodingthings"
-author: "Egor Chiglintsev"
-description: "Yet another tech blog related to various coding stuff I encounter in my everyday life."
-more: "Read"
-url: "http://wanderwaltz.github.io"
+# Dependencies
+markdown:    kramdown
+highlighter: pygments
 
-markdown: kramdown
+gems:
+ - jekyll-paginate
+ - jekyll-gist
 
 comments:
-    disqus: "justcodingthings"
-
-style:
-    padding: 33%
-    anchor: "#46f"
-    serif-heading: true
-    nav: "#181818"
-    description: "white"
-    article:
-        odd: "#ffffff"
-        even: "#ffffff"
+  disqus: "justcodingthings"
 
 sass:
-  sass_dir: _sass
-  style: compressed
+    sass_dir: _sass
 
-links:
-  - github: "https://github.com/wanderwaltz/"
-  - twitter: "https://twitter.com/wanderwaltz/"
-  - rss: "http://wanderwaltz.github.io/feed.xml"
 
-excerpt_separator: "<!--more-->"
-defaults: [{scope: {path: ""}, values: {layout: "default"}}, {scope: {path: "", type: "posts"}, values: {comments: true}}]
+# Permalinks
+permalink:   pretty
+
+# Setup
+title:             'Just Coding Things'
+tagline:           'A Jekyll theme'
+description:       'Yet another tech blog related to various coding stuff I encounter in my everyday life.'
+baseurl:           /
+excerpt_separator: '<!--more-->'
+more:              'Read'
+
+defaults:
+  -
+    scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
+
+
+author:
+  name:      'Egor Chiglintsev'
+  url:       https://github.com/wanderwaltz
+
+paginate:    5

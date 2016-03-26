@@ -1,0 +1,37 @@
+---
+layout: default
+---
+
+<div class="post">
+  <h1 class="post-title">{{ page.title }}</h1>
+  <span class="post-date">{{ page.date | date_to_string }}</span>
+  {{ content }}
+</div>
+
+{% if page.tags %}
+  {% assign tags_list = page.tags | sort %}
+  <ul class="inline-list">
+    {% for item in (0..tags_list.size) %}
+      {% unless forloop.last %}
+        {% capture this_word %}{{ tags_list[item] | strip_newlines }}{% endcapture %}
+          <li><a href="{{ "/tags/" }}#{{this_word}}" class="tag"><span class="term">{{ this_word }}</span></a></li>
+        {% endunless %}
+      {% endfor %}
+  </ul>
+{% endif %}
+
+<div class="related">
+  <h2>Related Posts</h2>
+  <ul class="related-posts">
+    {% for post in site.related_posts limit:3 %}
+      <li>
+        <h3>
+          <a href="{{ post.url }}">
+            {{ post.title }}
+            <small>{{ post.date | date_to_string }}</small>
+          </a>
+        </h3>
+      </li>
+    {% endfor %}
+  </ul>
+</div>

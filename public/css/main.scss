@@ -1,3 +1,10 @@
+---
+---
+@import "_more_mixins";
+
+$base-color : #747474;
+
+
 .inline-list {
   list-style: none;
   margin-left: 0;
@@ -8,7 +15,6 @@
   }
 }
 
-$base-color : #747474;
 
 .tag {
     text-transform: lowercase;
@@ -34,6 +40,7 @@ $base-color : #747474;
     }
   }
 
+
 .photo {
   padding: 10px 10px 20px 10px;
   background: #fff;
@@ -49,59 +56,7 @@ $base-color : #747474;
   right: 0;
 }
 
+
 .float-center {
   text-align: center;
-}
-
-
-.no-border {
-  border-style: none;
-}
-
-table, .no-border {
-  th {
-    @extend .no-border;
-  }
-
-  td {
-    @extend .no-border;
-  }
-}
-
-table, .curriculum-vitae {
-  th {
-    @extend .no-border;
-    vertical-align: top;
-  }
-
-  td {
-    @extend .no-border;
-    vertical-align: top;
-
-    &.date {
-      font-weight: 400;
-      white-space: nowrap;
-    }
-  }
-}
-
-
-#markdown-toc {
-  padding: 16px 16px 16px 16px;
-  border: 1px solid #ddd;
-  box-shadow: 0px 4px 2px #ddd;
-  font-size: 0.75em;
-  line-height: 1.5em;
-  display: inline-block;
-
-  li {
-    list-style-type: none;
-    padding: 0px;
-    margin: 0px;
-  }
-}
-
-.h2, i.fa.small {
-  font-size: 0.5em;
-  vertical-align: middle;
 }
