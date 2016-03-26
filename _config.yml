@@ -5,12 +5,16 @@ highlighter: pygments
 gems:
  - jekyll-paginate
  - jekyll-gist
+ - jekyll-feed
 
 comments:
   disqus: "justcodingthings"
 
 sass:
-    sass_dir: _sass
+  sass_dir: _sass
+
+feed:
+  path: feed.xml
 
 
 # Permalinks
