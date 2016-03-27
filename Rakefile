@@ -19,6 +19,26 @@ def build
 end
 
 
+def commit(message)
+  build
+
+  commit_source = "git add -A && git commit -m \"#{message}\""
+  commit_site = "cd _site && git add -A && git commit -m \"#{message}\""
+
+  execute(commit_source)
+  execute(commit_site)
+end
+
+
+def push_origin
+  push_source = "git push origin"
+  push_site = "cd _site && git push origin"
+
+  execute(push_source)
+  execute(push_site)
+end
+
+
 task :serve do
   serve
 end
@@ -30,11 +50,15 @@ end
 
 
 task :commit, :message do |t, args|
-  build
-
-  commit_source = "git add -A && git commit -m \"#{args[:message]}\""
-  commit_site = "cd _site && git add -A && git commit -m \"#{args[:message]}\""
-
-  execute(commit_source)
-  execute(commit_site)
+  commit(args[:message])
 end
+
+
+task :publish, :message do |t, args|
+  if args[:message] != nil
+    commit(args[:message])
+  end
+
+  push_origin
+end
+
