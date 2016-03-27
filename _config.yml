@@ -24,7 +24,7 @@ permalink:   pretty
 title:             'Just Coding Things'
 tagline:           'Life, Programming and Stuff'
 description:       'Life, Programming and Stuff'
-url:               'https://wanderwaltz.github.io'
+url:               'http://wanderwaltz.github.io'
 baseurl:           /
 excerpt_separator: '<!--more-->'
 more:              'Read'
