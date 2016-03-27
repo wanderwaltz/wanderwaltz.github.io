@@ -9,8 +9,12 @@ def execute(cmd)
 end
 
 
-def serve
-  execute("bundle exec jekyll serve --lsi")
+def serve(suffix)
+  if suffix != nil
+    suffix = " & #{suffix}"
+  end
+
+  execute("bundle exec jekyll serve --lsi" + suffix.to_s)
 end
 
 
@@ -40,7 +44,7 @@ end
 
 
 task :serve do
-  serve
+  serve("sleep 5s && open -a Safari http://127.0.0.1:4000")
 end
 
 
