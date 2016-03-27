@@ -57,7 +57,6 @@ task :init do
   ]
 
   execute(commands.join(" && "))
-  # build
 end
 
 
