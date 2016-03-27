@@ -2,9 +2,8 @@ require 'Open3'
 
 def execute(cmd)
   result = ""
-  Open3.popen3(cmd) do |stdin, stdout, stderr, wait_thr|
-    while stdout_line = stdout.gets || stderr_line = stderr.gets
-      line = [stdout_line, stderr_line].compact.join("\n")
+  Open3.popen2e(cmd) do |stdin, stdout, wait_thr|
+    while line = stdout.gets
       result << line << "\n"
       puts line
     end
