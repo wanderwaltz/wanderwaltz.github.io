@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
 	<channel>
-		<title></title>
+		<title>Just Coding Things</title>
 		<description>Life, Programming and Stuff</description>
-		<link>https://wanderwaltz.github.io</link>
-		<atom:link href="https://wanderwaltz.github.io/feed.xml" rel="self" type="application/rss+xml" />
+		<link>http://wanderwaltz.github.io</link>
+		<atom:link href="http://wanderwaltz.github.io/feed.xml" rel="self" type="application/rss+xml" />
 		
 			
 			<item>
@@ -28,8 +28,8 @@ and I’d like to share an example of a practical problem, which ended up not be
 </description>
 				
 				<pubDate>Sun, 27 Mar 2016 20:39:00 +0600</pubDate>
-				<link>https://wanderwaltz.github.io/2016/03/27/web-design-with-a-coding-mentality/</link>
-				<guid isPermaLink="true">https://wanderwaltz.github.io/2016/03/27/web-design-with-a-coding-mentality/</guid>
+				<link>http://wanderwaltz.github.io/2016/03/27/web-design-with-a-coding-mentality/</link>
+				<guid isPermaLink="true">http://wanderwaltz.github.io/2016/03/27/web-design-with-a-coding-mentality/</guid>
 			</item>
 			
 		
@@ -52,8 +52,8 @@ all that well. Constructing an &lt;code&gt;NSArray&lt;/code&gt; of objects using
 </description>
 				
 				<pubDate>Fri, 18 Mar 2016 22:20:00 +0600</pubDate>
-				<link>https://wanderwaltz.github.io/2016/03/18/safe-array-literals/</link>
-				<guid isPermaLink="true">https://wanderwaltz.github.io/2016/03/18/safe-array-literals/</guid>
+				<link>http://wanderwaltz.github.io/2016/03/18/safe-array-literals/</link>
+				<guid isPermaLink="true">http://wanderwaltz.github.io/2016/03/18/safe-array-literals/</guid>
 			</item>
 			
 		
@@ -72,8 +72,8 @@ all that well. Constructing an &lt;code&gt;NSArray&lt;/code&gt; of objects using
 </description>
 				
 				<pubDate>Thu, 23 Apr 2015 05:12:00 +0600</pubDate>
-				<link>https://wanderwaltz.github.io/2015/04/23/binding-swift-funcs/</link>
-				<guid isPermaLink="true">https://wanderwaltz.github.io/2015/04/23/binding-swift-funcs/</guid>
+				<link>http://wanderwaltz.github.io/2015/04/23/binding-swift-funcs/</link>
+				<guid isPermaLink="true">http://wanderwaltz.github.io/2015/04/23/binding-swift-funcs/</guid>
 			</item>
 			
 		
@@ -88,8 +88,8 @@ all that well. Constructing an &lt;code&gt;NSArray&lt;/code&gt; of objects using
 </description>
 				
 				<pubDate>Sat, 11 Apr 2015 08:30:00 +0600</pubDate>
-				<link>https://wanderwaltz.github.io/2015/04/11/swift-wrappers-for-c-libraries/</link>
-				<guid isPermaLink="true">https://wanderwaltz.github.io/2015/04/11/swift-wrappers-for-c-libraries/</guid>
+				<link>http://wanderwaltz.github.io/2015/04/11/swift-wrappers-for-c-libraries/</link>
+				<guid isPermaLink="true">http://wanderwaltz.github.io/2015/04/11/swift-wrappers-for-c-libraries/</guid>
 			</item>
 			
 		
@@ -102,8 +102,8 @@ all that well. Constructing an &lt;code&gt;NSArray&lt;/code&gt; of objects using
 </description>
 				
 				<pubDate>Sat, 11 Apr 2015 02:47:00 +0600</pubDate>
-				<link>https://wanderwaltz.github.io/2015/04/11/spellchecking-blog-posts/</link>
-				<guid isPermaLink="true">https://wanderwaltz.github.io/2015/04/11/spellchecking-blog-posts/</guid>
+				<link>http://wanderwaltz.github.io/2015/04/11/spellchecking-blog-posts/</link>
+				<guid isPermaLink="true">http://wanderwaltz.github.io/2015/04/11/spellchecking-blog-posts/</guid>
 			</item>
 			
 		
@@ -126,8 +126,8 @@ all that well. Constructing an &lt;code&gt;NSArray&lt;/code&gt; of objects using
 </description>
 				
 				<pubDate>Sun, 05 Apr 2015 00:00:00 +0600</pubDate>
-				<link>https://wanderwaltz.github.io/2015/04/05/artificial-inheritance/</link>
-				<guid isPermaLink="true">https://wanderwaltz.github.io/2015/04/05/artificial-inheritance/</guid>
+				<link>http://wanderwaltz.github.io/2015/04/05/artificial-inheritance/</link>
+				<guid isPermaLink="true">http://wanderwaltz.github.io/2015/04/05/artificial-inheritance/</guid>
 			</item>
 			
 		
@@ -146,8 +146,8 @@ all that well. Constructing an &lt;code&gt;NSArray&lt;/code&gt; of objects using
 </description>
 				
 				<pubDate>Thu, 02 Apr 2015 00:00:00 +0600</pubDate>
-				<link>https://wanderwaltz.github.io/2015/04/02/once-upon-an-app/</link>
-				<guid isPermaLink="true">https://wanderwaltz.github.io/2015/04/02/once-upon-an-app/</guid>
+				<link>http://wanderwaltz.github.io/2015/04/02/once-upon-an-app/</link>
+				<guid isPermaLink="true">http://wanderwaltz.github.io/2015/04/02/once-upon-an-app/</guid>
 			</item>
 			
 		
@@ -162,8 +162,8 @@ all that well. Constructing an &lt;code&gt;NSArray&lt;/code&gt; of objects using
 </description>
 				
 				<pubDate>Wed, 01 Apr 2015 00:00:00 +0600</pubDate>
-				<link>https://wanderwaltz.github.io/2015/04/01/that-awkward-moment/</link>
-				<guid isPermaLink="true">https://wanderwaltz.github.io/2015/04/01/that-awkward-moment/</guid>
+				<link>http://wanderwaltz.github.io/2015/04/01/that-awkward-moment/</link>
+				<guid isPermaLink="true">http://wanderwaltz.github.io/2015/04/01/that-awkward-moment/</guid>
 			</item>
 			
 		
@@ -178,8 +178,8 @@ all that well. Constructing an &lt;code&gt;NSArray&lt;/code&gt; of objects using
 </description>
 				
 				<pubDate>Sun, 29 Mar 2015 00:00:00 +0600</pubDate>
-				<link>https://wanderwaltz.github.io/2015/03/29/beyond-objective-c/</link>
-				<guid isPermaLink="true">https://wanderwaltz.github.io/2015/03/29/beyond-objective-c/</guid>
+				<link>http://wanderwaltz.github.io/2015/03/29/beyond-objective-c/</link>
+				<guid isPermaLink="true">http://wanderwaltz.github.io/2015/03/29/beyond-objective-c/</guid>
 			</item>
 			
 		
@@ -199,8 +199,8 @@ all that well. Constructing an &lt;code&gt;NSArray&lt;/code&gt; of objects using
 </description>
 				
 				<pubDate>Sat, 28 Mar 2015 00:00:00 +0600</pubDate>
-				<link>https://wanderwaltz.github.io/2015/03/28/subclassing-nsarray/</link>
-				<guid isPermaLink="true">https://wanderwaltz.github.io/2015/03/28/subclassing-nsarray/</guid>
+				<link>http://wanderwaltz.github.io/2015/03/28/subclassing-nsarray/</link>
+				<guid isPermaLink="true">http://wanderwaltz.github.io/2015/03/28/subclassing-nsarray/</guid>
 			</item>
 			
 		
@@ -218,8 +218,8 @@ private methods in Objective-C.&lt;/p&gt;
 </description>
 				
 				<pubDate>Thu, 26 Mar 2015 00:00:00 +0600</pubDate>
-				<link>https://wanderwaltz.github.io/2015/03/26/putting-more-c-in-your-objective-c/</link>
-				<guid isPermaLink="true">https://wanderwaltz.github.io/2015/03/26/putting-more-c-in-your-objective-c/</guid>
+				<link>http://wanderwaltz.github.io/2015/03/26/putting-more-c-in-your-objective-c/</link>
+				<guid isPermaLink="true">http://wanderwaltz.github.io/2015/03/26/putting-more-c-in-your-objective-c/</guid>
 			</item>
 			
 		
