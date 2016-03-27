@@ -1,11 +1,14 @@
 require 'Open3'
 
 def execute(cmd)
+  result = ""
   Open3.popen3(cmd) do |stdin, stdout, stderr, wait_thr|
     while line = stdout.gets
+      result << line << "\n"
       puts line
     end
   end
+  result
 end
 
 
@@ -43,6 +46,21 @@ def push_origin
 end
 
 
+task :init do
+  git_remote_url = `git config --get remote.origin.url`.strip
+
+  commands = [
+    "rm -rf _site",
+    "mkdir _site",
+    "cd _site",
+    "git clone #{git_remote_url} .",
+  ]
+
+  execute(commands.join(" && "))
+  # build
+end
+
+
 task :serve do
   serve("sleep 5s && open -a Safari http://127.0.0.1:4000")
 end
@@ -64,5 +82,10 @@ task :publish, :message do |t, args|
   end
 
   push_origin
+end
+
+
+task :status do
+  execute("git status")
 end
 
