@@ -9,6 +9,33 @@
 			
 			<item>
 				<author>wanderwaltz@gmail.com (Egor Chiglintsev)</author>
+				<title>My GitHub Pages Blog Setup</title>
+				
+					<description>I’ve mentioned before that this blog
+is a custom deployed one. While GitHub Pages support some of the Jekyll plugins, I’d like to have
+more flexibility and freedom to use any other plugins, some of which I’ve made myself. As stated in
+the GitHub Pages
+documentation,
+
+
+  Other plugins are not supported, so the only way to incorporate them in your site is to generate
+your site locally and then push your site’s static files to your GitHub Pages site.
+
+
+So this is exactly what I’m doing here. I think it may be useful for someone if I share my setup
+of this blog’s development and deployment process.
+
+</description>
+				
+				<pubDate>Mon, 28 Mar 2016 01:11:00 +0600</pubDate>
+				<link>http://wanderwaltz.github.io/2016/03/28/my-github-pages-blog-setup/</link>
+				<guid isPermaLink="true">http://wanderwaltz.github.io/2016/03/28/my-github-pages-blog-setup/</guid>
+			</item>
+			
+		
+			
+			<item>
+				<author>wanderwaltz@gmail.com (Egor Chiglintsev)</author>
 				<title>Web Design with a Coding Mentality</title>
 				
 					<description>Recently I’ve come to a realization that I like coding better than writing. Consider this blog for
