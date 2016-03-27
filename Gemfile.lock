@@ -20,7 +20,6 @@ GEM
       mercenary (~> 0.3.3)
       rouge (~> 1.7)
       safe_yaml (~> 1.0)
-    jekyll-feed (0.4.0)
     jekyll-gist (1.4.0)
       octokit (~> 4.2)
     jekyll-paginate (1.1.0)
@@ -65,7 +64,6 @@ PLATFORMS
 DEPENDENCIES
   classifier-reborn
   jekyll
-  jekyll-feed
   jekyll-gist
   jekyll-paginate
   jekyll-sass
