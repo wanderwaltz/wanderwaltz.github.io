@@ -26,8 +26,8 @@ permalink:   pretty
 
 # Setup
 title:             'Just Coding Things'
-tagline:           'A Jekyll theme'
-description:       'Yet another tech blog related to various coding stuff I encounter in my everyday life.'
+tagline:           'Life, Programming and Stuff'
+description:       'Life, Programming and Stuff'
 baseurl:           /
 excerpt_separator: '<!--more-->'
 more:              'Read'
