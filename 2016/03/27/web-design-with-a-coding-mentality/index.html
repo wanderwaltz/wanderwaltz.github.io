@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <link type="application/atom+xml" rel="alternate" href="/feed.xml" title="" />
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Web Design with a Coding Mentality &middot; Just Coding Things
+    
+  </title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/hyde.css">
+  <link rel="stylesheet" href="/public/css/main.css">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+                                 <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+</head>
+
+
+  <body>
+
+    <div class="sidebar">
+
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <h1>
+        <a href="/">
+          Just Coding Things
+        </a>
+      </h1>
+      <p class="lead">Life, Programming and Stuff</p>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a class="sidebar-nav-item" href="/">Home</a>
+
+      
+        
+
+        
+        
+          
+            
+          
+        
+          
+            
+              <a class="sidebar-nav-item" href="/about/">About</a>
+            
+          
+        
+          
+            
+              <a class="sidebar-nav-item" href="/archive/">Archive</a>
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              <a class="sidebar-nav-item" href="/tags/">Tags</a>
+            
+          
+        
+          
+            
+              <a class="sidebar-nav-item" href="/links/">Links</a>
+            
+          
+        
+          
+        
+          
+        
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+      
+    </nav>
+
+    <p>&copy; 2016. All rights reserved.</p>
+  </div>
+</div>
+
+
+    <div class="content container">
+      <div class="post">
+  
+  <!-- post_title.html -->
+<h1 class="post-title">
+
+  Web Design with a Coding Mentality
+
+</h1>
+
+
+  <span class="post-date">27 Mar 2016</span>
+  <p>Recently I’ve come to a realization that I like coding better than writing. Consider this blog for
+example. I’ve been tinkering with it for a couple of days now: changing the theme, moving CSS styles
+around, optimizing usage of templates etc. - all that instead of actually writing some content,
+which someone could actually read.</p>
+
+<p>It is a funny thought - as a programmer, I value the internal structure, the beauty of the source
+files more than the actual product, which will be used by the consumer.</p>
+
+<p>Maybe this comes from the fact that I’m not really a good writer, but there is one more thing that
+makes me do all this: I see this blog as a piece of software, with all the usual concerns such as
+maintainability, extendibility etc.</p>
+
+<p>They say that if all you have is a hammer, everything looks like a nail. Programming is my hammer
+and I’d like to share an example of a practical problem, which ended up not being a nail after all.
+<!--more--></p>
+
+<h2 id="dont-repeat-yourself">Don’t Repeat Yourself</h2>
+
+<p>One of the important principles of software engineering is <em>“Don’t Repeat Yourself”</em>, which
+is stated as <em>“Every piece of knowledge must have a single, unambiguous, authoritative
+representation within a system.”</em><sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup></p>
+
+<p>While trying to apply the DRY principle to this blog, I’ve stumbled upon a repeating sequence in
+my <code>index.html</code> and <code>post</code> template. When displaying the post title, a conditional logic is
+necessary to properly render link post titles.</p>
+
+<p><span class="note">
+There a two general types of posts in this blog: a default and a link post. Link posts differ from
+the default posts in that they do not really have a lot of meaningful text written by me, they are
+a pair of an external URL and a short comment explaining why I’d find this particular page
+interesting enough to share here. As an example of link post, consider
+<a href="/2015/04/11/damn-cool-algorithms/">Damn Cool Algorithms</a>.
+</span></p>
+
+<p>While usual post title looks like this:</p>
+
+<blockquote>
+  <p><strong>Default Post Title</strong></p>
+</blockquote>
+
+<p>The link post title should look like this:</p>
+
+<blockquote>
+  <p><strong><i class="fa fa-bookmark-o"></i> Link Post Title</strong></p>
+</blockquote>
+
+<p>And the bookmark icon<sup id="fnref:2"><a href="#fn:2" class="footnote">2</a></sup> should be added to all link post titles regardless of where the title is
+displayed.</p>
+
+<p>It was implemented in the source files like that:</p>
+
+<figure class="highlight"><pre><code class="language-html" data-lang="html">{% if post.external_url %}
+  <span class="nt">&lt;h1</span> <span class="na">class=</span><span class="s">&quot;post-title&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;{{ post.external_url }}&quot;</span><span class="nt">&gt;</span>
+      {% icon fa-bookmark-o %} {{ post.title }}
+    <span class="nt">&lt;/a&gt;</span>
+   <span class="nt">&lt;/h1&gt;</span>
+{% else %}
+  <span class="nt">&lt;h1</span> <span class="na">class=</span><span class="s">&quot;post-title&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;{{ post.url }}&quot;</span><span class="nt">&gt;</span>
+      {{ post.title }}
+    <span class="nt">&lt;/a&gt;</span>
+  <span class="nt">&lt;/h1&gt;</span>
+{% endif %}</code></pre></figure>
+
+<p>This snippet of Liquid template was used on both <code>index.html</code> and in <code>post</code> template.</p>
+
+<p>Obviously I wanted to avoid duplication and reuse this code somehow. The first thing I thought of is
+making a custom Liquid tag, which would check the condition and render the necessary HTML depending
+on the post type (well, I’m probably not being absolutely honest here - it is probably not the most
+obvious solution, but yes, it’s the first thing coming in mind while I already know that making
+custom Liquid tags is even possible).</p>
+
+<p>So the following Jekyll plugin is born:</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1"># post_title.rb</span>
+<span class="k">module</span> <span class="nn">Jekyll</span>
+  <span class="k">class</span> <span class="nc">PostTitle</span> <span class="o">&lt;</span> <span class="no">Liquid</span><span class="o">::</span><span class="no">Tag</span>
+    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">tag_name</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">tokens</span><span class="p">)</span>
+      <span class="k">super</span>
+      <span class="vi">@text</span> <span class="o">=</span> <span class="n">text</span>
+      <span class="vi">@tokens</span> <span class="o">=</span> <span class="n">tokens</span>
+    <span class="k">end</span>
+
+    <span class="k">def</span> <span class="nf">render</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
+      <span class="n">post</span> <span class="o">=</span> <span class="n">context</span><span class="o">[</span><span class="vi">@text</span><span class="o">]</span>
+      <span class="n">externalUrl</span> <span class="o">=</span> <span class="n">post</span><span class="o">[</span><span class="s2">&quot;external_url&quot;</span><span class="o">]</span>
+      <span class="n">url</span> <span class="o">=</span> <span class="n">post</span><span class="o">[</span><span class="s2">&quot;url&quot;</span><span class="o">]</span>
+      <span class="n">title</span> <span class="o">=</span> <span class="n">post</span><span class="o">[</span><span class="s2">&quot;title&quot;</span><span class="o">]</span>
+
+      <span class="c1"># check for link posts</span>
+      <span class="k">if</span> <span class="n">externalUrl</span>
+        <span class="n">link</span> <span class="o">=</span> <span class="o">&lt;&lt;-</span><span class="no">external</span>
+<span class="sh">          &lt;a href=&quot;#{externalUrl}&quot;&gt;</span>
+<span class="sh">            &lt;i class=\&quot;fa fa-bookmark-o small\&quot;&gt;&lt;/i&gt; #{title}</span>
+<span class="sh">          &lt;/a&gt;</span>
+<span class="no">        external</span>
+      <span class="c1"># link the post only if the title is not displayed on the post&#39;s</span>
+      <span class="c1"># page itself - in this case just use the &lt;h1&gt; without href.</span>
+      <span class="k">elsif</span> <span class="n">context</span><span class="o">[</span><span class="s2">&quot;page&quot;</span><span class="o">][</span><span class="s2">&quot;url&quot;</span><span class="o">]</span> <span class="o">!=</span> <span class="n">url</span>
+        <span class="n">link</span> <span class="o">=</span> <span class="o">&lt;&lt;-</span><span class="no">internal</span>
+<span class="sh">          &lt;a href=&quot;#{url}&quot;&gt;#{title}&lt;/a&gt;</span>
+<span class="no">        internal</span>
+      <span class="k">else</span>
+        <span class="n">link</span> <span class="o">=</span> <span class="n">title</span>
+      <span class="k">end</span>
+
+      <span class="o">&lt;&lt;-</span><span class="no">return</span>
+<span class="sh">        &lt;h1 class=&quot;post-title&quot;&gt;#{link}&lt;/h1&gt;</span>
+<span class="no">      return</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="no">Liquid</span><span class="o">::</span><span class="no">Template</span><span class="o">.</span><span class="n">register_tag</span><span class="p">(</span><span class="s1">&#39;post_title&#39;</span><span class="p">,</span> <span class="no">Jekyll</span><span class="o">::</span><span class="no">PostTitle</span><span class="p">)</span></code></pre></figure>
+
+<p>A rather straightforward solution, I think. Now this new <code>post_title</code> tag can be used in
+<code>index.html</code> like this:</p>
+
+<figure class="highlight"><pre><code class="language-html" data-lang="html"><span class="c">&lt;!-- index.html --&gt;</span>
+{% for post in paginator.posts %}
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;post&quot;</span><span class="nt">&gt;</span>
+    {% post_title post %}
+  <span class="nt">&lt;/div&gt;</span>
+{% endfor %}</code></pre></figure>
+
+<h2 id="the-right-way">The Right Way?</h2>
+
+<p>After more css-tinkering and adjusting the blog code, I’ve started to think whether using Ruby for
+this simple thing is actually the right way to do. I’m thinking a coder instead of as a web designer
+here. Maybe writing a new plugin just for that is an overkill, and a simple mixin template would
+work?</p>
+
+<p>Putting the repeating piece of HTML above into a separete file:</p>
+
+<figure class="highlight"><pre><code class="language-html" data-lang="html"><span class="c">&lt;!-- post_title.html --&gt;</span>
+<span class="nt">&lt;h1</span> <span class="na">class=</span><span class="s">&quot;post-title&quot;</span><span class="nt">&gt;</span>
+{% if post.external_url %}
+  <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;{{ post.external_url }}&quot;</span><span class="nt">&gt;</span>
+    {% icon fa-bookmark-o %} {{ post.title }}
+  <span class="nt">&lt;/a&gt;</span>
+{% elsif page.url != post.url %}
+  <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;{{ post.url }}&quot;</span><span class="nt">&gt;</span>
+    {{ post.title }}
+  <span class="nt">&lt;/a&gt;</span>
+{% else %}
+  {{ post.title }}
+{% endif %}
+<span class="nt">&lt;/h1&gt;</span></code></pre></figure>
+
+<p>And then just including it where needed:</p>
+
+<figure class="highlight"><pre><code class="language-html" data-lang="html"><span class="c">&lt;!-- index.html --&gt;</span>
+{% for post in paginator.posts %}
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;post&quot;</span><span class="nt">&gt;</span>
+    {% include post_title.html %}
+  <span class="nt">&lt;/div&gt;</span>
+{% endfor %}</code></pre></figure>
+
+<p>It does the same trick without any plugin magic. On the plus side, it works in GitHub Pages, where
+usage of custom plugins is prohibited<sup id="fnref:3"><a href="#fn:3" class="footnote">3</a></sup>.</p>
+
+<p>The case in point: I’m thinkning as a programmer and
+my solution to everything is programming. It’s OK, I think, when it works. But sometimes it is a
+good practice to think outside of one’s comfort zone.</p>
+
+<div class="footnotes">
+  <ol>
+    <li id="fn:1">
+      <p>Citation from <a href="https://en.wikipedia.org/wiki/Don%27t_repeat_yourself">Wikipedia</a>. <a href="#fnref:1" class="reversefootnote">&#8617;</a></p>
+    </li>
+    <li id="fn:2">
+      <p>Via <a href="http://fontawesome.io">Font-Awesome</a>. <a href="#fnref:2" class="reversefootnote">&#8617;</a></p>
+    </li>
+    <li id="fn:3">
+      <p>Lack of custom plugins was the actual reason for me to drop dynamic GitHub page generation and
+  proceed with a static approach (i.e. <code>.nojekyll</code>), but this is a topic for another post. <a href="#fnref:3" class="reversefootnote">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+
+  
+    
+    <ul class="inline-list">
+      
+        
+          
+            <li><a href="/tags/#Jekyll" class="tag"><span class="term">Jekyll</span></a></li>
+          
+        
+        
+          
+            <li><a href="/tags/#Liquid" class="tag"><span class="term">Liquid</span></a></li>
+          
+        
+        
+          
+            <li><a href="/tags/#Meta" class="tag"><span class="term">Meta</span></a></li>
+          
+        
+        
+          
+            <li><a href="/tags/#Ruby" class="tag"><span class="term">Ruby</span></a></li>
+          
+        
+        
+          
+            <li><a href="/tags/#Templates" class="tag"><span class="term">Templates</span></a></li>
+          
+        
+        
+          
+            <li><a href="/tags/#Thoughts" class="tag"><span class="term">Thoughts</span></a></li>
+          
+        
+        
+        
+    </ul>
+  
+
+</div>
+
+<div class="related">
+  <h2>Related Posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2015/04/11/swift-wrappers-for-c-libraries/">
+            Writing Swift wrappers for C libraries
+            <small>11 Apr 2015</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2015/04/02/once-upon-an-app/">
+            Once upon an App
+            <small>02 Apr 2015</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2015/04/05/artificial-inheritance/">
+            Artificial Inheritance
+            <small>05 Apr 2015</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+    </div>
+
+  </body>
+</html>
