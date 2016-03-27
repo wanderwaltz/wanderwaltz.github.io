@@ -8,6 +8,7 @@
 		
 			
 			<item>
+				<author>wanderwaltz@gmail.com (Egor Chiglintsev)</author>
 				<title>Web Design with a Coding Mentality</title>
 				
 					<description>Recently I’ve come to a realization that I like coding better than writing. Consider this blog for
@@ -35,6 +36,7 @@ and I’d like to share an example of a practical problem, which ended up not be
 		
 			
 			<item>
+				<author>wanderwaltz@gmail.com (Egor Chiglintsev)</author>
 				<title>Safe NSArray literals</title>
 				
 					<description>While Swift is a new panacea an a go-to solution for all things programming, we still have to
@@ -59,6 +61,7 @@ nil, we’ll have a crash in our hands. We don’t really want this to happen, r
 		
 			
 			<item>
+				<author>wanderwaltz@gmail.com (Egor Chiglintsev)</author>
 				<title>Binding Swift funcs</title>
 				
 					<description>I’ve already talked about my quest to learn me some Swift. Having implemented basic Swift wrappers for Squirrel tables and arrays, the time has come to move on to the fun stuff: binding functions.
@@ -79,6 +82,7 @@ Working with C function pointers in Swift? Oh boy, this gonna be good!
 		
 			
 			<item>
+				<author>wanderwaltz@gmail.com (Egor Chiglintsev)</author>
 				<title>Writing Swift wrappers for C libraries</title>
 				
 					<description>I’ve been kind of bashing Swift recently because of the current buggy state of the tools (SourceKit service and Swift compiler crashes are the most notable offenders). But I have to admit that as a language Swift has become much more usable then it was the last time I’ve touched it. I still encounter weird seemingly unrelated compilation error messages but (thanks to Stack Overflow and all the people who already encountered something similar) I usually can decipher the errors and either fix them or mourn for things that cannot be fixed.
@@ -95,6 +99,7 @@ Swift interaction with C code was actually a pleasant surprise for me. I’ve de
 		
 			
 			<item>
+				<author>wanderwaltz@gmail.com (Egor Chiglintsev)</author>
 				<title>Spellchecking blog posts</title>
 				
 					<description>English is not my native language. You’ve probably noticed that already. To make the posts in this blog a bit less cringe worthy, I check the spelling and grammar of the text I write using Microsoft Word. The problem is that Word is not really tailored to work with programming-related texts and code samples.
@@ -111,6 +116,7 @@ Swift interaction with C code was actually a pleasant surprise for me. I’ve de
 		
 			
 			<item>
+				<author>wanderwaltz@gmail.com (Egor Chiglintsev)</author>
 				<title>Artificial Inheritance</title>
 				
 					<description>They say inheritance is bad. Yes, there really are 5 different links in the previous sentence.
@@ -133,6 +139,7 @@ Now starting with that in mind I’ve come up with an interesting little runtime
 		
 			
 			<item>
+				<author>wanderwaltz@gmail.com (Egor Chiglintsev)</author>
 				<title>Once upon an App</title>
 				
 					<description>I was making this one app for a long time already. An app for a single user. Not really a promising venture, one might say. But this is personal. It’s an app for my father which helps him do his job and which he asked me to make for him when I was still going to school.
@@ -153,6 +160,7 @@ Well, I’ve made it. Two times from scratch already. And I think I’m going fo
 		
 			
 			<item>
+				<author>wanderwaltz@gmail.com (Egor Chiglintsev)</author>
 				<title>That awkward moment when `git rebase --continue`</title>
 				
 					<description>…suddenly opens vi to update a commit message and you don’t really know how to save the file and exit the goddamn editor.
@@ -169,6 +177,7 @@ No, really, I should probably learn me some vi because it is kind of ridiculous 
 		
 			
 			<item>
+				<author>wanderwaltz@gmail.com (Egor Chiglintsev)</author>
 				<title>Beyond Objective-C</title>
 				
 					<description>They say Objective-C is dead. A new king named Swift is rising and Objective-C days are counted. Well that’s probably true. It may be not completely true right now, but one day it will be. I surely need to familiarize myself with Swift a little bit more so I will know what I’m doing already when there would be no choice to write in it.
@@ -185,6 +194,7 @@ What’s bothering me still is that Swift is Apple-specific in the same way that
 		
 			
 			<item>
+				<author>wanderwaltz@gmail.com (Egor Chiglintsev)</author>
 				<title>Subclassing NSArray</title>
 				
 					<description>Creating custom collections is rarely necessary nowadays. Most of the time you can safely go with the collection classes provided by the standard library you’re working with and not bother with the implementation details. What would be the reason to write a custom collection anyway?
@@ -206,6 +216,7 @@ I cannot come up with another reasons to subclass Foundation collections right n
 		
 			
 			<item>
+				<author>wanderwaltz@gmail.com (Egor Chiglintsev)</author>
 				<title>Putting more &quot;C&quot; in your Objective-C</title>
 				
 					<description>I like Objective-C. I’ve been writing Objective-C code for almost 6 years now and I can surely say
