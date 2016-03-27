@@ -36,7 +36,7 @@ defaults:
       type: "posts"
     values:
       layout: "post"
-      author: "wanderwaltz@gmail.com (Egor Chiglintsev)"
+      author: "Egor Chiglintsev"
 
 
 author:
