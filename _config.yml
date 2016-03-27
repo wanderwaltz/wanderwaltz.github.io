@@ -42,7 +42,14 @@ defaults:
 
 
 author:
-  name:      'Egor Chiglintsev'
-  url:       https://github.com/wanderwaltz
+  name:   'Egor Chiglintsev'
+  url:    https://github.com/wanderwaltz
 
-paginate:    5
+paginate: 5
+
+# Ignored files
+exclude:
+  - 'Rakefile'
+  - 'Gemfile'
+  - 'Gemfile.lock'
+  - 'LICENSE.md'
