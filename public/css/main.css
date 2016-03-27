@@ -11,6 +11,9 @@
   margin: 0;
   overflow: visible; }
 
+pre, code {
+  font-size: 70%; }
+
 .inline-list {
   list-style: none;
   margin-left: 0;
