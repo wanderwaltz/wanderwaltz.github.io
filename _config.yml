@@ -36,10 +36,12 @@ defaults:
       type: "posts"
     values:
       layout: "post"
+      author: "wanderwaltz@gmail.com (Egor Chiglintsev)"
 
 
 author:
   name:   'Egor Chiglintsev'
+  email:  wanderwaltz@gmail.com
   url:    https://github.com/wanderwaltz
 
 paginate: 5

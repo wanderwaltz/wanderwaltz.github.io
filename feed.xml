@@ -10,6 +10,7 @@
 		{% for post in site.posts %}
 			{% unless post.external_url %}
 			<item>
+				<author>{{ post.author }}</author>
 				<title>{{ post.title | xml_escape }}</title>
 				{% if post.excerpt %}
 					<description>{{ post.excerpt | strip_html | xml_escape }}</description>
