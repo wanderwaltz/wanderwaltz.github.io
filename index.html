@@ -6,7 +6,7 @@ title: Home
 <div class="posts">
   {% for post in paginator.posts %}
   <div class="post">
-    {% post_title post %}
+    {% include post_title.html %}
 
     <span class="post-date">{{ post.date | date_to_string }}</span>
 
