@@ -32,6 +32,15 @@
       {% endif %}
     </nav>
 
+    <!-- Link icons -->
+    <span>
+      {% for link_hash in site.links %}
+        {% for link in link_hash %}
+          <a href="{{ link[1] }}"><i class="fa fa-{{ link[0] }}-square"></i></a>
+        {% endfor %}
+      {% endfor %}
+    </span>
+
     <p>&copy; {{ site.time | date: '%Y' }}. All rights reserved.</p>
   </div>
 </div>

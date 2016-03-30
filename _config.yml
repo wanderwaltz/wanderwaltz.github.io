@@ -18,7 +18,7 @@ include:
 
 
 # Permalinks
-permalink:   pretty
+permalink: pretty
 
 # Setup
 title:             'Just Coding Things'
@@ -37,12 +37,19 @@ defaults:
     values:
       layout: "post"
       author: "Egor Chiglintsev"
+      comments: true
 
 
 author:
   name:   'Egor Chiglintsev'
   email:  wanderwaltz@gmail.com
   url:    https://github.com/wanderwaltz
+
+links:
+  - linkedin: "https://www.linkedin.com/in/chiglintsev"
+  - github:   "https://github.com/wanderwaltz/"
+  - twitter:  "https://twitter.com/wanderwaltz/"
+  - rss:      "https://wanderwaltz.github.io/feed.xml"
 
 paginate: 5
 
