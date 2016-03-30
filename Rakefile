@@ -21,7 +21,26 @@ def serve(suffix)
 end
 
 
+def build_cv
+  unless File.exists?('_plugins/_md2resume')
+    return
+  end
+
+  commands = [
+    "rm cv.html",
+    "rm cv.pdf",
+    "_plugins/_md2resume html _cv.md .",
+    "_plugins/_md2resume pdf _cv.md .",
+    "mv _cv.html cv.html",
+    "mv _cv.pdf cv.pdf",
+  ]
+
+  execute(commands.join(" && "))
+end
+
+
 def build
+  build_cv
   execute("bundle exec jekyll build --lsi")
 end
 
@@ -54,6 +73,10 @@ task :init do
     "mkdir _site",
     "cd _site",
     "git clone #{git_remote_url} .",
+    "cd ../_plugins",
+    "rm _md2resume",
+    "curl -L https://github.com/there4/markdown-resume/raw/master/bin/md2resume > _md2resume",
+    "chmod +x _md2resume"
   ]
 
   execute(commands.join(" && "))
