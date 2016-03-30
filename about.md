@@ -9,7 +9,7 @@ modified: 2015-03-26
   <img src="/images/avatar.jpg" alt="" width="200" height="200">
 </figure>
 
-_About something or other_
+<span style="white-space: nowrap;"> About something or other.</span>
 
 Hi, my name is Egor, I've been writing apps for iOS since 2009 and this is yet another tech blog related to various coding stuff I encounter in my everyday life.
 
