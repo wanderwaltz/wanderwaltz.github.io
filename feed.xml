@@ -9,6 +9,28 @@
 			
 			<item>
 				<author>Egor Chiglintsev</author>
+				<title>Your Error Messages Are Not Helpful</title>
+				
+					<description>An unknown error occurred
+
+
+I imagine everyone has seen this error message at least once in their lives. It’s not very helpful,
+is it?
+
+I’ve encountered this error message today when trying to run an app on my iPhone using Xcode. No
+other explanation was provided, no ways of recovery. What should one do in this scenario?
+
+</description>
+				
+				<pubDate>Thu, 31 Mar 2016 11:51:00 +0600</pubDate>
+				<link>http://wanderwaltz.github.io/2016/03/31/your-error-messages-are-not-hepful/</link>
+				<guid isPermaLink="true">http://wanderwaltz.github.io/2016/03/31/your-error-messages-are-not-hepful/</guid>
+			</item>
+			
+		
+			
+			<item>
+				<author>Egor Chiglintsev</author>
 				<title>My GitHub Pages Blog Setup</title>
 				
 					<description>I’ve mentioned before that this blog
