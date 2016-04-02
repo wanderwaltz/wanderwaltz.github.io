@@ -27,8 +27,8 @@ def build_cv
   end
 
   commands = [
-    "rm cv.html",
-    "rm cv.pdf",
+    "rm -f cv.html",
+    "rm -f cv.pdf",
     "_plugins/_md2resume html _cv.md .",
     "_plugins/_md2resume pdf _cv.md .",
     "mv _cv.html cv.html",
