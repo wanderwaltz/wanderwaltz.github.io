@@ -1,5 +1,17 @@
 ---
 ---
-<a href="itms-services://?action=download-manifest&url={{ "iMMPI/iMMPI.plist" | prepend: site.baseurl }}">
-  Install iMMPI
-</a>
+<html>
+  <head>
+    <script type="text/javascript">
+      function load() {
+        window.location.href = "itms-services://?action=download-manifest&url={{ "iMMPI/iMMPI.plist" | prepend: site.baseurl }}";
+      }
+    </script>
+  </head>
+
+  <body onload="load()">
+    <a href="itms-services://?action=download-manifest&url={{ "iMMPI/iMMPI.plist" | prepend: site.baseurl }}">
+      <h1>Install iMMPI</h1>
+    </a>
+  </body>
+</html>
