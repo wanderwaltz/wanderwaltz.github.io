@@ -149,10 +149,10 @@
 
 <ul>
   <li><strong>Performance?</strong> I’d say that you go with the standard collections and rewrite them if and only if you’re completely sure that it’s the collection that is your bottleneck and not anything else. Give me a profiler-proven reason to do that.</li>
-  <li><strong>Changing the collection interface?</strong> Well that could be done via categories or composition. You don’t really need to subclass <code>NSArray</code> or <code>NSDictionary</code> to change their interface if you want to.</li>
+  <li><strong>Changing the collection interface?</strong> Well, that could be done via categories or composition. You don’t really need to subclass <code>NSArray</code> or <code>NSDictionary</code> to change their interface if you want to.</li>
 </ul>
 
-<p>I cannot come up with another reasons to subclass Foundation collections right now, but to be honest, here at <a href="http://wanderwaltz.github.io">#justcodingthings</a> we don’t actually need a reason to do something. We do it because we can and that’s the only reason we need.
+<p>I cannot come up with another reason to subclass Foundation collections right now, but to be honest, here at <a href="http://wanderwaltz.github.io">#justcodingthings</a> we don’t actually need a reason to do something. We do it because we can and that’s the only reason we need.
 <!--more--></p>
 
 <p>There is nothing new under the sun and <a href="https://twitter.com/mikeash">@mikeash</a> has already discussed this topic in his <a href="https://mikeash.com/pyblog/friday-qa-2010-03-12-subclassing-class-clusters.html">Friday Q&amp;A</a>, but I still thought I’d reiterate it once more at least for the reason of providing another example of the technique.</p>
@@ -160,7 +160,7 @@
 <p>To have a semi-realistic sample to work with, let’s build a dynamically mapped array and integrate it into <code>NSArray</code> cluster.</p>
 
 <h2 id="define-dynamically-mapped">Define ‘dynamically mapped’</h2>
-<p>So suppose we want to perform a certain transform or mapping to the elements of a given <code>NSArray</code>. The mapping itself will be represented as a mapper block:</p>
+<p>So suppose we want to perform a certain transform or mapping to the elements of a given <code>NSArray</code>. The mapping itself will be represented by a mapper block:</p>
 
 <figure class="highlight"><pre><code class="language-objc" data-lang="objc"><span class="kt">id</span> <span class="p">(</span><span class="o">^</span><span class="n">mapper</span><span class="p">)(</span><span class="kt">id</span> <span class="n">object</span><span class="p">,</span> <span class="bp">NSUInteger</span> <span class="n">index</span><span class="p">)</span> <span class="p">{</span>
     <span class="c1">// return transformed object</span>
@@ -212,7 +212,7 @@
   <li><strong>Primitive instance methods.</strong> It’s actually almost trivial to implement these in our case. More on that below.</li>
   <li><strong>Designated initializers.</strong> Right, so creating our custom <code>initWithArray:mapper:</code> initializer won’t be enough, since because of subclassing <code>NSArray</code> it would be possible to invoke all other initializers of this class on our <code>CCMappedArray</code>. So all of the <code>[CCMappedArray array]</code>, <code>[CCMappedArray arrayWithArray: other]</code> etc should also work.</li>
   <li><strong><code>NSCopying</code></strong> is simple and easily doable.</li>
-  <li><strong><code>NSMutableCopying</code></strong> is a bit trickier if we want to keep the dynamic mapping. For simplicity I suggest we just return a plain old <code>NSMutableArray</code> and lose the mapper block in process (we’ll have to apply the mapper to all elements while copying of course).</li>
+  <li><strong><code>NSMutableCopying</code></strong> is a bit trickier if we want to keep the dynamic mapping. For simplicity I suggest we just return a plain old <code>NSMutableArray</code> and lose the mapper block in the process (we’ll have to apply the mapper to all elements while copying of course).</li>
   <li><strong><code>NSCoding</code></strong> will also lose the mapper block since there is no way to encode/decode it.</li>
 </ul>
 
@@ -291,7 +291,7 @@ so the <code>count</code> method just returns the original count:</p>
     <span class="k">return</span> <span class="n">object</span><span class="p">;</span>
 <span class="p">}</span></code></pre></figure>
 
-<p>Without a mapper block our array represents an identity mapping.</p>
+<p>Without a mapper block, our array represents an identity mapping.</p>
 
 <p>Let’s continue with <code>NSCopying</code>. Note that we actually work with immutable arrays only so we never have to actually copy anything:</p>
 
@@ -336,10 +336,10 @@ so the <code>count</code> method just returns the original count:</p>
       <p>Prefix <code>CC</code> stands for ‘Containers Collection’ which is a name of a <a href="https://github.com/wanderwaltz/ContainersCollection">github project</a> where mapped array is implemented as well as some other collection-like classes. <a href="#fnref:2" class="reversefootnote">&#8617;</a></p>
     </li>
     <li id="fn:3">
-      <p>Altough to keep the <code>NSMutableArray</code> contract intact we would need to be sure that setting elements of the array after it has been mapped would not apply the mapping block again. So we would need to store the indexes of the ‘automatic’ mapped elements and the indexes of the elements set explicitly by the user of the class and process these elements accordingly. <a href="#fnref:3" class="reversefootnote">&#8617;</a></p>
+      <p>Although to keep the <code>NSMutableArray</code> contract intact we would need to be sure that setting elements of the array after it has been mapped would not apply the mapping block again. So we would need to store the indexes of the ‘automatic’ mapped elements and the indexes of the elements set explicitly by the user of the class and process these elements accordingly. <a href="#fnref:3" class="reversefootnote">&#8617;</a></p>
     </li>
     <li id="fn:4">
-      <p>I’ve seen and worked with an implementation of <code>NSArray</code> mapping using a category on <code>NSArray</code> which applied the given block to the receiver immediately and returned the mapped <code>NSArray</code>. This implementation handled <code>nil</code> returned from the block differently, essentially removing elements mapped to <code>nil</code> from the result. This would change the count of the elements within the resulting array. With our current implementation this would result in unnecessary complications so we replace <code>nil</code> results with <code>NSNull</code>s and keep the count intact. <a href="#fnref:4" class="reversefootnote">&#8617;</a></p>
+      <p>I’ve seen and worked with an implementation of <code>NSArray</code> mapping using a category on <code>NSArray</code> which applied the given block to the receiver immediately and returned the mapped <code>NSArray</code>. This implementation handled <code>nil</code> returned from the block differently, essentially removing elements mapped to <code>nil</code> from the result. This would change the count of the elements within the resulting array. With our current implementation, this would result in unnecessary complications so we replace <code>nil</code> results with <code>NSNull</code>s and keep the count intact. <a href="#fnref:4" class="reversefootnote">&#8617;</a></p>
     </li>
   </ol>
 </div>

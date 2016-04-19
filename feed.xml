@@ -134,9 +134,9 @@ Working with C function pointers in Swift? Oh boy, this gonna be good!
 				<author>Egor Chiglintsev</author>
 				<title>Writing Swift wrappers for C libraries</title>
 				
-					<description>I’ve been kind of bashing Swift recently because of the current buggy state of the tools (SourceKit service and Swift compiler crashes are the most notable offenders). But I have to admit that as a language Swift has become much more usable then it was the last time I’ve touched it. I still encounter weird seemingly unrelated compilation error messages but (thanks to Stack Overflow and all the people who already encountered something similar) I usually can decipher the errors and either fix them or mourn for things that cannot be fixed.
+					<description>I’ve been kind of bashing Swift recently because of the current buggy state of the tools (SourceKit service and Swift compiler crashes are the most notable offenders). But I have to admit that as a language Swift has become much more usable than it was the last time I’ve touched it. I still encounter weird seemingly unrelated compilation error messages but (thanks to Stack Overflow and all the people who already encountered something similar) I usually can decipher the errors and either fix them or mourn for things that cannot be fixed.
 
-Swift interaction with C code was actually a pleasant surprise for me. I’ve decided to practice Swift a bit by creating a wrapper/bindings library for Squirrel language. Squirrel is written in C++, but has C API so it should be simple to import it and use in Swift code. I’ve never actually thought it would be that easy.
+Swift interaction with C code was actually a pleasant surprise for me. I’ve decided to practice Swift a bit by creating a wrapper/bindings library for Squirrel language. Squirrel is written in C++ but has C API so it should be simple to import it and use in Swift code. I’ve never actually thought it would be that easy.
 
 </description>
 				
@@ -172,11 +172,11 @@ Swift interaction with C code was actually a pleasant surprise for me. I’ve de
 
 The links I’ve provided may not be the most trustworthy sources on the subject (as the matter of fact, I’ve entered ‘inheritance is bad’ in the Google prompt and used the top results just to provide a couple of examples). Jokes aside, there is a lot of info out there about the reasons to prefer composition over inheritance in most cases.
 
-As with all of such statements you don’t blindly follow the rule. Inheritance is a tool, and as a software engineer you should know when and where to use your tools.
+As with all of such statements you don’t blindly follow the rule. Inheritance is a tool, and as a software engineer, you should know when and where to use your tools.
 
 I’m using composition for building complex objects a lot these days. One of the patterns I’ve been using lately is adding Objective-C protocol conformance to specific objects (i.e. not classes, but individual instances) with the help of wrapper (or decorator) objects. To simplify the interaction with these wrappers I’m using the message forwarding mechanism, which allows me treating the wrapper object in the same way as the original object, but with the benefits of the added protocol.
 
-Now starting with that in mind I’ve come up with an interesting little runtime construct, which utilizes composition and message forwarding to implement multiple inheritance-like behavior on instance level.
+Now starting with that in mind I’ve come up with an interesting little runtime construct, which utilizes composition and message forwarding to implement multiple inheritance-like behaviors on the instance level.
 
 </description>
 				
@@ -195,7 +195,7 @@ Now starting with that in mind I’ve come up with an interesting little runtime
 
 The app is actually pretty simple. It’s an implementation of a customized Minnesota Multiphasic Personality Inventory) test (MMPI for shortness) which involves the user answering 500+ yes/no questions and a lot of tedious but otherwise simple math to calculate the results.
 
-Before the app, father was calculating these results manually, which required comparing the answers list with a bunch of template tables, calculate means, standard deviations and all that statistical stuff, which is rather simple in formulae, but is tedious to compute by hand. I was aiming to be a programmer from my early days and it’s no surprise that my father asked me to make this app for him.
+Before the app, my father was calculating these results manually, which required comparing the answers list with a bunch of template tables, calculate means, standard deviations, and all that statistical stuff, which is rather simple in formulae, but is tedious to compute by hand. I was aiming to be a programmer from my early days and it’s no surprise that my father asked me to make this app for him.
 
 Well, I’ve made it. Two times from scratch already. And I think I’m going for the third.
 
@@ -229,7 +229,7 @@ No, really, I should probably learn me some vi because it is kind of ridiculous 
 				<author>Egor Chiglintsev</author>
 				<title>Beyond Objective-C</title>
 				
-					<description>They say Objective-C is dead. A new king named Swift is rising and Objective-C days are counted. Well that’s probably true. It may be not completely true right now, but one day it will be. I surely need to familiarize myself with Swift a little bit more so I will know what I’m doing already when there would be no choice to write in it.
+					<description>They say Objective-C is dead. A new king named Swift is rising and Objective-C days are counted. Well, that’s probably true. It may be not completely true right now, but one day it will be. I surely need to familiarize myself with Swift a little bit more so I will know what I’m doing already when there would be no choice to write in it.
 
 What’s bothering me still is that Swift is Apple-specific in the same way that Objective-C has always been. Learning Swift more, getting used to it will bind you tighter to the Apple platform (it does not matter, Mac OS or iOS). You still will have almost no experience on any other platforms or technologies.
 
@@ -250,10 +250,10 @@ What’s bothering me still is that Swift is Apple-specific in the same way that
 
 
   Performance? I’d say that you go with the standard collections and rewrite them if and only if you’re completely sure that it’s the collection that is your bottleneck and not anything else. Give me a profiler-proven reason to do that.
-  Changing the collection interface? Well that could be done via categories or composition. You don’t really need to subclass NSArray or NSDictionary to change their interface if you want to.
+  Changing the collection interface? Well, that could be done via categories or composition. You don’t really need to subclass NSArray or NSDictionary to change their interface if you want to.
 
 
-I cannot come up with another reasons to subclass Foundation collections right now, but to be honest, here at #justcodingthings we don’t actually need a reason to do something. We do it because we can and that’s the only reason we need.
+I cannot come up with another reason to subclass Foundation collections right now, but to be honest, here at #justcodingthings we don’t actually need a reason to do something. We do it because we can and that’s the only reason we need.
 
 </description>
 				
@@ -272,7 +272,7 @@ I cannot come up with another reasons to subclass Foundation collections right n
 that I’m comfortable with the language and that it provides everything I need to make awesome apps.
 But nothing is perfect of course.
 
-The dynamic nature of the language can be a woe at some times. One of such things is lack of proper
+The dynamic nature of the language can be a woe at some times. One of such things is the lack of proper
 private methods in Objective-C.
 
 </description>

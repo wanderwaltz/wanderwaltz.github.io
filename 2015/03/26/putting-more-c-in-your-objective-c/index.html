@@ -149,14 +149,14 @@
 that I’m comfortable with the language and that it provides everything I need to make awesome apps.
 But nothing is perfect of course.</p>
 
-<p>The dynamic nature of the language can be a woe at some times. One of such things is lack of proper
+<p>The dynamic nature of the language can be a woe at some times. One of such things is the lack of proper
 private methods in Objective-C.
 <!--more--></p>
 
 <p>Whether you like it or not, whatever you call your method, it could
 be overridden in a subclass even if you don’t really want it to be overridden. More so, if your
 method is not listed in the header file, someone could override your ‘private’ hidden method even
-without realizing it. Who knows what will happen in that case. Hopefully your app will crash
+without realizing it. Who knows what will happen in that case. Hopefully, your app will crash
 fast and early.</p>
 
 <p>I have a small silly practical reason to talk about it right now. I’ve been creating a lot of
@@ -178,13 +178,12 @@ actually does all the setup and is called by both of these initializers:</p>
     <span class="c1">// Create subviews, set up state etc.</span>
 <span class="p">}</span></code></pre></figure>
 
-<p>I prefix the name of this method with <code>private_</code> to notify myself and my teammates that this
-method should not be exposed to the outside world and is actually private implementation detail
+<p>I prefix the name of this method with <code>private_</code> to notify myself and my teammates that this method should not be exposed to the outside world and is actually a private implementation detail
 of my class.</p>
 
 <p>It gets kind of ugly when I’m trying to subclass such a view. I want then to have another common
 setup logic specific to the subclass, but I cannot actually use the name <code>private_setup</code> anymore.
-Otherwise it would override the logic of the superclass initialization and I won’t be able to call
+Otherwise, it would override the logic of the superclass initialization and I won’t be able to call
 <code>super</code> since the method is not exposed anywhere.</p>
 
 <p>This is actually not a real problem. I can instantly name at least two possible solutions to
@@ -256,12 +255,12 @@ needed) does pretty much exactly what’s needed in terms of privacy and non-ove
 
 <p>I know a couple of people who probably would say that this kind of code is even more ugly than the
 variants I’ve listed before (I’m looking at you <a href="http://twitter.com/stkhapugin">@stkhapugin</a>), but
-I’m quite fond with it at the moment. It does everything I wanted to and does not require any
+I’m quite fond of it at the moment. It does everything I wanted to and does not require any
 obscure runtime or preprocessor magic to implement. I call it a win.</p>
 <div class="footnotes">
   <ol>
     <li id="fn:1">
-      <p>The designated initializer for an <code>UIView</code> subclass is of course the <code>initWithFrame:</code> one, but
+      <p>The designated initializer for a <code>UIView</code> subclass is, of course, the <code>initWithFrame:</code> one, but
   when loading the view from a storyboard or a xib it won’t be called in favor of the <code>initWithCoder:</code>. <a href="#fnref:1" class="reversefootnote">&#8617;</a></p>
     </li>
   </ol>

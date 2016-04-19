@@ -199,11 +199,11 @@ before adding them to the array, but it is much uglier:</p>
 
 <p>This solution adds a lot of cognitive strain on the potential code reader. Instead of focusing on
 the simple “instantiate some actions and present them” logic, we create a bunch of temporary
-variables, complement each one with a <code>nil</code>-chekcing condition and completely obscure the point
+variables, complement each one with a <code>nil</code>-checking condition and completely obscure the point
 of the whole thing.</p>
 
-<p>One can argue that we should have a non-failable initializers of the objects in question and there
-would be no problem in the first place, but unfortunately this is not always possible.</p>
+<p>One can argue that we should have non-failable initializers of the objects in question and there
+would be no problem in the first place, but unfortunately, this is not always possible.</p>
 
 <p><strong>Solution #2: Implicit nil checks</strong> Trying to minimize possible <code>nil</code>-related crashes, we’ve added
 a category on <code>NSMutableArray</code>, which provides a method for safely adding a nullable object by just
@@ -220,7 +220,7 @@ ignoring the <code>nil</code> values.</p>
 <span class="p">[</span><span class="nb">self</span> <span class="nl">presentActions</span><span class="p">:</span> <span class="n">actions</span><span class="p">];</span></code></pre></figure>
 
 <p>Well, it’s simpler, but not simple enough. I don’t really like to have a temporary array variable,
-which only purpose is to be passed to the method invocation right after it is instantiated.</p>
+the only purpose of which is to be passed to the method invocation right after it is instantiated.</p>
 
 <p><strong>Solution #3: Defaulting</strong> Another possible solution is to default all the possible <code>nil</code> values to
 a certain guaranteed non-nil object:</p>
@@ -259,8 +259,8 @@ on the reader.</p>
 
 <span class="k">@end</span></code></pre></figure>
 
-<p>Here we’re using variable argument list for passing the objects. Usually these lists are
-<code>nil</code>-terminated (there’s even a <code>NS_REQUIRES_NIL_TERMINATION</code> attribute, which triggers a compiler
+<p>Here we’re using variable argument list for passing the objects. Usually, these lists are
+<code>nil</code>-terminated (there’s even an <code>NS_REQUIRES_NIL_TERMINATION</code> attribute, which triggers a compiler
 check for that), but since we want to allow <code>nil</code> values inside our argument list, we have to
 provide some other object as the list terminator.</p>
 
@@ -307,7 +307,7 @@ simpler:</p>
 <span class="cp">        [NSArraySafeLiteral class]])</span></code></pre></figure>
 
 <p>Here I’m using the class pointer as the list terminator, which should suffice for the most use
-cases, but any other known static object can be used instead.</p>
+cases but any other known static object can be used instead.</p>
 
 <p>Now the syntax</p>
 
