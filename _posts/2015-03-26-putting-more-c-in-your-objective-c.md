@@ -8,21 +8,21 @@ I like Objective-C. I've been writing Objective-C code for almost 6 years now an
 that I'm comfortable with the language and that it provides everything I need to make awesome apps.
 But nothing is perfect of course.
 
-The dynamic nature of the language can be a woe at some times. One of such things is lack of proper
+The dynamic nature of the language can be a woe at some times. One of such things is the lack of proper
 private methods in Objective-C.
 <!--more-->
 
 Whether you like it or not, whatever you call your method, it could
 be overridden in a subclass even if you don't really want it to be overridden. More so, if your
 method is not listed in the header file, someone could override your 'private' hidden method even
-without realizing it. Who knows what will happen in that case. Hopefully your app will crash
+without realizing it. Who knows what will happen in that case. Hopefully, your app will crash
 fast and early.
 
 I have a small silly practical reason to talk about it right now. I've been creating a lot of
 `IB_DESIGNABLE` views recently and therefore as a responsible person I have to override two
 initializers[^1] for each of them:
 
-[^1]: The designated initializer for an `UIView` subclass is of course the `initWithFrame:` one, but
+[^1]: The designated initializer for a `UIView` subclass is, of course, the `initWithFrame:` one, but
       when loading the view from a storyboard or a xib it won't be called in favor of the `initWithCoder:`.
 
 {% highlight objc %}
@@ -44,13 +44,12 @@ actually does all the setup and is called by both of these initializers:
 }
 {% endhighlight %}
 
-I prefix the name of this method with `private_` to notify myself and my teammates that this
-method should not be exposed to the outside world and is actually private implementation detail
+I prefix the name of this method with `private_` to notify myself and my teammates that this method should not be exposed to the outside world and is actually a private implementation detail
 of my class.
 
 It gets kind of ugly when I'm trying to subclass such a view. I want then to have another common
 setup logic specific to the subclass, but I cannot actually use the name `private_setup` anymore.
-Otherwise it would override the logic of the superclass initialization and I won't be able to call
+Otherwise, it would override the logic of the superclass initialization and I won't be able to call
 `super` since the method is not exposed anywhere.
 
 This is actually not a real problem. I can instantly name at least two possible solutions to
@@ -119,5 +118,5 @@ needed) does pretty much exactly what's needed in terms of privacy and non-overr
 
 I know a couple of people who probably would say that this kind of code is even more ugly than the
 variants I've listed before (I'm looking at you [@stkhapugin](http://twitter.com/stkhapugin)), but
-I'm quite fond with it at the moment. It does everything I wanted to and does not require any
+I'm quite fond of it at the moment. It does everything I wanted to and does not require any
 obscure runtime or preprocessor magic to implement. I call it a win.

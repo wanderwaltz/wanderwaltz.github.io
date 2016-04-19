@@ -69,11 +69,11 @@ if (shareAction != nil) {
 
 This solution adds a lot of cognitive strain on the potential code reader. Instead of focusing on
 the simple "instantiate some actions and present them" logic, we create a bunch of temporary
-variables, complement each one with a `nil`-chekcing condition and completely obscure the point
+variables, complement each one with a `nil`-checking condition and completely obscure the point
 of the whole thing.
 
-One can argue that we should have a non-failable initializers of the objects in question and there
-would be no problem in the first place, but unfortunately this is not always possible.
+One can argue that we should have non-failable initializers of the objects in question and there
+would be no problem in the first place, but unfortunately, this is not always possible.
 
 **Solution #2: Implicit nil checks** Trying to minimize possible `nil`-related crashes, we've added
 a category on `NSMutableArray`, which provides a method for safely adding a nullable object by just
@@ -92,7 +92,7 @@ NSMutableArray *actions = [[NSMutableArray alloc] init];
 {% endhighlight %}
 
 Well, it's simpler, but not simple enough. I don't really like to have a temporary array variable,
-which only purpose is to be passed to the method invocation right after it is instantiated.
+the only purpose of which is to be passed to the method invocation right after it is instantiated.
 
 **Solution #3: Defaulting** Another possible solution is to default all the possible `nil` values to
 a certain guaranteed non-nil object:
@@ -137,8 +137,8 @@ Implementation is also simple enough. Consider the following class:
 @end
 {% endhighlight %}
 
-Here we're using variable argument list for passing the objects. Usually these lists are
-`nil`-terminated (there's even a `NS_REQUIRES_NIL_TERMINATION` attribute, which triggers a compiler
+Here we're using variable argument list for passing the objects. Usually, these lists are
+`nil`-terminated (there's even an `NS_REQUIRES_NIL_TERMINATION` attribute, which triggers a compiler
 check for that), but since we want to allow `nil` values inside our argument list, we have to
 provide some other object as the list terminator.
 
@@ -189,7 +189,7 @@ simpler:
 {% endhighlight %}
 
 Here I'm using the class pointer as the list terminator, which should suffice for the most use
-cases, but any other known static object can be used instead.
+cases but any other known static object can be used instead.
 
 Now the syntax
 

@@ -120,8 +120,7 @@ from the command line invokes `jekyll serve` and automatically opens the local b
 used while writing new posts or editing the layout to allow checking the immediate results in
 browser. It also includes the `--lsi` flag.
 
-`serve` task is also implemented as a helper function with a small twist of having a `suffix`
-parameter, which is used to run another shell command while the first one is still running.
+`serve` task is also implemented as a helper function with a small twist of having a `suffix` parameter, which is used to run another shell command while the first one is still running.
 
 {% highlight ruby %}
 def serve(suffix)
@@ -252,7 +251,7 @@ include:
 {% endhighlight %}
 
 On the other side, Jekyll copies all files not starting with `.` or `_` into the build directory,
-so lots of internal stuff ends up there, while I don't really want this to happen. Thankfully,
+so lots of internal stuff ends up there while I don't really want this to happen. Thankfully,
 Jekyll configuration supports file exclusion too:
 
 {% highlight yaml %}
@@ -267,7 +266,7 @@ exclude:
 ## In Conclusion
 
 Deploying a locally built Jekyll site on GitHub Pages seemed to be a cumbersome task at first, but
-with right setup and the help of `rake` it becomes a piece of cake. Writing a good post is a lot
+with the right setup and the help of `rake` it becomes a piece of cake. Writing a good post is a lot
 more difficult problem than calling
 
     rake publish["Add a new post"]

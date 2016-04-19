@@ -71,9 +71,9 @@ It was implemented in the source files like that:
 {{ "{% endif" }} %}
 {% endhighlight %}
 
-This snippet of Liquid template was used on both `index.html` and in `post` template.
+This snippet of a Liquid template was used on both `index.html` and in `post` template.
 
-Obviously I wanted to avoid duplication and reuse this code somehow. The first thing I thought of is
+Obviously, I wanted to avoid duplication and reuse this code somehow. The first thing I thought of is
 making a custom Liquid tag, which would check the condition and render the necessary HTML depending
 on the post type (well, I'm probably not being absolutely honest here - it is probably not the most
 obvious solution, but yes, it's the first thing coming in mind while I already know that making
@@ -138,7 +138,7 @@ A rather straightforward solution, I think. Now this new `post_title` tag can be
 
 ## The Right Way?
 
-After more css-tinkering and adjusting the blog code, I've started to think whether using Ruby for
+After more CSS-tinkering and adjusting the blog code, I've started to think whether using Ruby for
 this simple thing is actually the right way to do. I'm thinking a coder instead of as a web designer
 here. Maybe writing a new plugin just for that is an overkill, and a simple mixin template would
 work?
@@ -179,7 +179,7 @@ usage of custom plugins is prohibited[^3].
 [^3]: Lack of custom plugins was the actual reason for me to drop dynamic GitHub page generation and
       proceed with a static approach (i.e. `.nojekyll`), but this is a topic for another post.
 
-The case in point: I'm thinkning as a programmer and
-my solution to everything is programming. It's OK, I think, when it works. But sometimes it is a
-good practice to think outside of one's comfort zone.
+The case in point: I'm thinking as a programmer and my solution to everything is programming.
+It's OK I think when it works. But sometimes it is a good practice to think outside of one's
+comfort zone.
 

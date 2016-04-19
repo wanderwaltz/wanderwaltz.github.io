@@ -8,16 +8,16 @@ tags: [Objective-C, Runtime, Inheritance, Composition, Forwarding, NSProxy, Obje
 
 The links I've provided may not be the most trustworthy sources on the subject (as the matter of fact, I've entered 'inheritance is bad' in the Google prompt and used the top results just to provide a couple of examples). Jokes aside, there is a lot of info out there about the reasons to prefer composition over inheritance in most cases.
 
-As with all of such statements you don't blindly follow the rule. Inheritance is a tool, and as a software engineer you should know when and where to use your tools.
+As with all of such statements you don't blindly follow the rule. Inheritance is a tool, and as a software engineer, you should know when and where to use your tools.
 
 I'm using composition for building complex objects a lot these days. One of the patterns I've been using lately is adding Objective-C protocol conformance to specific objects (i.e. not classes, but individual instances) with the help of wrapper (or decorator) objects. To simplify the interaction with these wrappers I'm using the message forwarding mechanism, which allows me treating the wrapper object in the same way as the original object, but with the benefits of the added protocol.
 
-Now starting with that in mind I've come up with an interesting little runtime construct, which utilizes composition and message forwarding to implement multiple inheritance-like behavior on instance level.
+Now starting with that in mind I've come up with an interesting little runtime construct, which utilizes composition and message forwarding to implement multiple inheritance-like behaviors on the instance level.
 <!--more-->
 
 The idea is actually pretty simple. In the scheme described above my wrapper object implements the protocol, which it is designed to add to the wrapped object. But abstracting the protocol implementation from the wrapper and implementing it in a separate class could achieve the same result. The wrapper itself would only be responsible for proper message forwarding between the objects it combines.
 
-Now why would we stop on protocols only? We could easily combine several classes just for the sake of doing it and say that our wrapper 'inherits' these objects' properties and methods. If we override the reflection methods such as `conformsToProtocol:` and `isKindOfClass:`, our wrapper could actually pose as the objects, which it wraps, implementing 'is-a' relationship almost perfectly. This looks a lot like inheritance to me.
+Now, why would we stop on protocols only? We could easily combine several classes just for the sake of doing it and say that our wrapper 'inherits' these objects' properties and methods. If we override the reflection methods such as `conformsToProtocol:` and `isKindOfClass:`, our wrapper could actually pose as the objects, which it wraps, implementing 'is-a' relationship almost perfectly. This looks a lot like inheritance to me.
 
 Let's write some code shall we?
 -------------------------------
@@ -79,7 +79,7 @@ The implementation is pretty straightforward:
 }
 {% endhighlight %}
 
-I'm aiming for the thread-safe implementation, hence the atomic properties and copying the dictionaries instead of mutating them directly. Parent objects are stored using class name as a key, designated targets are stored using the selector name as a key. Note that the designated targets are completely independent of the parent objects. This is intentional. If you wanted, you could construct the proxy by adding method implementations one by one using the designated targets API.
+I'm aiming for the thread-safe implementation, hence the atomic properties and copying the dictionaries instead of mutating them directly. Parent objects are stored using the class name as a key, designated targets are stored using the selector name as a key. Note that the designated targets are completely independent of the parent objects. This is intentional. If you wanted, you could construct the proxy by adding method implementations one by one using the designated targets API.
 
 Now let's look at the forwarding part. First we write a couple of helper methods to work with designated targets:
 
@@ -213,13 +213,13 @@ We're almost there now. In order to make our proxy completely interchangeable wi
 }
 {% endhighlight %}
 
-But here be dragons, they say. Remember that overriding `isEqual:` also requires having a consistent `hash` implementation? If two objects are equal, they should also have equal hashes. Suppose we have several parent objects and are comparing the proxy with each of the parents using `isEqual:`. In that case this implementation will return `YES` each time, but which value of the `hash` would we return? Each parent could return a different hash in general.
+But here be dragons, they say. Remember that overriding `isEqual:` also requires having a consistent `hash` implementation? If two objects are equal, they should also have equal hashes. Suppose we have several parent objects and are comparing the proxy with each of the parents using `isEqual:`. In that case, this implementation will return `YES` each time, but which value of the `hash` would we return? Each parent could return a different hash in general.
 
-That makes creation of a universal `isEqual:` implementation kind of impossible. A designated 'identity' object, which is also set externally and is used to forward both `isEqual:` and `hash` calls, is probably a decent tradeoff.
+That makes the creation of a universal `isEqual:` implementation kind of impossible. A designated 'identity' object, which is also set externally and is used to forward both `isEqual:` and `hash` calls, is probably a decent tradeoff.
 
 So what's the purpose of that exactly?
 --------------------------------------
 
-I've not actually come up with a scenario when this would actually be useful yet. As usual, the code is [available](https://github.com/wanderwaltz/artificial-inheritance) on GitHub; feel free to have a look if you're interested. My lack of ideas for usage scenarios gets kind of clear when you look at the unit tests, which I've provided for the class. Without a proper usage scenario these tests are rather artificial and contrived.
+I've not actually come up with a scenario when this would actually be useful yet. As usual, the code is [available](https://github.com/wanderwaltz/artificial-inheritance) on GitHub; feel free to have a look if you're interested. My lack of ideas for usage scenarios gets kind of clear when you look at the unit tests, which I've provided for the class. Without a proper usage scenario, these tests are rather artificial and contrived.
 
 It's worth mentioning that this proxy class is actually rather useless by itself. You generally would not gain anything by just blindly combining several objects into one and providing automatic forwarding mechanisms. These objects are still completely independent. The usage scenario I'm having in mind involves actually subclassing `WWInheritanceProxy` and providing custom implementations of some of the methods, which will allow the resulting object to be more than just a sum of its parts. You provide the most significant methods, automatic forwarding provides the rest.

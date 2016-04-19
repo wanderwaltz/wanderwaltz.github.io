@@ -7,9 +7,9 @@ tags: [Objective-C, NSArray, Class Cluster, Inheritance, Map, Blocks]
 Creating custom collections is rarely necessary nowadays. Most of the time you can safely go with the collection classes provided by the standard library you're working with and not bother with the implementation details. What would be the reason to write a custom collection anyway?
 
 - **Performance?** I'd say that you go with the standard collections and rewrite them if and only if you're completely sure that it's the collection that is your bottleneck and not anything else. Give me a profiler-proven reason to do that.
-- **Changing the collection interface?** Well that could be done via categories or composition. You don't really need to subclass `NSArray` or `NSDictionary` to change their interface if you want to.
+- **Changing the collection interface?** Well, that could be done via categories or composition. You don't really need to subclass `NSArray` or `NSDictionary` to change their interface if you want to.
 
-I cannot come up with another reasons to subclass Foundation collections right now, but to be honest, here at [#justcodingthings](http://wanderwaltz.github.io) we don't actually need a reason to do something. We do it because we can and that's the only reason we need.
+I cannot come up with another reason to subclass Foundation collections right now, but to be honest, here at [#justcodingthings](http://wanderwaltz.github.io) we don't actually need a reason to do something. We do it because we can and that's the only reason we need.
 <!--more-->
 
 There is nothing new under the sun and [@mikeash](https://twitter.com/mikeash) has already discussed this topic in his [Friday Q&A](https://mikeash.com/pyblog/friday-qa-2010-03-12-subclassing-class-clusters.html), but I still thought I'd reiterate it once more at least for the reason of providing another example of the technique.
@@ -18,7 +18,7 @@ To have a semi-realistic sample to work with, let's build a dynamically mapped a
 
 Define 'dynamically mapped'
 -------------
-So suppose we want to perform a certain transform or mapping to the elements of a given `NSArray`. The mapping itself will be represented as a mapper block:
+So suppose we want to perform a certain transform or mapping to the elements of a given `NSArray`. The mapping itself will be represented by a mapper block:
 
 {% highlight objc %}
 id (^mapper)(id object, NSUInteger index) {
@@ -77,7 +77,7 @@ So we'll have to deal with the following:
 - **Primitive instance methods.** It's actually almost trivial to implement these in our case. More on that below.
 - **Designated initializers.** Right, so creating our custom `initWithArray:mapper:` initializer won't be enough, since because of subclassing `NSArray` it would be possible to invoke all other initializers of this class on our `CCMappedArray`. So all of the `[CCMappedArray array]`, `[CCMappedArray arrayWithArray: other]` etc should also work.
 - **`NSCopying`** is simple and easily doable.
-- **`NSMutableCopying`** is a bit trickier if we want to keep the dynamic mapping. For simplicity I suggest we just return a plain old `NSMutableArray` and lose the mapper block in process (we'll have to apply the mapper to all elements while copying of course).
+- **`NSMutableCopying`** is a bit trickier if we want to keep the dynamic mapping. For simplicity I suggest we just return a plain old `NSMutableArray` and lose the mapper block in the process (we'll have to apply the mapper to all elements while copying of course).
 - **`NSCoding`** will also lose the mapper block since there is no way to encode/decode it.
 
 Implementation
@@ -127,7 +127,7 @@ Now our designated initializer will look like this:
 
 Note how we're using `[originalArray copy]` there - for simplicity we want to only work with immutable arrays, although it's pretty simple to expand the implementation to work with mutable arrays too[^3].
 
-[^3]: Altough to keep the `NSMutableArray` contract intact we would need to be sure that setting elements of the array after it has been mapped would not apply the mapping block again. So we would need to store the indexes of the 'automatic' mapped elements and the indexes of the elements set explicitly by the user of the class and process these elements accordingly.
+[^3]: Although to keep the `NSMutableArray` contract intact we would need to be sure that setting elements of the array after it has been mapped would not apply the mapping block again. So we would need to store the indexes of the 'automatic' mapped elements and the indexes of the elements set explicitly by the user of the class and process these elements accordingly.
 
 We also need to override the designated initializers of the `NSArray` class:
 
@@ -168,9 +168,9 @@ so the `count` method just returns the original count:
 }
 {% endhighlight %}
 
-[^4]: I've seen and worked with an implementation of `NSArray` mapping using a category on `NSArray` which applied the given block to the receiver immediately and returned the mapped `NSArray`. This implementation handled `nil` returned from the block differently, essentially removing elements mapped to `nil` from the result. This would change the count of the elements within the resulting array. With our current implementation this would result in unnecessary complications so we replace `nil` results with `NSNull`s and keep the count intact.
+[^4]: I've seen and worked with an implementation of `NSArray` mapping using a category on `NSArray` which applied the given block to the receiver immediately and returned the mapped `NSArray`. This implementation handled `nil` returned from the block differently, essentially removing elements mapped to `nil` from the result. This would change the count of the elements within the resulting array. With our current implementation, this would result in unnecessary complications so we replace `nil` results with `NSNull`s and keep the count intact.
 
-Without a mapper block our array represents an identity mapping.
+Without a mapper block, our array represents an identity mapping.
 
 Let's continue with `NSCopying`. Note that we actually work with immutable arrays only so we never have to actually copy anything:
 

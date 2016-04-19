@@ -40,7 +40,7 @@ When this function is called from the Squirrel code, the native C `SQFUNCTION` w
 
 Pretty simple, right? Apparently not if we're accessing Squirrel from Swift.
 
-[^1]: I don't really know if the 'free variable' term is commonly used in this meaning. Squirrel API documentation defines free variables as following: *"A free variable is a variable external from the function scope as is not a local variable or parameter of the function. Free variables reference a local variable from a outer scope".* So basically 'free variables' are captured variables from an outer scope, which are actually the reason why the Squirrel closures are closures. When binding a native function you can pass external free variables using the provided API.
+[^1]: I don't really know if the 'free variable' term is commonly used in this meaning. Squirrel API documentation defines free variables as following: *"A free variable is a variable external from the function scope as is not a local variable or parameter of the function. Free variables reference a local variable from an outer scope".* So basically 'free variables' are captured variables from an outer scope, which are actually the reason why the Squirrel closures are closures. When binding a native function you can pass external free variables using the provided API.
 
 ## Trouble ahead
 
@@ -79,11 +79,11 @@ Nothing really useful so far. It seems we won't be able to create `CFunctionPoin
 
 ## Objective-C to the rescue!
 
-Well it seems we won't be able to avoid Objective-C code in our Swift framework completely. Since we cannot reasonably provide `SQFUNCTIONs` to the Squirrel API from Swift, it seems to be the only possible solution to do it from Objective-C.
+Well, it seems we won't be able to avoid Objective-C code in our Swift framework completely. Since we cannot reasonably provide `SQFUNCTIONs` to the Squirrel API from Swift, it seems to be the only possible solution to do it from Objective-C.
 
 Why not 'Objective' and not just 'C' you ask? Because we'll be binding Objective-C blocks.
 
-The idea is actually pretty simple. First we introduce a 'Swift binder' block type, which has a signature similar to `SQFUNCTION`:
+The idea is actually pretty simple. First, we introduce a 'Swift binder' block type, which has a signature similar to `SQFUNCTION`:
 {% highlight objc %}
 typedef SQInteger (^private_block_SwiftFuncBinder)(HSQUIRRELVM vm);
 {% endhighlight %}
@@ -122,7 +122,7 @@ The single free variable will be on top of the Squirrel VM stack when calling th
 
 Notice that this code has a flaw. The block is leaked on the native closure creation. It happens because the user pointer itself is a simplified version of a 'user data' concept in Squirrel and it is considered a value type and therefore has no destruction facility built in. We obviously have to release the block when the closure is destroyed, so `SQUserPointer` is probably not a good way to go.
 
-The comment in the last code snippet hints that using `sq_newuserdata` API would probably help. I've left this note for myself, but have not actually tried it yet. User data can have release hooks - additional functions, which are called when the corresponding Squirrel object is destroyed[^2]. These should prove helpful for releasing our blocks when needed.
+The comment in the last code snippet hints that using `sq_newuserdata` API would probably help. I've left this note for myself but have not actually tried it yet. User data can have release hooks - additional functions, which are called when the corresponding Squirrel object is destroyed[^2]. These should prove helpful for releasing our blocks when needed.
 
 [^2]: Squirrel utilizes memory-counted model similar to the Objective-C with ARC enabled: there are strong and weak references between Squirrel objects, and when the reference count of an object becomes zero, it gets immediately destroyed. Although I remember there some APIs related to garbage collection so there may be other options.
 
@@ -160,11 +160,11 @@ public class SQClosure: SQObject {
 }
 {% endhighlight %}
 
-A little bit of this and that is going on here: we're also keeping a strong reference to the Squirrel object representing newly created closure, adding a readable name to it for debugging purposes etc. But the general idea should be more or less clear. We've bound an Objective-C block to Squirrel and it is callable from inside the Squirrel scripts.
+A little bit of this and that is going on here: we're also keeping a strong reference to the Squirrel object representing the newly created closure, adding a readable name to it for debugging purposes etc. But the general idea should be more or less clear. We've bound an Objective-C block to Squirrel and it is callable from inside the Squirrel scripts.
 
 ## Now what?
 
-We can bind simple functions using the API we've created. For example this is a function binding which adds two integers together:
+We can bind simple functions using the API we've created. For example, this is a function binding which adds two integers together:
 {% highlight swift %}
 SQClosure(vm: vm, name: nil, impl: { sqvm in
   let vm = SquirrelVM.associated(vm: sqvm) // get SquirrelVM associated with a given HSQUIRRELVM

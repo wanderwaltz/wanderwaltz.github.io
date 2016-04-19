@@ -24,13 +24,13 @@ Xcode when trying to run an application on a device.">
 
 ### Hello, IT. Have you tried turning it off and on again?
 
-First thing coming in mind is to just unplug the iPhone and reconnect it again. Nope, the problem
+First thing coming to mind is to just unplug the iPhone and reconnect it again. Nope, the problem
 persists.
 
 Next step is to restart the iPhone -- nope, still not working.
 
-Restarting Xcode? Does not help. Restating the Mac? Probably won't help too, I have not actually
-tried it though.
+Restarting Xcode? Does not help. Restarting the Mac? Probably won't help too, I have not actually
+tried it, though.
 
 Then I finally think about looking at the device logs. Maybe I should've really thought about it
 earlier and save myself a couple of minutes staring at the screen. Device logs end up being actually
@@ -61,11 +61,11 @@ I admit, I'm guilty of using the _'an unknown error has occurred'_ message in my
 non-descript message is usually used in user-facing error popups with a not much more helpful
 suggestion to _'please try again later'_. But this is done for the sake of the user -- we programmers
 automatically suppose that not all of our application users are that tech-savvy to understand what
-the actual error means, and displaying lots of internal terminology would just confuse or even scare
-the user. Maybe this is right, maybe this is wrong, I don't really know. Sometimes _'an uknown error
+the actual error means, and displaying lots of internal terms would just confuse or even scare
+the user. Maybe this is right, maybe this is wrong, I don't really know. Sometimes _'an unknown error
 occurred'_ is left there just as a placeholder message to be replaced by something helpful later and
 this 'later' just does not ever happen.
 
-I would think that Xcode is different though. It is a tool for programmers who really do know what
+I would think that Xcode is different, though. It is a tool for programmers who really do know what
 they're doing and for whom a more verbose and relevant error message would save a lot of time and
 nerves.
