@@ -145,28 +145,28 @@
 
 
   <span class="post-date">28 Mar 2015</span>
-  <p>Creating custom collections is rarely necessary nowadays. Most of the time you can safely go with the collection classes provided by the standard library you’re working with and not bother with the implementation details. What would be the reason to write a custom collection anyway?</p>
+  <p>Creating custom collections is rarely necessary nowadays. Most of the time you can safely go with the collection classes provided by the standard library you are working with and not bother with the implementation details. What would be the reason to write a custom collection anyway?</p>
 
 <ul>
-  <li><strong>Performance?</strong> I’d say that you go with the standard collections and rewrite them if and only if you’re completely sure that it’s the collection that is your bottleneck and not anything else. Give me a profiler-proven reason to do that.</li>
-  <li><strong>Changing the collection interface?</strong> Well, that could be done via categories or composition. You don’t really need to subclass <code>NSArray</code> or <code>NSDictionary</code> to change their interface if you want to.</li>
+  <li><strong>Performance?</strong> I’d say that you go with the standard collections and rewrite them if and only if you are completely sure that it is the collection that is your bottleneck and not anything else. Give me a profiler-proven reason to do that.</li>
+  <li><strong>Changing the interface?</strong> Well, that could be done via categories or composition. You do not really need to subclass <code>NSArray</code> or <code>NSDictionary</code> to change their interface if you want to.</li>
 </ul>
 
-<p>I cannot come up with another reason to subclass Foundation collections right now, but to be honest, here at <a href="http://wanderwaltz.github.io">#justcodingthings</a> we don’t actually need a reason to do something. We do it because we can and that’s the only reason we need.
+<p>I cannot come up with another reason to subclass Foundation collections right now, but to be honest, here at <a href="http://wanderwaltz.github.io">#justcodingthings</a> we do not actually need a reason to do something. We do it because we can, and that is the only reason we need.
 <!--more--></p>
 
-<p>There is nothing new under the sun and <a href="https://twitter.com/mikeash">@mikeash</a> has already discussed this topic in his <a href="https://mikeash.com/pyblog/friday-qa-2010-03-12-subclassing-class-clusters.html">Friday Q&amp;A</a>, but I still thought I’d reiterate it once more at least for the reason of providing another example of the technique.</p>
+<p>There is nothing new under the sun, and <a href="https://twitter.com/mikeash">@mikeash</a> has already discussed this topic in his <a href="https://mikeash.com/pyblog/friday-qa-2010-03-12-subclassing-class-clusters.html">Friday Q&amp;A</a>, but I still thought I’d reiterate it once more at least for the reason of providing another example of the technique.</p>
 
 <p>To have a semi-realistic sample to work with, let’s build a dynamically mapped array and integrate it into <code>NSArray</code> cluster.</p>
 
 <h2 id="define-dynamically-mapped">Define ‘dynamically mapped’</h2>
-<p>So suppose we want to perform a certain transform or mapping to the elements of a given <code>NSArray</code>. The mapping itself will be represented by a mapper block:</p>
+<p>So suppose we want to perform a particular transform or mapping to the elements of a given <code>NSArray</code>. We could represent the mapping  with a block:</p>
 
 <figure class="highlight"><pre><code class="language-objc" data-lang="objc"><span class="kt">id</span> <span class="p">(</span><span class="o">^</span><span class="n">mapper</span><span class="p">)(</span><span class="kt">id</span> <span class="n">object</span><span class="p">,</span> <span class="bp">NSUInteger</span> <span class="n">index</span><span class="p">)</span> <span class="p">{</span>
     <span class="c1">// return transformed object</span>
 <span class="p">}</span></code></pre></figure>
 
-<p>So each time we access <code>array[i]</code> we will actually receive the result of <code>mapper(array[i], i)</code>. There are some questions open to discussion of course. What will we do if the block returns <code>nil</code> for some of the elements? To be consistent with <code>NSArray</code> API we should not return <code>nil</code> since that is not expected for <code>NSArrays</code>. I suggest we transform <code>nil</code>s to <code>NSNull</code> instances automatically.</p>
+<p>So each time we access <code>array[i]</code> we will actually receive the result of <code>mapper(array[i], i)</code>. There are some questions open to discussion of course. What will we do if the block returns <code>nil</code> for some of the elements? To be consistent with <code>NSArray</code> API we should not return <code>nil</code> since we do not expect that from <code>NSArrays</code>. I suggest we transform <code>nil</code>s to <code>NSNull</code> instances automatically.</p>
 
 <p>What will the mapping interface look like? I suppose something like that will do nicely:</p>
 
@@ -196,7 +196,7 @@
 
 <span class="k">@end</span></code></pre></figure>
 
-<p>Since we know we’ll be subclassing <code>NSArray</code>, let’s dive into the <a href="https://developer.apple.com/library/mac/documentation/Cocoa/Reference/Foundation/Classes/NSArray_Class/">documentation</a> and look what we’ll have to actually do to achieve our goal.</p>
+<p>Since we know we’ll be subclassing <code>NSArray</code>, let’s dive into the <a href="https://developer.apple.com/library/mac/documentation/Cocoa/Reference/Foundation/Classes/NSArray_Class/">documentation</a> and look what we’ll have to do to achieve our goal.</p>
 
 <blockquote>
   <p>Any subclass of <code>NSArray</code> must override the primitive instance methods <code>count</code> and <code>objectAtIndex:</code>. These methods must operate on the backing store that you provide for the elements of the collection.</p>
@@ -209,8 +209,8 @@
 <p>So we’ll have to deal with the following:</p>
 
 <ul>
-  <li><strong>Primitive instance methods.</strong> It’s actually almost trivial to implement these in our case. More on that below.</li>
-  <li><strong>Designated initializers.</strong> Right, so creating our custom <code>initWithArray:mapper:</code> initializer won’t be enough, since because of subclassing <code>NSArray</code> it would be possible to invoke all other initializers of this class on our <code>CCMappedArray</code>. So all of the <code>[CCMappedArray array]</code>, <code>[CCMappedArray arrayWithArray: other]</code> etc should also work.</li>
+  <li><strong>Primitive instance methods.</strong> It’s almost trivial to implement these in our case. More on that below.</li>
+  <li><strong>Designated initializers.</strong> Right, so creating our custom <code>initWithArray:mapper:</code> initializer won’t be enough, since because of subclassing <code>NSArray</code> it would be possible to invoke all other initializers of this class on our <code>CCMappedArray</code>. So all of the <code>[CCMappedArray array]</code>, <code>[CCMappedArray arrayWithArray: other]</code> etc. should also work.</li>
   <li><strong><code>NSCopying</code></strong> is simple and easily doable.</li>
   <li><strong><code>NSMutableCopying</code></strong> is a bit trickier if we want to keep the dynamic mapping. For simplicity I suggest we just return a plain old <code>NSMutableArray</code> and lose the mapper block in the process (we’ll have to apply the mapper to all elements while copying of course).</li>
   <li><strong><code>NSCoding</code></strong> will also lose the mapper block since there is no way to encode/decode it.</li>
@@ -254,7 +254,7 @@
     <span class="k">return</span> <span class="nb">self</span><span class="p">;</span>
 <span class="p">}</span></code></pre></figure>
 
-<p>Note how we’re using <code>[originalArray copy]</code> there - for simplicity we want to only work with immutable arrays, although it’s pretty simple to expand the implementation to work with mutable arrays too<sup id="fnref:3"><a href="#fn:3" class="footnote">3</a></sup>.</p>
+<p>Note how we’re using <code>[originalArray copy]</code> there - for simplicity we want only to work with immutable arrays, although it is pretty simple to expand the implementation to work with mutable arrays too<sup id="fnref:3"><a href="#fn:3" class="footnote">3</a></sup>.</p>
 
 <p>We also need to override the designated initializers of the <code>NSArray</code> class:</p>
 
@@ -273,8 +273,7 @@
 
 <p>Note that both these initializers do not have a mapper block essentially making the returned <code>CCMappedArray</code> a useless wrapper over the original <code>NSArray</code>. It’s OK since initializing <code>CCMappedArray</code> using the standard <code>NSArray</code> initializers is not really intended.</p>
 
-<p>Now let’s get to primitive methods of the <code>NSArray</code>. We don’t change the count of the original array<sup id="fnref:4"><a href="#fn:4" class="footnote">4</a></sup>,
-so the <code>count</code> method just returns the original count:</p>
+<p>Now let’s get to primitive methods of the <code>NSArray</code>. We don’t change the count of the original array<sup id="fnref:4"><a href="#fn:4" class="footnote">4</a></sup>, so the <code>count</code> method just returns the original count:</p>
 
 <figure class="highlight"><pre><code class="language-objc" data-lang="objc"><span class="p">-</span> <span class="p">(</span><span class="bp">NSUInteger</span><span class="p">)</span><span class="nf">count</span>
 <span class="p">{</span>
@@ -293,7 +292,7 @@ so the <code>count</code> method just returns the original count:</p>
 
 <p>Without a mapper block, our array represents an identity mapping.</p>
 
-<p>Let’s continue with <code>NSCopying</code>. Note that we actually work with immutable arrays only so we never have to actually copy anything:</p>
+<p>Let’s continue with <code>NSCopying</code>. Note that since we are working with immutable arrays only, we never have to actually copy anything:</p>
 
 <figure class="highlight"><pre><code class="language-objc" data-lang="objc"><span class="p">-</span> <span class="p">(</span><span class="kt">instancetype</span><span class="p">)</span><span class="nf">copyWithZone:</span><span class="p">(</span><span class="n">NSZone</span> <span class="o">*</span><span class="p">)</span><span class="nv">zone</span>
 <span class="p">{</span>
@@ -326,7 +325,7 @@ so the <code>count</code> method just returns the original count:</p>
     <span class="k">return</span> <span class="p">[</span><span class="nb">self</span> <span class="nl">initWithArray</span><span class="p">:</span> <span class="n">array</span> <span class="nl">mapper</span><span class="p">:</span> <span class="nb">nil</span><span class="p">];</span>
 <span class="p">}</span></code></pre></figure>
 
-<p>And that’s actually it. Our <code>CCMappedArray</code> is ready and working. The code for this class can be found <a href="https://github.com/wanderwaltz/ContainersCollection">here</a>. I’ve added some unit tests for <code>CCMappedArray</code> as well.</p>
+<p>So that is actually it. Our <code>CCMappedArray</code> is ready and working. The code for this class can be found <a href="https://github.com/wanderwaltz/ContainersCollection">here</a>. I’ve added some unit tests for <code>CCMappedArray</code> as well.</p>
 <div class="footnotes">
   <ol>
     <li id="fn:1">

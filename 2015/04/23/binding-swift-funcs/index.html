@@ -164,7 +164,7 @@
 
 <p>And then it could be used as a valid Squirrel object and called from the Squirrel code.</p>
 
-<p>That’s not that a big thing to dream of. <a href="http://scrat.sourceforge.net/">SQRat</a>, a Squirrel binding utility for C++, does that easily with templates (although it has been written a long time before lambdas appeared on the C++ horizon, so these are not supported AFAIK).</p>
+<p>That’s not that a big thing to dream of. <a href="http://scrat.sourceforge.net/">SQRat</a>, a Squirrel binding utility for C++, does that easily with templates (although it had been written a long time before lambdas appeared on the C++ horizon, so these are not supported AFAIK).</p>
 
 <p>How does one achieve this sorcery? It could be done with a certain amount of boilerplate code and some clever templates, at least in C++.</p>
 
@@ -174,11 +174,11 @@
 
 <p>Here you pass the Squirrel VM handle, an <code>SQFUNCTION</code> pointer and number of free variables to bind to the function<sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup>.</p>
 
-<p>After that you have your freshly bound native closure in the Squirrel VM stack and can set it as a value for a table slot, use it as a parameter for another function or whatever.</p>
+<p>After that, you have your freshly bound native closure in the Squirrel VM stack and can set it as a value for a table slot, use it as a parameter for another function or whatever.</p>
 
 <p>When this function is called from the Squirrel code, the native C <code>SQFUNCTION</code> will get called with the Squirrel VM as the only parameter. All parameters passed from Squirrel code will already be pushed to the VM stack waiting to be read and processed.</p>
 
-<p>Pretty simple, right? Apparently not if we’re accessing Squirrel from Swift.</p>
+<p>Pretty simple, right? Apparently not if we are accessing Squirrel from Swift.</p>
 
 <h2 id="trouble-ahead">Trouble ahead</h2>
 
@@ -213,15 +213,15 @@
 <span class="p">...</span>
 <span class="p">}</span></code></pre></figure>
 
-<p>Nothing really useful so far. It seems we won’t be able to create <code>CFunctionPointers</code> from Swift code ourselves and surely we won’t be able to pass Swift funcs as C functions to the Squirrel API.</p>
+<p>Nothing really useful so far. It seems we will not be able to create <code>CFunctionPointers</code> from Swift code ourselves and surely we will not be able to pass Swift funcs as C functions to the Squirrel API.</p>
 
 <h2 id="objective-c-to-the-rescue">Objective-C to the rescue!</h2>
 
-<p>Well, it seems we won’t be able to avoid Objective-C code in our Swift framework completely. Since we cannot reasonably provide <code>SQFUNCTIONs</code> to the Squirrel API from Swift, it seems to be the only possible solution to do it from Objective-C.</p>
+<p>Well, it seems we will not be able to avoid Objective-C code in our Swift framework entirely. Since we cannot reasonably provide <code>SQFUNCTIONs</code> to the Squirrel API from Swift, it seems to be the only possible solution to do it from Objective-C.</p>
 
 <p>Why not ‘Objective’ and not just ‘C’ you ask? Because we’ll be binding Objective-C blocks.</p>
 
-<p>The idea is actually pretty simple. First, we introduce a ‘Swift binder’ block type, which has a signature similar to <code>SQFUNCTION</code>:</p>
+<p>The idea is pretty simple. First, we introduce a ‘Swift binder’ block type, which has a signature similar to <code>SQFUNCTION</code>:</p>
 
 <figure class="highlight"><pre><code class="language-objc" data-lang="objc"><span class="k">typedef</span> <span class="nf">SQInteger</span> <span class="p">(</span><span class="o">^</span><span class="n">private_block_SwiftFuncBinder</span><span class="p">)(</span><span class="n">HSQUIRRELVM</span> <span class="n">vm</span><span class="p">);</span></code></pre></figure>
 
@@ -241,7 +241,7 @@
     <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
 <span class="p">}</span></code></pre></figure>
 
-<p>Here we’re using the <code>SQUserPointer</code> type (which actually is just a <code>void*</code>) to pass the block to the bound function. The binding call uses a helper function and looks like this:</p>
+<p>Here we are using the <code>SQUserPointer</code> type (which actually is just a <code>void*</code>) to pass the block to the bound function. The binding call uses a helper function and looks like this:</p>
 
 <figure class="highlight"><pre><code class="language-objc" data-lang="objc"><span class="kt">void</span> <span class="nf">SwiftSquirrel_Private_createNativeClosureWithBlock</span><span class="p">(</span><span class="n">HSQUIRRELVM</span> <span class="n">vm</span><span class="p">,</span>
         <span class="n">SQInteger</span> <span class="p">(</span><span class="o">^</span><span class="n">block</span><span class="p">)(</span><span class="n">HSQUIRRELVM</span><span class="p">))</span>
@@ -256,7 +256,7 @@
 
 <p>Notice that this code has a flaw. The block is leaked on the native closure creation. It happens because the user pointer itself is a simplified version of a ‘user data’ concept in Squirrel and it is considered a value type and therefore has no destruction facility built in. We obviously have to release the block when the closure is destroyed, so <code>SQUserPointer</code> is probably not a good way to go.</p>
 
-<p>The comment in the last code snippet hints that using <code>sq_newuserdata</code> API would probably help. I’ve left this note for myself but have not actually tried it yet. User data can have release hooks - additional functions, which are called when the corresponding Squirrel object is destroyed<sup id="fnref:2"><a href="#fn:2" class="footnote">2</a></sup>. These should prove helpful for releasing our blocks when needed.</p>
+<p>The comment in the last code snippet hints that using <code>sq_newuserdata</code> API would probably help. I’ve left this note for myself but have not tried it yet. User data can have release hooks - additional functions, which are called when the corresponding Squirrel object is destroyed<sup id="fnref:2"><a href="#fn:2" class="footnote">2</a></sup>. These should prove helpful for releasing our blocks when needed.</p>
 
 <p>Now we have a binding API with an overly verbose name <code>SwiftSquirrel_Private_createNativeClosureWithBlock</code>, which no longer accepts a C function pointer, but an Objective-C block instead. This one can be used from Swift rather straightforwardly:</p>
 
@@ -290,7 +290,7 @@
     <span class="p">}</span>
 <span class="p">}</span></code></pre></figure>
 
-<p>A little bit of this and that is going on here: we’re also keeping a strong reference to the Squirrel object representing the newly created closure, adding a readable name to it for debugging purposes etc. But the general idea should be more or less clear. We’ve bound an Objective-C block to Squirrel and it is callable from inside the Squirrel scripts.</p>
+<p>A little bit of this and that is going on here: we are also keeping a strong reference to the Squirrel object representing the newly created closure, adding a readable name to it for debugging purposes, etc. However, the general idea should be more or less clear. We’ve bound an Objective-C block to Squirrel, and it is callable from inside the Squirrel scripts.</p>
 
 <h2 id="now-what">Now what?</h2>
 
@@ -304,20 +304,20 @@
   <span class="k">return</span> <span class="mi">1</span><span class="p">;</span> <span class="c1">// 1 indicates that Squirrel should pop the result value; 0 for void functions</span>
 <span class="p">})</span></code></pre></figure>
 
-<p>But that’s not really what we wanted initially. At least it is not completely what we wanted. It would be more convenient to do the same thing by calling something like that:</p>
+<p>Still, that is not really what we wanted initially. At least it is not completely what we wanted. It would be more convenient to do the same thing by calling something like that:</p>
 
 <figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="n">SQClosure</span><span class="p">(</span><span class="nl">vm</span><span class="p">:</span> <span class="n">squirrel</span><span class="p">)</span> <span class="p">{</span> <span class="p">(</span><span class="nl">x</span><span class="p">:</span> <span class="n">Int</span><span class="p">,</span> <span class="nl">y</span><span class="p">:</span> <span class="n">Int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Int</span> <span class="k">in</span>
   <span class="k">return</span> <span class="n">x</span><span class="o">+</span><span class="n">y</span><span class="p">;</span>
 <span class="p">}</span></code></pre></figure>
 
-<p>Is that possible? Kind of. But this is a topic of a future post.</p>
+<p>Is that possible? Kind of. However, this is a topic of a future post.</p>
 <div class="footnotes">
   <ol>
     <li id="fn:1">
-      <p>I don’t really know if the ‘free variable’ term is commonly used in this meaning. Squirrel API documentation defines free variables as following: <em>“A free variable is a variable external from the function scope as is not a local variable or parameter of the function. Free variables reference a local variable from an outer scope”.</em> So basically ‘free variables’ are captured variables from an outer scope, which are actually the reason why the Squirrel closures are closures. When binding a native function you can pass external free variables using the provided API. <a href="#fnref:1" class="reversefootnote">&#8617;</a></p>
+      <p>I do not really know if the ‘free variable’ term is commonly used in this meaning. Squirrel API documentation defines free variables as following: <em>“A free variable is a variable external from the function scope as is not a local variable or parameter of the function. Free variables reference a local variable from an outer scope”.</em> So basically ‘free variables’ are captured variables from an outer scope, which are the reason why the Squirrel closures are closures. When binding a native function, you can pass external free variables using the provided API. <a href="#fnref:1" class="reversefootnote">&#8617;</a></p>
     </li>
     <li id="fn:2">
-      <p>Squirrel utilizes memory-counted model similar to the Objective-C with ARC enabled: there are strong and weak references between Squirrel objects, and when the reference count of an object becomes zero, it gets immediately destroyed. Although I remember there some APIs related to garbage collection so there may be other options. <a href="#fnref:2" class="reversefootnote">&#8617;</a></p>
+      <p>Squirrel utilizes memory-counted model similar to the Objective-C with ARC enabled: there are strong and weak references between Squirrel objects, and when the reference count of an object becomes zero, it gets immediately destroyed. Although I remember there were some APIs related to garbage collection so there may be other options. <a href="#fnref:2" class="reversefootnote">&#8617;</a></p>
     </li>
   </ol>
 </div>

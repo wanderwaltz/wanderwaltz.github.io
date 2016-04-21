@@ -145,39 +145,30 @@
 
 
   <span class="post-date">28 Mar 2016</span>
-  <p>I’ve <a href="/2016/03/27/web-design-with-a-coding-mentality/">mentioned</a> before that this blog
-is a custom deployed one. While GitHub Pages support some of the Jekyll plugins, I’d like to have
-more flexibility and freedom to use any other plugins, some of which I’ve made myself. As stated in
-the GitHub Pages
+  <p>I’ve <a href="/2016/03/27/web-design-with-a-coding-mentality/">mentioned</a> before that this blog is a custom deployed one. While GitHub Pages support some of the Jekyll plugins, I’d like to have more flexibility and freedom to use any other plugins, some of which I’ve made myself. As stated in the GitHub Pages
 <a href="https://help.github.com/articles/adding-jekyll-plugins-to-a-github-pages-site/">documentation</a>,</p>
 
 <blockquote>
-  <p>Other plugins are not supported, so the only way to incorporate them in your site is to generate
-your site locally and then push your site’s static files to your GitHub Pages site.</p>
+  <p>Other plugins are not supported, so the only way to incorporate them into your site is to generate your site locally and then push your site’s static files to your GitHub Pages site.</p>
 </blockquote>
 
-<p>So this is exactly what I’m doing here. I think it may be useful for someone if I share my setup
-of this blog’s development and deployment process.
+<p>So this is exactly what I’m doing here. I think it may be useful for someone if I share my setup of this blog’s development and deployment process.
 <!--more--></p>
 
 <h2 id="basic-setup">Basic Setup</h2>
 
 <p>I’m using a variation of the setup <a href="http://stackoverflow.com/a/27666206/892696">suggested</a> by David
-Jacquel on Stack Overflow. The idea is to have <strong>a single Git repository</strong> with the source and built
-site living in <strong>two separate branches</strong>. The <code>master</code> branch contains the built static site and
-is used for publishing content on <code>http://wanderwaltz.github.io</code>. The <code>source</code> branch contains the site source,
-templates, Jekyll plugins and all the stuff, which is used to actually build the site.</p>
+Jacquel on Stack Overflow. The idea is to have <strong>a single Git repository</strong> with the source and built site living in <strong>two separate branches</strong>. The <code>master</code> branch contains the built static site and
+is used for publishing content on <code>http://wanderwaltz.github.io</code>. The <code>source</code> branch contains the site source, templates, Jekyll plugins and all the stuff, which is used to actually build the site.</p>
 
 <p>Calling</p>
 
 <pre><code>jekyll build
 </code></pre>
 
-<p>in the source directory builds the site inside a <code>_site</code> subdirectory, which needs to be pushed to
-the root of the <code>master</code> branch in order to actually be presented on <code>http://wanderwaltz.github.io</code>.</p>
+<p>in the source directory builds the site inside a <code>_site</code> subdirectory, which needs to be pushed to the root of the <code>master</code> branch to be presented on <code>http://wanderwaltz.github.io</code>.</p>
 
-<p>In order to achieve this, I have <strong>two local git repos</strong>, each having the corresponding branch
-checked out. The directory structure looks like this:</p>
+<p>To achieve this, I have <strong>two local git repos</strong>, each having the corresponding branch checked out. The directory structure looks like this:</p>
 
 <pre><code>  .
   ├── .git          // source branch is checked out
@@ -208,10 +199,7 @@ checked out. The directory structure looks like this:</p>
 <p>Doing all this by hand would be cumbersome and error-prone, so I’m using
 <a href="https://github.com/ruby/rake">rake</a> to perform each step automatically.</p>
 
-<p>The <code>Rakefile</code> I’m using can be found
-<a href="https://github.com/wanderwaltz/wanderwaltz.github.io/blob/source/Rakefile">here</a>. It mostly
-functions by making system calls to <code>jekyll</code> and <code>git</code>, and I’ve had to add a helper function,
-which allows seeing the output of these commands interactively while the Ruby process is running:</p>
+<p>You can find the <code>Rakefile</code> I am using <a href="https://github.com/wanderwaltz/wanderwaltz.github.io/blob/source/Rakefile">here</a>. It mostly functions by making system calls to <code>jekyll</code> and <code>git</code>, and I’ve had to add a helper function, which allows seeing the output of these commands interactively while the Ruby process is running:</p>
 
 <figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="nb">require</span> <span class="s1">&#39;Open3&#39;</span>
 
@@ -250,7 +238,7 @@ reason to build locally).</p>
   <span class="n">build</span>
 <span class="k">end</span></code></pre></figure>
 
-<p>You may notice that I’m also using <a href="http://bundler.io">Bundler</a> to manage the gems used by the
+<p>You may notice that I am also using <a href="http://bundler.io">Bundler</a> to manage the gems used by the
 project.</p>
 
 <h3 id="serve">:serve</h3>
@@ -260,9 +248,7 @@ project.</p>
 <pre><code>rake serve
 </code></pre>
 
-<p>from the command line invokes <code>jekyll serve</code> and automatically opens the local blog in Safari. It is
-used while writing new posts or editing the layout to allow checking the immediate results in
-browser. It also includes the <code>--lsi</code> flag.</p>
+<p>from the command line invokes <code>jekyll serve</code> and automatically opens the local blog in Safari. It is used while writing new posts or editing the layout to allow checking the immediate results in browser. It also includes the <code>--lsi</code> flag.</p>
 
 <p><code>serve</code> task is also implemented as a helper function with a small twist of having a <code>suffix</code> parameter, which is used to run another shell command while the first one is still running.</p>
 
@@ -278,9 +264,7 @@ browser. It also includes the <code>--lsi</code> flag.</p>
   <span class="n">serve</span><span class="p">(</span><span class="s2">&quot;sleep 5s &amp;&amp; open -a Safari http://127.0.0.1:4000&quot;</span><span class="p">)</span>
 <span class="k">end</span></code></pre></figure>
 
-<p><code>jekyll serve</code> will run indefinitely unless stopped and won’t allow us to open Safari right after
-the site is built, so I’m doing it simultaneously with a fixed delay. There is a chance that the
-site won’t yet be built and served by the time the delay ends, but it works for now.</p>
+<p><code>jekyll serve</code> will run indefinitely unless stopped and won’t allow us to open Safari right after the site is built, so I am doing it simultaneously with a fixed delay. There is a chance that the site will not yet be built and served by the time the delay ends, but it works for now.</p>
 
 <h3 id="commit">:commit</h3>
 
@@ -289,12 +273,7 @@ site won’t yet be built and served by the time the delay ends, but it works fo
 <pre><code>rake commit["Message"]
 </code></pre>
 
-<p>adds and commits all files in the root directory to the <code>source</code> branch of the repo with the
-commit message provided. It then builds the site and commits the output to the <code>master</code> branch
-with the same commit message. Since the <code>master</code> branch is checked out in the <code>_site</code> directory,
-where the build results are located, we will have both the source and the built site committed
-to their respective branches of the main repo (remember that both directories have the same repo
-cloned, just with different branches checked out).</p>
+<p>adds and commits all files in the root directory to the <code>source</code> branch of the repo with the commit message provided. It then builds the site and commits the output to the <code>master</code> branch with the same commit message. Since the <code>master</code> branch is checked out in the <code>_site</code> directory, where the build results are located, we will have both the source and the built site committed to their respective branches of the main repo (remember that both directories have the same repo cloned, just with different branches checked out).</p>
 
 <figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">commit</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
   <span class="n">build</span>
@@ -310,14 +289,11 @@ cloned, just with different branches checked out).</p>
   <span class="n">commit</span><span class="p">(</span><span class="n">args</span><span class="o">[</span><span class="ss">:message</span><span class="o">]</span><span class="p">)</span>
 <span class="k">end</span></code></pre></figure>
 
-<p>Note that all of the tasks and helper functions execute synchronously, so the <code>commit</code> function
-will first build the site and only after Jekyll finishes working will it commit all changes in both
+<p>Note that all of the tasks and helper functions execute synchronously, so the <code>commit</code> function will first build the site and only after Jekyll finishes working will it commit all changes in both
 of the repos.</p>
 
-<p>A noteworthy detail is that each call of the <code>execute</code> function spawns a new shell process, so no
-state is preserved between the calls. Because of that we have to make all the commands essentially
-one-liners by joining them via <code>&amp;&amp;</code>. This also allows us doing <code>cd _site</code> in the second step and
-not worrying about returning back to the current directory after <code>git</code> has finished.</p>
+<p>A noteworthy detail is that each call of the <code>execute</code> function spawns a new shell process, so no state is preserved between the calls. Because of that, we have to make all the commands essentially
+one-liners by joining them via <code>&amp;&amp;</code>. This also allows us doing <code>cd _site</code> in the second step and not worrying about returning to the current directory after <code>git</code> has finished.</p>
 
 <h3 id="publish">:publish</h3>
 
@@ -326,8 +302,7 @@ not worrying about returning back to the current directory after <code>git</code
 <pre><code>rake publish["Message"]
 </code></pre>
 
-<p>does the same thing as <code>commit</code>, but also pushes both branches to the remote. There is also an
-option to call <code>publish</code> without parameters</p>
+<p>does the same thing as <code>commit</code>, but also pushes both branches to the remote. There is also an option to call <code>publish</code> without parameters</p>
 
 <pre><code>rake publish
 </code></pre>
@@ -376,21 +351,15 @@ option to call <code>publish</code> without parameters</p>
 
 <h2 id="other-details">Other Details</h2>
 
-<p>In order to tell GitHub to leave the site alone and don’t try to build anything, an empty
-<code>.nojekyll</code> file is added to the repo’s <code>master</code> branch. Jekyll ignores hidden files by default and
-therefore would delete the <code>.nojekyll</code> file each time the site is built (it deletes the <code>_site</code>
-contents including the <code>.nojekyll</code>, but leaves <code>.git</code> alone - probably a feature of Jekyll itself).</p>
+<p>In order to tell GitHub to leave the site alone and don’t try to build anything, an empty <code>.nojekyll</code> file is added to the repo’s <code>master</code> branch. Jekyll ignores hidden files by default and therefore would delete the <code>.nojekyll</code> file each time the site is built (it deletes the <code>_site</code> contents including the <code>.nojekyll</code>, but leaves <code>.git</code> alone - probably a feature of Jekyll itself).</p>
 
-<p>In order to keep <code>.nojekyll</code> in the <code>_site</code> forever, I’ve pushed it to the <code>source</code> branch and added
-the following line into the <code>_config.yml</code>:</p>
+<p>In order to keep <code>.nojekyll</code> in the <code>_site</code> forever, I’ve pushed it to the <code>source</code> branch and added the following line into the <code>_config.yml</code>:</p>
 
 <figure class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="c1"># _config.yml</span>
 <span class="l-Scalar-Plain">include</span><span class="p-Indicator">:</span>
  <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">.nojekyll</span></code></pre></figure>
 
-<p>On the other side, Jekyll copies all files not starting with <code>.</code> or <code>_</code> into the build directory,
-so lots of internal stuff ends up there while I don’t really want this to happen. Thankfully,
-Jekyll configuration supports file exclusion too:</p>
+<p>On the other side, Jekyll copies all files not starting with <code>.</code> or <code>_</code> into the build directory, so lots of internal stuff ends up there while I do not really want this to happen. Thankfully, Jekyll configuration supports file exclusion too:</p>
 
 <figure class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="c1"># _config.yml</span>
 <span class="l-Scalar-Plain">exclude</span><span class="p-Indicator">:</span>
@@ -401,14 +370,12 @@ Jekyll configuration supports file exclusion too:</p>
 
 <h2 id="in-conclusion">In Conclusion</h2>
 
-<p>Deploying a locally built Jekyll site on GitHub Pages seemed to be a cumbersome task at first, but
-with the right setup and the help of <code>rake</code> it becomes a piece of cake. Writing a good post is a lot
-more difficult problem than calling</p>
+<p>Deploying a locally built Jekyll site on GitHub Pages seemed to be a cumbersome task at first, but with the right setup and the help of <code>rake</code> it becomes a piece of cake. Writing a good post is a lot more challenging problem than calling</p>
 
 <pre><code>rake publish["Add a new post"]
 </code></pre>
 
-<p>in the command line to finish the job afterwards.</p>
+<p>in the command line to finish the job afterward.</p>
 
 
   

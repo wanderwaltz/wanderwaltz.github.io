@@ -147,9 +147,9 @@
 
     <span class="post-date">11 Apr 2015</span>
 
-    <p>I’ve been kind of bashing Swift recently because of the current buggy state of the tools (SourceKit service and Swift compiler crashes are the most notable offenders). But I have to admit that as a language Swift has become much more usable than it was the last time I’ve touched it. I still encounter weird seemingly unrelated compilation error messages but (thanks to Stack Overflow and all the people who already encountered something similar) I usually can decipher the errors and either fix them or mourn for things that cannot be fixed.</p>
+    <p>I’ve been kind of bashing Swift recently because of the current buggy state of the tools (SourceKit service and Swift compiler crashes are the most notable offenders). However, I have to admit that Swift has become much more usable as a language than it was the last time I’ve touched it. I still encounter weird seemingly unrelated compilation error messages but (thanks to Stack Overflow and all the people who already encountered something similar) I usually can decipher the errors and either fix them or mourn for things that cannot be fixed.</p>
 
-<p>Swift interaction with C code was actually a pleasant surprise for me. I’ve decided to practice Swift a bit by creating a wrapper/bindings library for <a href="http://squirrel-lang.org/">Squirrel</a> language. Squirrel is written in C++ but has C API so it should be simple to import it and use in Swift code. I’ve never actually thought it would be that easy.</p>
+<p>Swift interaction with C code was a pleasant surprise for me. I’ve decided to practice Swift a bit by creating a wrapper/bindings library for <a href="http://squirrel-lang.org/">Squirrel</a> language. Squirrel is written in C++ but has C API so it should be simple to import it and use in Swift code. I’ve never actually thought it would be that easy.</p>
 
 
 
@@ -173,7 +173,7 @@
 
     <span class="post-date">11 Apr 2015</span>
 
-    <p>English is not my native language. You’ve probably noticed that already. To make the posts in this blog a bit less cringe worthy, I check the spelling and grammar of the text I write using Microsoft Word. The problem is that Word is not really tailored to work with programming-related texts and code samples.</p>
+    <p>English is not my native language. You’ve probably noticed that already. To make the posts in this blog a bit less cringe worthy, I check the spelling and grammar of the text I write using Microsoft Word. The problem is that Word is not really tailored to work with programming-related documents and code samples.</p>
 
 
 
@@ -197,9 +197,9 @@
 
     <span class="post-date">11 Apr 2015</span>
 
-    <p>I’ve stumbled upon an interesting looking <a href="http://blog.notdot.net/">blog</a> today. It has not been
-updated for a long time now, but the articles posted there seem to be a pretty good read nevertheless.
-I reckon I should add this one to the <a href="links">links</a> page.</p>
+    <p>I’ve stumbled upon an interesting looking <a href="http://blog.notdot.net/">blog</a> today. It has not been updated for a long time now, but the articles posted there seem to be a pretty good read nevertheless.</p>
+
+<p>I reckon I should add this one to the <a href="links">links</a> page.</p>
 
 
     
@@ -220,11 +220,11 @@ I reckon I should add this one to the <a href="links">links</a> page.</p>
 
     <p><a href="http://blogs.perl.org/users/sid_burn/2014/03/inheritance-is-bad-code-reuse-part-1.html">They</a> <a href="http://blog.berniesumption.com/software/inheritance-is-evil-and-must-be-destroyed/">say</a> <a href="http://simpleprogrammer.com/2010/01/15/inheritance-is-inherently-evil/">inheritance</a> <a href="http://stackoverflow.com/questions/11056943/deep-class-inheritance-hierarchy-bad-idea">is</a> <a href="http://codingdelight.com/2014/01/16/favor-composition-over-inheritance-part-1/">bad</a>. Yes, there really are 5 different links in the previous sentence.</p>
 
-<p>The links I’ve provided may not be the most trustworthy sources on the subject (as the matter of fact, I’ve entered ‘inheritance is bad’ in the Google prompt and used the top results just to provide a couple of examples). Jokes aside, there is a lot of info out there about the reasons to prefer composition over inheritance in most cases.</p>
+<p>The links I’ve provided may not be the most trustworthy sources on the subject (as the matter of fact, I’ve entered ‘inheritance is bad’ in the Google prompt and used the top results just to provide a couple of examples). Jokes aside, there is much info out there about the reasons to prefer composition over inheritance in most cases.</p>
 
-<p>As with all of such statements you don’t blindly follow the rule. Inheritance is a tool, and as a software engineer, you should know when and where to use your tools.</p>
+<p>As with all of such statements you do not blindly follow the rule. Inheritance is a tool, and as a software engineer, you should know when and where to use your tools.</p>
 
-<p>I’m using composition for building complex objects a lot these days. One of the patterns I’ve been using lately is adding Objective-C protocol conformance to specific objects (i.e. not classes, but individual instances) with the help of wrapper (or decorator) objects. To simplify the interaction with these wrappers I’m using the message forwarding mechanism, which allows me treating the wrapper object in the same way as the original object, but with the benefits of the added protocol.</p>
+<p>I’m using composition for building complex objects a lot these days. One of the patterns I’ve been using lately is adding Objective-C protocol conformance to specific objects (i.e. not classes, but individual instances) with the help of wrapper (or decorator) objects. To simplify the interaction with these wrappers I am using the message forwarding mechanism, which allows me treating the wrapper in the same way as the original object, but with the benefits of the added protocol.</p>
 
 <p>Now starting with that in mind I’ve come up with an interesting little runtime construct, which utilizes composition and message forwarding to implement multiple inheritance-like behaviors on the instance level.</p>
 
@@ -254,7 +254,7 @@ I reckon I should add this one to the <a href="links">links</a> page.</p>
 
 <p>The app is actually pretty simple. It’s an implementation of a customized <a href="https://en.wikipedia.org/wiki/Minnesota_Multiphasic_Personality_Inventory">Minnesota Multiphasic Personality Inventory</a>) test (MMPI for shortness) which involves the user answering 500+ yes/no questions and a lot of tedious but otherwise simple math to calculate the results.</p>
 
-<p>Before the app, my father was calculating these results manually, which required comparing the answers list with a bunch of template tables, calculate means, standard deviations, and all that statistical stuff, which is rather simple in formulae, but is tedious to compute by hand. I was aiming to be a programmer from my early days and it’s no surprise that my father asked me to make this app for him.</p>
+<p>Before the app, my father was calculating these results manually, which required comparing the answers list with a bunch of template tables, calculate means, standard deviations, and all that statistical stuff, which is rather simple in formulae, but is tedious to compute by hand. I was aiming to be a programmer from my early days, and it’s no surprise that my father asked me to make this app for him.</p>
 
 <p>Well, I’ve made it. Two times from scratch already. And I think I’m going for the third.</p>
 

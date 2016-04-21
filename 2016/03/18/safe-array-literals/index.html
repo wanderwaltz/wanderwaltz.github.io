@@ -145,17 +145,13 @@
 
 
   <span class="post-date">18 Mar 2016</span>
-  <p>While Swift is a new panacea an a go-to solution for all things programming, we still have to
-maintain our years’-old Objective-C codebases. And that comes with a bag of old problems, which
-every Objective-C programmer has encountered once in their life.</p>
+  <p>While Swift is a new panacea and a go-to solution for all things programming, we still have to maintain our years’-old Objective-C codebases. And that comes with a bag of old problems, which every Objective-C programmer has encountered once in their life.</p>
 
-<p>Consider an <code>NSArray</code>. Capable of containing any object type, it does not handle <code>nil</code>
-all that well. Constructing an <code>NSArray</code> of objects using an array literal like this:</p>
+<p>Consider an <code>NSArray</code>. Capable of containing any object type, it does not handle <code>nil</code> all that well. Constructing an <code>NSArray</code> of objects using an array literal like this:</p>
 
 <figure class="highlight"><pre><code class="language-objc" data-lang="objc"><span class="bp">NSArray</span> <span class="o">*</span><span class="n">arr</span> <span class="o">=</span> <span class="l">@[</span><span class="n">object1</span><span class="p">,</span> <span class="n">object2</span><span class="p">,</span> <span class="n">object3</span><span class="l">]</span><span class="p">;</span></code></pre></figure>
 
-<p>is concise and convenient, but it comes with a cost. If any of the object references is actually
-<code>nil</code>, we’ll have a crash in our hands. We don’t really want this to happen, right?
+<p>is concise and convenient, but it comes with a cost. If any of the object references is actually <code>nil</code>, we’ll have a crash in our hands. We don’t really want this to happen, right?
 <!--more--></p>
 
 <h1 id="the-problem">The Problem</h1>
@@ -168,12 +164,9 @@ all that well. Constructing an <code>NSArray</code> of objects using an array li
     <span class="p">[</span><span class="n">ShareAction</span> <span class="n">new</span><span class="p">]</span>
 <span class="l">]</span><span class="p">];</span></code></pre></figure>
 
-<p>without worrying about accidentally getting <code>nil</code> in one of these object references. Here I’ve just
-constructed them, but what their initializers may fail?<sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup> What if I don’t really know where the
-objects come from (as if I got them from elsewhere as method parameters)?</p>
+<p>without worrying about accidentally getting <code>nil</code> in one of these object references. Here I’ve just constructed them, but what their initializers may fail?<sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup> What if I do not really know where the objects come from (as if I got them from elsewhere as method parameters)?</p>
 
-<p><strong>Solution #1: Explicit <code>nil</code> checks</strong> One obvious alternative is to <code>nil</code>-check all of the objects
-before adding them to the array, but it is much uglier:</p>
+<p><strong>Solution #1: Explicit <code>nil</code> checks</strong> One obvious alternative is to <code>nil</code>-check all of the objects before adding them to the array, but it is much uglier:</p>
 
 <figure class="highlight"><pre><code class="language-objc" data-lang="objc"><span class="bp">NSMutableArray</span> <span class="o">*</span><span class="n">actions</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">NSMutableArray</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
 
@@ -197,17 +190,11 @@ before adding them to the array, but it is much uglier:</p>
 
 <span class="p">[</span><span class="nb">self</span> <span class="nl">presentActions</span><span class="p">:</span> <span class="n">actions</span><span class="p">];</span></code></pre></figure>
 
-<p>This solution adds a lot of cognitive strain on the potential code reader. Instead of focusing on
-the simple “instantiate some actions and present them” logic, we create a bunch of temporary
-variables, complement each one with a <code>nil</code>-checking condition and completely obscure the point
-of the whole thing.</p>
+<p>This solution adds much cognitive strain on the potential code reader. Instead of focusing on the simple “instantiate some actions and present them” logic, we create a bunch of temporary variables, complement each one with a <code>nil</code>-checking condition and completely obscure the point of the whole thing.</p>
 
-<p>One can argue that we should have non-failable initializers of the objects in question and there
-would be no problem in the first place, but unfortunately, this is not always possible.</p>
+<p>One can argue that we should have non-failable initializers of the objects in question and there would be no problem in the first place, but unfortunately, this is not always possible.</p>
 
-<p><strong>Solution #2: Implicit nil checks</strong> Trying to minimize possible <code>nil</code>-related crashes, we’ve added
-a category on <code>NSMutableArray</code>, which provides a method for safely adding a nullable object by just
-ignoring the <code>nil</code> values.</p>
+<p><strong>Solution #2: Implicit nil checks</strong> Trying to minimize possible <code>nil</code>-related crashes, we’ve added a category on <code>NSMutableArray</code>, which provides a method for safely adding a nullable object by just ignoring the <code>nil</code> values.</p>
 
 <p>The code becomes much simpler:</p>
 
@@ -219,8 +206,7 @@ ignoring the <code>nil</code> values.</p>
 
 <span class="p">[</span><span class="nb">self</span> <span class="nl">presentActions</span><span class="p">:</span> <span class="n">actions</span><span class="p">];</span></code></pre></figure>
 
-<p>Well, it’s simpler, but not simple enough. I don’t really like to have a temporary array variable,
-the only purpose of which is to be passed to the method invocation right after it is instantiated.</p>
+<p>Well, it is simpler, but not simple enough. I do not really like to have a temporary array variable, the only purpose of which is to be passed to the method invocation right after it is instantiated.</p>
 
 <p><strong>Solution #3: Defaulting</strong> Another possible solution is to default all the possible <code>nil</code> values to
 a certain guaranteed non-nil object:</p>
@@ -231,16 +217,13 @@ a certain guaranteed non-nil object:</p>
     <span class="p">[</span><span class="n">ShareAction</span> <span class="n">new</span><span class="p">]</span> <span class="o">?:</span> <span class="p">[</span><span class="bp">NSNull</span> <span class="n">null</span><span class="p">]</span>
 <span class="l">]</span><span class="p">];</span></code></pre></figure>
 
-<p>This is also too syntactically heavy for my taste and also requires the <code>presentActions:</code> method
-to know about this defaulting behavior and properly handle the <code>NSNull</code> instance passed instead
-of the expected action object.</p>
+<p>This is also too syntactically heavy for my taste and also requires the <code>presentActions:</code> method to know about this defaulting behavior and appropriately handle the <code>NSNull</code> instance passed instead of the expected action object.</p>
 
 <p>There has to be a better way.</p>
 
 <h2 id="the-solution-custom-literals">The Solution: Custom literals</h2>
 
-<p>What if we could come up with a custom array literal implementation, which skips <code>nil</code> values
-automagically? Preempting myself a bit, I’ll show how the solution I’ve ended up with looks like:</p>
+<p>What if we could come up with a custom array literal implementation, which skips <code>nil</code> values automagically? Preempting myself a bit, I’ll show how the solution I’ve ended up with looks like:</p>
 
 <figure class="highlight"><pre><code class="language-objc" data-lang="objc"><span class="p">[</span><span class="nb">self</span> <span class="nl">presentActions</span><span class="p">:</span> <span class="err">$</span><span class="n">array</span><span class="p">(</span>
     <span class="p">[</span><span class="n">LikeAction</span> <span class="n">new</span><span class="p">],</span>
@@ -248,8 +231,7 @@ automagically? Preempting myself a bit, I’ll show how the solution I’ve ende
     <span class="p">[</span><span class="n">ShareAction</span> <span class="n">new</span><span class="p">]</span>
 <span class="p">)];</span></code></pre></figure>
 
-<p>It’s almost as simple as the default <code>@[]</code> syntax and provides almost no additional cognitive strain
-on the reader.</p>
+<p>It is almost as simple as the default <code>@[]</code> syntax and provides virtually no additional cognitive strain on the reader.</p>
 
 <p>Implementation is also simple enough. Consider the following class:</p>
 
@@ -259,10 +241,7 @@ on the reader.</p>
 
 <span class="k">@end</span></code></pre></figure>
 
-<p>Here we’re using variable argument list for passing the objects. Usually, these lists are
-<code>nil</code>-terminated (there’s even an <code>NS_REQUIRES_NIL_TERMINATION</code> attribute, which triggers a compiler
-check for that), but since we want to allow <code>nil</code> values inside our argument list, we have to
-provide some other object as the list terminator.</p>
+<p>Here we are using variable argument list for passing the objects. Usually, these lists are <code>nil</code>-terminated (there’s even an <code>NS_REQUIRES_NIL_TERMINATION</code> attribute, which triggers a compiler check for that), but since we want to allow <code>nil</code> values inside our argument list, we have to provide some other object as the terminator.</p>
 
 <p>Implementation of this class is rather straightforward:</p>
 
@@ -293,12 +272,9 @@ provide some other object as the list terminator.</p>
 
 <span class="k">@end</span></code></pre></figure>
 
-<p>Note that we still have a mutable array and may need to copy it to make it immutable, but it is
-probably an optional precaution since the method interface does not state anything about the
-result’s mutability.</p>
+<p>Note that we still have a mutable array and may need to copy it to make it immutable, but it is probably an optional precaution since the method interface does not state anything about the result’s mutability.</p>
 
-<p>The only step left is to provide a helper macro, which will make <code>NSArraySafeLiteral</code> a little bit
-simpler:</p>
+<p>The only step left is to provide a helper macro, which will make <code>NSArraySafeLiteral</code> a little bit simpler:</p>
 
 <figure class="highlight"><pre><code class="language-objc" data-lang="objc"><span class="cp">#define $array(...)                        \</span>
 <span class="cp">    ([NSArraySafeLiteral arrayWithObjects: \</span>
@@ -306,8 +282,7 @@ simpler:</p>
 <span class="cp">        __VA_ARGS__,                       \</span>
 <span class="cp">        [NSArraySafeLiteral class]])</span></code></pre></figure>
 
-<p>Here I’m using the class pointer as the list terminator, which should suffice for the most use
-cases but any other known static object can be used instead.</p>
+<p>Here I am utilizing the class pointer as the list terminator, which should suffice for the most use cases, but any other known static object can be used instead.</p>
 
 <p>Now the syntax</p>
 
@@ -321,9 +296,7 @@ cases but any other known static object can be used instead.</p>
 <div class="footnotes">
   <ol>
     <li id="fn:1">
-      <p>Well, yes, we have to decide what to actually do with these possible <code>nil</code> objects if we
-  encounter one of these. In our codebases the most frequent case is to just skip them, so this
-  is the scenario I’m considering. <a href="#fnref:1" class="reversefootnote">&#8617;</a></p>
+      <p>Well, yes, we have to decide what to do with these possible <code>nil</code> objects if we encounter one of these. In our codebases the most common case is just to skip them, so this is the scenario I am considering. <a href="#fnref:1" class="reversefootnote">&#8617;</a></p>
     </li>
   </ol>
 </div>
@@ -384,18 +357,18 @@ cases but any other known static object can be used instead.</p>
     
       <li>
         <h3>
-          <a href="/2015/04/05/artificial-inheritance/">
-            Artificial Inheritance
-            <small>05 Apr 2015</small>
+          <a href="/2015/04/11/swift-wrappers-for-c-libraries/">
+            Writing Swift wrappers for C libraries
+            <small>11 Apr 2015</small>
           </a>
         </h3>
       </li>
     
       <li>
         <h3>
-          <a href="/2015/04/11/swift-wrappers-for-c-libraries/">
-            Writing Swift wrappers for C libraries
-            <small>11 Apr 2015</small>
+          <a href="/2015/04/23/binding-swift-funcs/">
+            Binding Swift funcs
+            <small>23 Apr 2015</small>
           </a>
         </h3>
       </li>

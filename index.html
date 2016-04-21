@@ -150,11 +150,9 @@
     <pre><code>An unknown error occurred
 </code></pre>
 
-<p>I imagine everyone has seen this error message at least once in their lives. It’s not very helpful,
-is it?</p>
+<p>I imagine everyone has seen this error message at least once in their lives. It’s not very helpful, is it?</p>
 
-<p>I’ve encountered this error message today when trying to run an app on my iPhone using Xcode. No
-other explanation was provided, no ways of recovery. What should one do in this scenario?</p>
+<p>I’ve encountered this error message today when trying to run an app on my iPhone using Xcode. No other explanation was provided, no ways of recovery. What should one do in this scenario?</p>
 
 
 
@@ -178,19 +176,14 @@ other explanation was provided, no ways of recovery. What should one do in this 
 
     <span class="post-date">28 Mar 2016</span>
 
-    <p>I’ve <a href="/2016/03/27/web-design-with-a-coding-mentality/">mentioned</a> before that this blog
-is a custom deployed one. While GitHub Pages support some of the Jekyll plugins, I’d like to have
-more flexibility and freedom to use any other plugins, some of which I’ve made myself. As stated in
-the GitHub Pages
+    <p>I’ve <a href="/2016/03/27/web-design-with-a-coding-mentality/">mentioned</a> before that this blog is a custom deployed one. While GitHub Pages support some of the Jekyll plugins, I’d like to have more flexibility and freedom to use any other plugins, some of which I’ve made myself. As stated in the GitHub Pages
 <a href="https://help.github.com/articles/adding-jekyll-plugins-to-a-github-pages-site/">documentation</a>,</p>
 
 <blockquote>
-  <p>Other plugins are not supported, so the only way to incorporate them in your site is to generate
-your site locally and then push your site’s static files to your GitHub Pages site.</p>
+  <p>Other plugins are not supported, so the only way to incorporate them into your site is to generate your site locally and then push your site’s static files to your GitHub Pages site.</p>
 </blockquote>
 
-<p>So this is exactly what I’m doing here. I think it may be useful for someone if I share my setup
-of this blog’s development and deployment process.</p>
+<p>So this is exactly what I’m doing here. I think it may be useful for someone if I share my setup of this blog’s development and deployment process.</p>
 
 
 
@@ -214,20 +207,14 @@ of this blog’s development and deployment process.</p>
 
     <span class="post-date">27 Mar 2016</span>
 
-    <p>Recently I’ve come to a realization that I like coding better than writing. Consider this blog for
-example. I’ve been tinkering with it for a couple of days now: changing the theme, moving CSS styles
-around, optimizing usage of templates etc. - all that instead of actually writing some content,
-which someone could actually read.</p>
+    <p>Recently I’ve come to a realization that I like coding better than writing. Consider this blog for example. I’ve been tinkering with it for a couple of days now: changing the theme, moving CSS styles around, optimizing usage of templates etc. - all that instead of actually writing some content, which someone could actually read.</p>
 
-<p>It is a funny thought - as a programmer, I value the internal structure, the beauty of the source
-files more than the actual product, which will be used by the consumer.</p>
+<p>It is a funny thought - as a programmer, I value the internal structure, the beauty of the source files more than the actual product, which will be used by the consumer.</p>
 
-<p>Maybe this comes from the fact that I’m not really a good writer, but there is one more thing that
-makes me do all this: I see this blog as a piece of software, with all the usual concerns such as
+<p>Maybe this comes from the fact that I’m not really a good writer, but there is one more thing that makes me do all this: I see this blog as a piece of software, with all the usual concerns such as
 maintainability, extendibility etc.</p>
 
-<p>They say that if all you have is a hammer, everything looks like a nail. Programming is my hammer
-and I’d like to share an example of a practical problem, which ended up not being a nail after all.</p>
+<p>They say that if all you have is a hammer, everything looks like a nail. Programming is my hammer, and I’d like to share an example of a practical problem, which ended up not being a nail after all.</p>
 
 
 
@@ -251,17 +238,13 @@ and I’d like to share an example of a practical problem, which ended up not be
 
     <span class="post-date">18 Mar 2016</span>
 
-    <p>While Swift is a new panacea an a go-to solution for all things programming, we still have to
-maintain our years’-old Objective-C codebases. And that comes with a bag of old problems, which
-every Objective-C programmer has encountered once in their life.</p>
+    <p>While Swift is a new panacea and a go-to solution for all things programming, we still have to maintain our years’-old Objective-C codebases. And that comes with a bag of old problems, which every Objective-C programmer has encountered once in their life.</p>
 
-<p>Consider an <code>NSArray</code>. Capable of containing any object type, it does not handle <code>nil</code>
-all that well. Constructing an <code>NSArray</code> of objects using an array literal like this:</p>
+<p>Consider an <code>NSArray</code>. Capable of containing any object type, it does not handle <code>nil</code> all that well. Constructing an <code>NSArray</code> of objects using an array literal like this:</p>
 
 <figure class="highlight"><pre><code class="language-objc" data-lang="objc"><span class="bp">NSArray</span> <span class="o">*</span><span class="n">arr</span> <span class="o">=</span> <span class="l">@[</span><span class="n">object1</span><span class="p">,</span> <span class="n">object2</span><span class="p">,</span> <span class="n">object3</span><span class="l">]</span><span class="p">;</span></code></pre></figure>
 
-<p>is concise and convenient, but it comes with a cost. If any of the object references is actually
-<code>nil</code>, we’ll have a crash in our hands. We don’t really want this to happen, right?</p>
+<p>is concise and convenient, but it comes with a cost. If any of the object references is actually <code>nil</code>, we’ll have a crash in our hands. We don’t really want this to happen, right?</p>
 
 
 

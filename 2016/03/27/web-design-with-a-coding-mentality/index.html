@@ -145,38 +145,24 @@
 
 
   <span class="post-date">27 Mar 2016</span>
-  <p>Recently I’ve come to a realization that I like coding better than writing. Consider this blog for
-example. I’ve been tinkering with it for a couple of days now: changing the theme, moving CSS styles
-around, optimizing usage of templates etc. - all that instead of actually writing some content,
-which someone could actually read.</p>
+  <p>Recently I’ve come to a realization that I like coding better than writing. Consider this blog for example. I’ve been tinkering with it for a couple of days now: changing the theme, moving CSS styles around, optimizing usage of templates etc. - all that instead of actually writing some content, which someone could actually read.</p>
 
-<p>It is a funny thought - as a programmer, I value the internal structure, the beauty of the source
-files more than the actual product, which will be used by the consumer.</p>
+<p>It is a funny thought - as a programmer, I value the internal structure, the beauty of the source files more than the actual product, which will be used by the consumer.</p>
 
-<p>Maybe this comes from the fact that I’m not really a good writer, but there is one more thing that
-makes me do all this: I see this blog as a piece of software, with all the usual concerns such as
+<p>Maybe this comes from the fact that I’m not really a good writer, but there is one more thing that makes me do all this: I see this blog as a piece of software, with all the usual concerns such as
 maintainability, extendibility etc.</p>
 
-<p>They say that if all you have is a hammer, everything looks like a nail. Programming is my hammer
-and I’d like to share an example of a practical problem, which ended up not being a nail after all.
+<p>They say that if all you have is a hammer, everything looks like a nail. Programming is my hammer, and I’d like to share an example of a practical problem, which ended up not being a nail after all.
 <!--more--></p>
 
 <h2 id="dont-repeat-yourself">Don’t Repeat Yourself</h2>
 
-<p>One of the important principles of software engineering is <em>“Don’t Repeat Yourself”</em>, which
-is stated as <em>“Every piece of knowledge must have a single, unambiguous, authoritative
-representation within a system.”</em><sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup></p>
+<p>One of the important principles of software engineering is <em>“Don’t Repeat Yourself”</em>, which is stated as <em>“Every piece of knowledge must have a single, unambiguous, authoritative representation within a system.”</em><sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup></p>
 
-<p>While trying to apply the DRY principle to this blog, I’ve stumbled upon a repeating sequence in
-my <code>index.html</code> and <code>post</code> template. When displaying the post title, a conditional logic is
-necessary to properly render link post titles.</p>
+<p>While trying to apply the DRY principle to this blog, I’ve stumbled upon a repeating sequence in my <code>index.html</code> and <code>post</code> template. When displaying the post title, a conditional logic is necessary to properly render link post titles.</p>
 
 <p><span class="note">
-There a two general types of posts in this blog: a default and a link post. Link posts differ from
-the default posts in that they do not really have a lot of meaningful text written by me, they are
-a pair of an external URL and a short comment explaining why I’d find this particular page
-interesting enough to share here. As an example of link post, consider
-<a href="/2015/04/11/damn-cool-algorithms/">Damn Cool Algorithms</a>.
+There a two general types of posts in this blog: a default and a link post. Link posts differ from the default posts in that they do not really have a lot of meaningful text written by me, they are a pair of an external URL and a short comment explaining why I’d find this particular page interesting enough to share here. As an example of link post, consider <a href="/2015/04/11/damn-cool-algorithms/">Damn Cool Algorithms</a>.
 </span></p>
 
 <p>While usual post title looks like this:</p>
@@ -191,8 +177,7 @@ interesting enough to share here. As an example of link post, consider
   <p><strong><i class="fa fa-bookmark-o"></i> Link Post Title</strong></p>
 </blockquote>
 
-<p>And the bookmark icon<sup id="fnref:2"><a href="#fn:2" class="footnote">2</a></sup> should be added to all link post titles regardless of where the title is
-displayed.</p>
+<p>So the bookmark icon<sup id="fnref:2"><a href="#fn:2" class="footnote">2</a></sup> should be added to all link post titles regardless of where the title is displayed.</p>
 
 <p>It was implemented in the source files like that:</p>
 
@@ -212,11 +197,8 @@ displayed.</p>
 
 <p>This snippet of a Liquid template was used on both <code>index.html</code> and in <code>post</code> template.</p>
 
-<p>Obviously, I wanted to avoid duplication and reuse this code somehow. The first thing I thought of is
-making a custom Liquid tag, which would check the condition and render the necessary HTML depending
-on the post type (well, I’m probably not being absolutely honest here - it is probably not the most
-obvious solution, but yes, it’s the first thing coming in mind while I already know that making
-custom Liquid tags is even possible).</p>
+<p>Naturally, I wanted to avoid duplication and reuse this code somehow. The first thing I thought of is making a custom Liquid tag, which would check the condition and render the necessary HTML depending
+on the post type (well, I am probably not being completely honest here - it is probably not the most obvious solution, but yes, it is the first thing coming to mind while I already know that making custom Liquid tags is even possible).</p>
 
 <p>So the following Jekyll plugin is born:</p>
 
@@ -261,8 +243,7 @@ custom Liquid tags is even possible).</p>
 
 <span class="no">Liquid</span><span class="o">::</span><span class="no">Template</span><span class="o">.</span><span class="n">register_tag</span><span class="p">(</span><span class="s1">&#39;post_title&#39;</span><span class="p">,</span> <span class="no">Jekyll</span><span class="o">::</span><span class="no">PostTitle</span><span class="p">)</span></code></pre></figure>
 
-<p>A rather straightforward solution, I think. Now this new <code>post_title</code> tag can be used in
-<code>index.html</code> like this:</p>
+<p>A rather straightforward solution, I think. Now this new <code>post_title</code> tag can be used in <code>index.html</code> like this:</p>
 
 <figure class="highlight"><pre><code class="language-html" data-lang="html"><span class="c">&lt;!-- index.html --&gt;</span>
 {% for post in paginator.posts %}
@@ -273,10 +254,7 @@ custom Liquid tags is even possible).</p>
 
 <h2 id="the-right-way">The Right Way?</h2>
 
-<p>After more CSS-tinkering and adjusting the blog code, I’ve started to think whether using Ruby for
-this simple thing is actually the right way to do. I’m thinking a coder instead of as a web designer
-here. Maybe writing a new plugin just for that is an overkill, and a simple mixin template would
-work?</p>
+<p>After more CSS-tinkering and adjusting the blog code, I’ve started to think whether using Ruby for this simple thing is the right way to do. I’m thinking a coder instead of as a web designer here. Maybe writing a new plugin just for that is an overkill, and a simple mixin template would work?</p>
 
 <p>Putting the repeating piece of HTML above into a separete file:</p>
 
@@ -304,13 +282,9 @@ work?</p>
   <span class="nt">&lt;/div&gt;</span>
 {% endfor %}</code></pre></figure>
 
-<p>It does the same trick without any plugin magic. On the plus side, it works in GitHub Pages, where
-usage of custom plugins is prohibited<sup id="fnref:3"><a href="#fn:3" class="footnote">3</a></sup>.</p>
+<p>It does the same trick without any plugin magic. On the plus side, it works in GitHub Pages, where usage of custom plugins is prohibited<sup id="fnref:3"><a href="#fn:3" class="footnote">3</a></sup>.</p>
 
-<p>The case in point: I’m thinking as a programmer and my solution to everything is programming.
-It’s OK I think when it works. But sometimes it is a good practice to think outside of one’s
-comfort zone.</p>
-
+<p>The case in point: I am thinking as a programmer and my solution to everything is programming. It is OK I think when it works. Still, sometimes it is a good practice to think outside of one’s comfort zone.</p>
 <div class="footnotes">
   <ol>
     <li id="fn:1">
@@ -320,8 +294,7 @@ comfort zone.</p>
       <p>Via <a href="http://fontawesome.io">Font-Awesome</a>. <a href="#fnref:2" class="reversefootnote">&#8617;</a></p>
     </li>
     <li id="fn:3">
-      <p>Lack of custom plugins was the actual reason for me to drop dynamic GitHub page generation and
-  proceed with a static approach (i.e. <code>.nojekyll</code>), but this is a topic for another post. <a href="#fnref:3" class="reversefootnote">&#8617;</a></p>
+      <p>Lack of custom plugins was the actual reason for me to drop dynamic GitHub page generation and proceed with a static approach (i.e. <code>.nojekyll</code>), however, this is a topic for another post. <a href="#fnref:3" class="reversefootnote">&#8617;</a></p>
     </li>
   </ol>
 </div>

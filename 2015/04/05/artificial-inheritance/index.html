@@ -147,18 +147,18 @@
   <span class="post-date">05 Apr 2015</span>
   <p><a href="http://blogs.perl.org/users/sid_burn/2014/03/inheritance-is-bad-code-reuse-part-1.html">They</a> <a href="http://blog.berniesumption.com/software/inheritance-is-evil-and-must-be-destroyed/">say</a> <a href="http://simpleprogrammer.com/2010/01/15/inheritance-is-inherently-evil/">inheritance</a> <a href="http://stackoverflow.com/questions/11056943/deep-class-inheritance-hierarchy-bad-idea">is</a> <a href="http://codingdelight.com/2014/01/16/favor-composition-over-inheritance-part-1/">bad</a>. Yes, there really are 5 different links in the previous sentence.</p>
 
-<p>The links I’ve provided may not be the most trustworthy sources on the subject (as the matter of fact, I’ve entered ‘inheritance is bad’ in the Google prompt and used the top results just to provide a couple of examples). Jokes aside, there is a lot of info out there about the reasons to prefer composition over inheritance in most cases.</p>
+<p>The links I’ve provided may not be the most trustworthy sources on the subject (as the matter of fact, I’ve entered ‘inheritance is bad’ in the Google prompt and used the top results just to provide a couple of examples). Jokes aside, there is much info out there about the reasons to prefer composition over inheritance in most cases.</p>
 
-<p>As with all of such statements you don’t blindly follow the rule. Inheritance is a tool, and as a software engineer, you should know when and where to use your tools.</p>
+<p>As with all of such statements you do not blindly follow the rule. Inheritance is a tool, and as a software engineer, you should know when and where to use your tools.</p>
 
-<p>I’m using composition for building complex objects a lot these days. One of the patterns I’ve been using lately is adding Objective-C protocol conformance to specific objects (i.e. not classes, but individual instances) with the help of wrapper (or decorator) objects. To simplify the interaction with these wrappers I’m using the message forwarding mechanism, which allows me treating the wrapper object in the same way as the original object, but with the benefits of the added protocol.</p>
+<p>I’m using composition for building complex objects a lot these days. One of the patterns I’ve been using lately is adding Objective-C protocol conformance to specific objects (i.e. not classes, but individual instances) with the help of wrapper (or decorator) objects. To simplify the interaction with these wrappers I am using the message forwarding mechanism, which allows me treating the wrapper in the same way as the original object, but with the benefits of the added protocol.</p>
 
 <p>Now starting with that in mind I’ve come up with an interesting little runtime construct, which utilizes composition and message forwarding to implement multiple inheritance-like behaviors on the instance level.
 <!--more--></p>
 
-<p>The idea is actually pretty simple. In the scheme described above my wrapper object implements the protocol, which it is designed to add to the wrapped object. But abstracting the protocol implementation from the wrapper and implementing it in a separate class could achieve the same result. The wrapper itself would only be responsible for proper message forwarding between the objects it combines.</p>
+<p>The idea is actually pretty simple. In the scheme described above my wrapper object implements the protocol, which it is designed to add to the wrapped object. However, abstracting the protocol implementation from the wrapper and implementing it in a separate class could achieve the same result. The wrapper itself would only be responsible for proper message forwarding between the objects it combines.</p>
 
-<p>Now, why would we stop on protocols only? We could easily combine several classes just for the sake of doing it and say that our wrapper ‘inherits’ these objects’ properties and methods. If we override the reflection methods such as <code>conformsToProtocol:</code> and <code>isKindOfClass:</code>, our wrapper could actually pose as the objects, which it wraps, implementing ‘is-a’ relationship almost perfectly. This looks a lot like inheritance to me.</p>
+<p>Now, why would we stop on protocols only? We could easily combine several classes just for the sake of doing it and say that our wrapper ‘inherits’ these objects’ properties and methods. If we override the reflection methods such as <code>conformsToProtocol:</code> and <code>isKindOfClass:</code>, our wrapper could pose as the objects which it wraps, implementing ‘is-a’ relationship almost flawlessly. This looks a lot like inheritance to me.</p>
 
 <h2 id="lets-write-some-code-shall-we">Let’s write some code shall we?</h2>
 
@@ -169,7 +169,7 @@
 <span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">setDesignatedTarget:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">designatedTarget</span> <span class="nf">forSelector:</span><span class="p">(</span><span class="kt">SEL</span><span class="p">)</span><span class="nv">selector</span><span class="p">;</span>
 <span class="k">@end</span></code></pre></figure>
 
-<p>The first method adds the parent object to the list of wrapped objects. Messages received by the proxy will be forwarded to one of these. But there could be situations when several of the wrapped objects do respond to a certain selector and the proxy would not know which one to forward the message to. That’s where the second method comes into the play. We could select a designated target for certain selectors to make sure that of several objects responding to a certain selector, only the one which we want to will actually receive the message.</p>
+<p>The first method adds the parent object to the list of wrapped objects. Messages received by the proxy will be forwarded to one of these. However, there could be situations when several of the proxied objects do respond to a specified selector, and the proxy would not know which one to forward the message to. That is where the second method comes into the play. We could select a designated target for individual selectors to make sure that of several objects responding to the given selector, only the one which we want to will actually receive the message.</p>
 
 <p>The implementation is pretty straightforward:</p>
 
@@ -216,7 +216,7 @@
     <span class="nb">self</span><span class="p">.</span><span class="n">designatedTargets</span> <span class="o">=</span> <span class="p">[</span><span class="n">designatedTargets</span> <span class="k">copy</span><span class="p">];</span>
 <span class="p">}</span></code></pre></figure>
 
-<p>I’m aiming for the thread-safe implementation, hence the atomic properties and copying the dictionaries instead of mutating them directly. Parent objects are stored using the class name as a key, designated targets are stored using the selector name as a key. Note that the designated targets are completely independent of the parent objects. This is intentional. If you wanted, you could construct the proxy by adding method implementations one by one using the designated targets API.</p>
+<p>I’m aiming for the thread-safe implementation, hence the atomic properties and copying the dictionaries instead of mutating them directly. Parent objects are stored using the class name as a key; designated targets are stored using the selector name as a key. Note that the designated targets are entirely independent of the parent objects. This is intentional. If you wanted, you could construct the proxy by adding method implementations one by one using the designated targets API.</p>
 
 <p>Now let’s look at the forwarding part. First we write a couple of helper methods to work with designated targets:</p>
 
@@ -327,7 +327,7 @@
     <span class="k">return</span> <span class="nb">NO</span><span class="p">;</span>
 <span class="p">}</span></code></pre></figure>
 
-<p>We’re almost there now. In order to make our proxy completely interchangeable with the objects it wraps, we may want to override <code>isEqual:</code> too. We could try to provide a similar implementation for this method:</p>
+<p>We are almost there now. To make our proxy completely interchangeable with the objects it wraps, we may want to override <code>isEqual:</code> too. We could try to provide a similar implementation for this method:</p>
 
 <figure class="highlight"><pre><code class="language-objc" data-lang="objc"><span class="p">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">isEqual:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">object</span>
 <span class="p">{</span>
@@ -343,15 +343,15 @@
     <span class="k">return</span> <span class="n">equal</span> <span class="o">?:</span> <span class="p">[</span><span class="nb">super</span> <span class="nl">isEqual</span><span class="p">:</span> <span class="n">object</span><span class="p">];</span>
 <span class="p">}</span></code></pre></figure>
 
-<p>But here be dragons, they say. Remember that overriding <code>isEqual:</code> also requires having a consistent <code>hash</code> implementation? If two objects are equal, they should also have equal hashes. Suppose we have several parent objects and are comparing the proxy with each of the parents using <code>isEqual:</code>. In that case, this implementation will return <code>YES</code> each time, but which value of the <code>hash</code> would we return? Each parent could return a different hash in general.</p>
+<p>However, here be dragons, they say. Remember that overriding <code>isEqual:</code> also requires having a consistent <code>hash</code> implementation? If two objects are equal, they should also have equal hashes. Suppose we have several parent objects and are comparing the proxy with each of the parents using <code>isEqual:</code>. In that case, this implementation will return <code>YES</code> each time, but which value of the <code>hash</code> would we return? Each parent could return a different hash in general.</p>
 
 <p>That makes the creation of a universal <code>isEqual:</code> implementation kind of impossible. A designated ‘identity’ object, which is also set externally and is used to forward both <code>isEqual:</code> and <code>hash</code> calls, is probably a decent tradeoff.</p>
 
 <h2 id="so-whats-the-purpose-of-that-exactly">So what’s the purpose of that exactly?</h2>
 
-<p>I’ve not actually come up with a scenario when this would actually be useful yet. As usual, the code is <a href="https://github.com/wanderwaltz/artificial-inheritance">available</a> on GitHub; feel free to have a look if you’re interested. My lack of ideas for usage scenarios gets kind of clear when you look at the unit tests, which I’ve provided for the class. Without a proper usage scenario, these tests are rather artificial and contrived.</p>
+<p>I’ve not actually come up with a scenario when this would be useful yet. As usual, the code is <a href="https://github.com/wanderwaltz/artificial-inheritance">available</a> on GitHub; feel free to have a look if you are interested. My lack of ideas for usage scenarios gets kind of clear when you look at the unit tests, which I’ve provided for the class. Without a proper usage scenario, these tests are rather artificial and contrived.</p>
 
-<p>It’s worth mentioning that this proxy class is actually rather useless by itself. You generally would not gain anything by just blindly combining several objects into one and providing automatic forwarding mechanisms. These objects are still completely independent. The usage scenario I’m having in mind involves actually subclassing <code>WWInheritanceProxy</code> and providing custom implementations of some of the methods, which will allow the resulting object to be more than just a sum of its parts. You provide the most significant methods, automatic forwarding provides the rest.</p>
+<p>It is worth mentioning that this proxy class is rather useless by itself. You generally would not gain anything by just blindly combining several objects into one and providing automatic forwarding mechanisms. These objects are still completely independent. The usage scenario I am having in mind involves subclassing <code>WWInheritanceProxy</code> and providing custom implementations of some of the methods, which will allow the resulting object to be more than just a sum of its parts. You supply the most important methods; automatic forwarding gives the rest.</p>
 
 
   
