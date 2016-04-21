@@ -4,21 +4,21 @@ description: "Where I talk about how one creates a proper NSArray subclass."
 date: 2015-03-28
 tags: [Objective-C, NSArray, Class Cluster, Inheritance, Map, Blocks]
 ---
-Creating custom collections is rarely necessary nowadays. Most of the time you can safely go with the collection classes provided by the standard library you're working with and not bother with the implementation details. What would be the reason to write a custom collection anyway?
+Creating custom collections is rarely necessary nowadays. Most of the time you can safely go with the collection classes provided by the standard library you are working with and not bother with the implementation details. What would be the reason to write a custom collection anyway?
 
-- **Performance?** I'd say that you go with the standard collections and rewrite them if and only if you're completely sure that it's the collection that is your bottleneck and not anything else. Give me a profiler-proven reason to do that.
-- **Changing the collection interface?** Well, that could be done via categories or composition. You don't really need to subclass `NSArray` or `NSDictionary` to change their interface if you want to.
+- **Performance?** I'd say that you go with the standard collections and rewrite them if and only if you are completely sure that it is the collection that is your bottleneck and not anything else. Give me a profiler-proven reason to do that.
+- **Changing the interface?** Well, that could be done via categories or composition. You do not really need to subclass `NSArray` or `NSDictionary` to change their interface if you want to.
 
-I cannot come up with another reason to subclass Foundation collections right now, but to be honest, here at [#justcodingthings](http://wanderwaltz.github.io) we don't actually need a reason to do something. We do it because we can and that's the only reason we need.
+I cannot come up with another reason to subclass Foundation collections right now, but to be honest, here at [#justcodingthings](http://wanderwaltz.github.io) we do not actually need a reason to do something. We do it because we can, and that is the only reason we need.
 <!--more-->
 
-There is nothing new under the sun and [@mikeash](https://twitter.com/mikeash) has already discussed this topic in his [Friday Q&A](https://mikeash.com/pyblog/friday-qa-2010-03-12-subclassing-class-clusters.html), but I still thought I'd reiterate it once more at least for the reason of providing another example of the technique.
+There is nothing new under the sun, and [@mikeash](https://twitter.com/mikeash) has already discussed this topic in his [Friday Q&A](https://mikeash.com/pyblog/friday-qa-2010-03-12-subclassing-class-clusters.html), but I still thought I'd reiterate it once more at least for the reason of providing another example of the technique.
 
 To have a semi-realistic sample to work with, let's build a dynamically mapped array and integrate it into `NSArray` cluster.
 
 Define 'dynamically mapped'
 -------------
-So suppose we want to perform a certain transform or mapping to the elements of a given `NSArray`. The mapping itself will be represented by a mapper block:
+So suppose we want to perform a particular transform or mapping to the elements of a given `NSArray`. We could represent the mapping  with a block:
 
 {% highlight objc %}
 id (^mapper)(id object, NSUInteger index) {
@@ -26,7 +26,7 @@ id (^mapper)(id object, NSUInteger index) {
 }
 {% endhighlight %}
 
-So each time we access `array[i]` we will actually receive the result of `mapper(array[i], i)`. There are some questions open to discussion of course. What will we do if the block returns `nil` for some of the elements? To be consistent with `NSArray` API we should not return `nil` since that is not expected for `NSArrays`. I suggest we transform `nil`s to `NSNull` instances automatically.
+So each time we access `array[i]` we will actually receive the result of `mapper(array[i], i)`. There are some questions open to discussion of course. What will we do if the block returns `nil` for some of the elements? To be consistent with `NSArray` API we should not return `nil` since we do not expect that from `NSArrays`. I suggest we transform `nil`s to `NSNull` instances automatically.
 
 What will the mapping interface look like? I suppose something like that will do nicely:
 
@@ -66,7 +66,7 @@ And we'll also need a category on `NSArray`:
 @end
 {% endhighlight %}
 
-Since we know we'll be subclassing `NSArray`, let's dive into the [documentation](https://developer.apple.com/library/mac/documentation/Cocoa/Reference/Foundation/Classes/NSArray_Class/) and look what we'll have to actually do to achieve our goal.
+Since we know we'll be subclassing `NSArray`, let's dive into the [documentation](https://developer.apple.com/library/mac/documentation/Cocoa/Reference/Foundation/Classes/NSArray_Class/) and look what we'll have to do to achieve our goal.
 
 >Any subclass of `NSArray` must override the primitive instance methods `count` and `objectAtIndex:`. These methods must operate on the backing store that you provide for the elements of the collection.
 
@@ -74,8 +74,8 @@ Since we know we'll be subclassing `NSArray`, let's dive into the [documentation
 
 So we'll have to deal with the following:
 
-- **Primitive instance methods.** It's actually almost trivial to implement these in our case. More on that below.
-- **Designated initializers.** Right, so creating our custom `initWithArray:mapper:` initializer won't be enough, since because of subclassing `NSArray` it would be possible to invoke all other initializers of this class on our `CCMappedArray`. So all of the `[CCMappedArray array]`, `[CCMappedArray arrayWithArray: other]` etc should also work.
+- **Primitive instance methods.** It's almost trivial to implement these in our case. More on that below.
+- **Designated initializers.** Right, so creating our custom `initWithArray:mapper:` initializer won't be enough, since because of subclassing `NSArray` it would be possible to invoke all other initializers of this class on our `CCMappedArray`. So all of the `[CCMappedArray array]`, `[CCMappedArray arrayWithArray: other]` etc. should also work.
 - **`NSCopying`** is simple and easily doable.
 - **`NSMutableCopying`** is a bit trickier if we want to keep the dynamic mapping. For simplicity I suggest we just return a plain old `NSMutableArray` and lose the mapper block in the process (we'll have to apply the mapper to all elements while copying of course).
 - **`NSCoding`** will also lose the mapper block since there is no way to encode/decode it.
@@ -125,7 +125,7 @@ Now our designated initializer will look like this:
 }
 {% endhighlight %}
 
-Note how we're using `[originalArray copy]` there - for simplicity we want to only work with immutable arrays, although it's pretty simple to expand the implementation to work with mutable arrays too[^3].
+Note how we're using `[originalArray copy]` there - for simplicity we want only to work with immutable arrays, although it is pretty simple to expand the implementation to work with mutable arrays too[^3].
 
 [^3]: Although to keep the `NSMutableArray` contract intact we would need to be sure that setting elements of the array after it has been mapped would not apply the mapping block again. So we would need to store the indexes of the 'automatic' mapped elements and the indexes of the elements set explicitly by the user of the class and process these elements accordingly.
 
@@ -148,8 +148,7 @@ We also need to override the designated initializers of the `NSArray` class:
 
 Note that both these initializers do not have a mapper block essentially making the returned `CCMappedArray` a useless wrapper over the original `NSArray`. It's OK since initializing `CCMappedArray` using the standard `NSArray` initializers is not really intended.
 
-Now let's get to primitive methods of the `NSArray`. We don't change the count of the original array[^4],
-so the `count` method just returns the original count:
+Now let's get to primitive methods of the `NSArray`. We don't change the count of the original array[^4], so the `count` method just returns the original count:
 
 {% highlight objc %}
 - (NSUInteger)count
@@ -172,7 +171,7 @@ so the `count` method just returns the original count:
 
 Without a mapper block, our array represents an identity mapping.
 
-Let's continue with `NSCopying`. Note that we actually work with immutable arrays only so we never have to actually copy anything:
+Let's continue with `NSCopying`. Note that since we are working with immutable arrays only, we never have to actually copy anything:
 
 {% highlight objc %}
 - (instancetype)copyWithZone:(NSZone *)zone
@@ -209,4 +208,4 @@ Then we implement `NSMutableCopying` and `NSCoding` as following:
 }
 {% endhighlight %}
 
-And that's actually it. Our `CCMappedArray` is ready and working. The code for this class can be found [here](https://github.com/wanderwaltz/ContainersCollection). I've added some unit tests for `CCMappedArray` as well.
+So that is actually it. Our `CCMappedArray` is ready and working. The code for this class can be found [here](https://github.com/wanderwaltz/ContainersCollection). I've added some unit tests for `CCMappedArray` as well.
