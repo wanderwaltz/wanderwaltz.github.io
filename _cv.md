@@ -19,8 +19,8 @@
 
 ### Technical {#technical}
 
-1. Objective-C
 1. Swift
+1. Objective-C
 1. Ruby
 1. Git
 1. Subversion

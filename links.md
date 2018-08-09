@@ -96,6 +96,17 @@ requirements of applications like video games.*
 - [Squirrel homepage](http://squirrel-lang.org/)
 - [SQRat](http://scrat.sourceforge.net/), Squirrel Binding Utility (C++)
 
+### Swift
+
+- [Swift Community](https://swift.org),
+- [Swift Forums](https://forums.swift.org),
+- [Silver: The Swift for .NET and Java/Android](https://www.elementscompiler.com/elements/silver/)
+
+#### Server-side Swift
+
+- [Kitura (IBM)](https://github.com/IBM-Swift/Kitura) is a web framework and web server that is created for web services written in Swift. For more information, visit [www.kitura.io](www.kitura.io),
+- [Vapor](https://vapor.codes) is a web framework for Swift. It provides a beautifully expressive and easy to use foundation for your next website, API, or cloud project.
+
 <hr/>
 ## Programming Problems
 
@@ -110,6 +121,8 @@ requirements of applications like video games.*
 - [Algorithmic Botany](http://algorithmicbotany.org/), a selection of articles and books on
     [Lindenmayer systems](http://en.wikipedia.org/wiki/L-system) and their applications in biological
     modeling and visualizations
+
+- [Beginner’s Resources to Learn Programming Languages](https://blog.vodien.com/beginners-resources-to-learn-programming-languages), a list of learning resources and tutorials for beginners who are interested in learning more about coding. Focused a little bit more on web development (HTML, CSS, JS), but has some info on Python and Ruby too. Suggested by Adam and Hannah Zimri.
 
 <hr/>
 ## Web Design
