@@ -30,7 +30,6 @@
       </div><!-- end header -->
 
     <div class="wrapper">
-
       <section>
         <div id="title">
           <h1>{{ page.title | default: site.github.repository_name }}</h1>
@@ -40,15 +39,26 @@
 
         {{ content }}
 
+        {% if page.tags %}
+          {% assign tags_list = page.tags | sort %}
+          <ul class="inline-list">
+          {% for item in (0..tags_list.size) %}
+            {% unless forloop.last %}
+              {% capture this_word %}{{ tags_list[item] | strip_newlines }}{% endcapture %}
+              <li><a href="{{ "/tags/" }}#{{this_word}}" class="tag"><span class="term">{{ this_word }}</span></a></li>
+            {% endunless %}
+          {% endfor %}
+          </ul>
+        {% endif %}
+
       </section>
       <section>
-      <div id="title">
+        <div id="title">
           <hr>
           <span class="credits left">Project maintained by <a href="{{ site.github.owner_url }}">{{ site.github.owner_name }}</a></span>
           <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/mattgraham">mattgraham</a></span>
         </div>
       </section>
-
     </div>
   </body>
 </html>
