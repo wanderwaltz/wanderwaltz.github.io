@@ -3,7 +3,7 @@ title: Safe NSArray literals
 description: "A way to ensure nil safety for NSArray literals."
 date: 2016-03-18 22:20:00 +0600
 updated: 2016-03-19 04:34:00 +0600
-tags: [Objective-C, NSArray, Literals, Nil, Safety]
+tags: [Objective-C, NSArray]
 ---
 While Swift is a new panacea and a go-to solution for all things programming, we still have to maintain our years'-old Objective-C codebases. And that comes with a bag of old problems, which every Objective-C programmer has encountered once in their life.
 

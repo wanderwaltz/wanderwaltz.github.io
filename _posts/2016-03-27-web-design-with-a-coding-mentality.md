@@ -2,7 +2,7 @@
 title: Web Design with a Coding Mentality
 description: "Managing a Jekyll blog from a programmer's perspective."
 date: 2016-03-27 20:39:00 +0600
-tags: [Thoughts, Jekyll, Meta, Liquid, Templates, Ruby]
+tags: [Meta]
 ---
 Recently I've come to a realization that I like coding better than writing. Consider this blog for example. I've been tinkering with it for a couple of days now: changing the theme, moving CSS styles around, optimizing usage of templates etc. - all that instead of actually writing some content, which someone could actually read.
 

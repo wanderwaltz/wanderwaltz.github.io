@@ -2,7 +2,7 @@
 title: Your Error Messages Are Not Helpful
 description: "An example of an error message popup in Xcode, which does not really help anyone."
 date: 2016-03-31 11:51:00 +0600
-tags: [Xcode, iOS, Error, Message, Unknown Error, Run, Device, iPhone, Install, Framework, Code Signing]
+tags: [Xcode]
 ---
 
     An unknown error occurred

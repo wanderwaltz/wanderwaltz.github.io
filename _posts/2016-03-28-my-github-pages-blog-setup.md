@@ -2,7 +2,7 @@
 title: My GitHub Pages Blog Setup
 description: "A practical setup of a GitHub Pages blog with custom deployment."
 date: 2016-03-28 01:11:00 +0600
-tags: [Jekyll, GitHub, Plugins, Rakefile, Rake, Ruby, Git, Commit, Push, Blog]
+tags: [Meta]
 ---
 I've [mentioned]({% post_url 2016-03-27-web-design-with-a-coding-mentality %}) before that this blog is a custom deployed one. While GitHub Pages support some of the Jekyll plugins, I'd like to have more flexibility and freedom to use any other plugins, some of which I've made myself. As stated in the GitHub Pages
 [documentation](https://help.github.com/articles/adding-jekyll-plugins-to-a-github-pages-site/),

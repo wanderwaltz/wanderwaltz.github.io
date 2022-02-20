@@ -3,7 +3,7 @@ title: Writing Swift wrappers for C libraries
 description: "Where I talk about my first experience in writing Swift code."
 date: 2015-04-11 02:30:00
 updated: 2015-04-23 00:41:00
-tags: [C, Swift, Squirrel, Framework, Type Inference, Types]
+tags: [Swift, Squirrel, Type Inference]
 ---
 I've been kind of bashing Swift recently because of the current buggy state of the tools (SourceKit service and Swift compiler crashes are the most notable offenders). However, I have to admit that Swift has become much more usable as a language than it was the last time I've touched it. I still encounter weird seemingly unrelated compilation error messages but (thanks to Stack Overflow and all the people who already encountered something similar) I usually can decipher the errors and either fix them or mourn for things that cannot be fixed.
 

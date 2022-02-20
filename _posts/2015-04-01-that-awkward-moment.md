@@ -2,7 +2,7 @@
 title: That awkward moment when `git rebase --continue`
 description: "Where I complain about my inability to use the `vi` editor."
 date: 2015-04-01
-tags: [Git, Rebase, Vi, Editor, SourceTree, Jedi, Terminal]
+tags: [Git, Rebase]
 ---
 ...suddenly opens vi to update a commit message and you don't really know how to save the file and exit the goddamn editor.
 
