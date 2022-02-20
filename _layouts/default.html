@@ -22,11 +22,8 @@
         <nav>
           <ul>
             <li class="fork"><a href="{{ site.url }}">Home</a></li>
-            {% if site.show_downloads %}
-              <li class="downloads"><a href="{{ site.github.zip_url }}">ZIP</a></li>
-              <li class="downloads"><a href="{{ site.github.tar_url }}">TAR</a></li>
-              <li class="title">DOWNLOADS</li>
-            {% endif %}
+            <li class="downloads"><a href="{% link links.md %}">Links</a></li>
+            <li class="downloads"><a href="{% link tags.html %}">Tags</a></li>
           </ul>
         </nav>
       </div><!-- end header -->

@@ -3,6 +3,8 @@
 
 @import "{{ site.theme }}";
 
+$base-color : #252525;
+
 body {
   font-size:18px;
 }
@@ -32,3 +34,35 @@ code {
   font-size:11px;
   color:#666;
 }
+
+.inline-list {
+  list-style: none;
+  margin-left: 0;
+  padding-left: 0;
+  li {
+    list-style-type: none;
+    display: inline;
+  }
+}
+
+.tag {
+    text-transform: lowercase;
+    display: inline-block;
+    font-size: small;
+    margin: 4px;
+    background-color: darken($base-color,30);
+    span {
+      color: #808080;
+      float: left;
+      padding: 2px 6px;
+    }
+    .count {
+      background-color: darken($base-color,48);
+    }
+    &:hover {
+      background-color: darken($base-color,48);
+      span {
+        color: #404040;
+      }
+    }
+  }
