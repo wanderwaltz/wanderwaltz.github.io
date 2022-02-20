@@ -37,8 +37,6 @@
           <hr>
         </div>
 
-        {{ content }}
-
         {% if page.tags %}
           {% assign tags_list = page.tags | sort %}
           <ul class="inline-list">
@@ -50,6 +48,8 @@
           {% endfor %}
           </ul>
         {% endif %}
+
+        {{ content }}
 
       </section>
       <section>
