@@ -1,5 +1,5 @@
 ---
-title: My GitHub Pages Blog Setup
+title: My GitHub Pages Blog Setup (outdated)
 description: "A practical setup of a GitHub Pages blog with custom deployment."
 date: 2016-03-28 01:11:00 +0600
 tags: [Meta]

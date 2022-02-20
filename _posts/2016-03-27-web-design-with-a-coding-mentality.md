@@ -1,5 +1,5 @@
 ---
-title: Web Design with a Coding Mentality
+title: Web Design with a Coding Mentality (outdated)
 description: "Managing a Jekyll blog from a programmer's perspective."
 date: 2016-03-27 20:39:00 +0600
 tags: [Meta]
