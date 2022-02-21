@@ -13,22 +13,19 @@ This is a step-by-step guide which I've made for myself while trying to set up a
 
 This is needed if you use [CocoaPods](https://cocoapods.org) in your iOS project, or if you use [Jekyll](https://jekyllrb.com) as your static site generator of choice.
 
-<details>
-<summary>Short list collapsed</summary>
-<ol>
-<li>install rvm (see <a href="https://rvm.io">https://rvm.io</a>)</li>
-<li>add <code>.ruby-version</code></li>
-<li>install ruby via rvm</li>
-<li>add <code>.ruby-gemset</code></li>
-<li><code>rvm use .</code></li>
-<li><code>gem install bundler</code></li>
-<li>add <code>Gemfile</code></li>
-<li><code>bundle install</code></li>
-<li><code>bundle exec &lt;command&gt;</code></li>
-</ol>
-<br/>
-</details>
-<br/>
+{% capture shortlist %}
+1. install rvm (see [https://rvm.io](https://rvm.io)),
+1. add `.ruby-version`,
+1. install ruby via rvm,
+1. add `.ruby-gemset`,
+1. `rvm use .`,
+1. `gem install bundler`,
+1. add `Gemfile`,
+1. `bundle install`,
+1. `bundle exec <command>`.
+{% endcapture %}
+
+{% include collapsed.html summary="Short list collapsed" content=shortlist %}
 
 ## Step 1: Install RVM/rbenv
 
