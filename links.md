@@ -6,7 +6,20 @@ gamedev a lot while studying in the university, but don't do it that much nowada
 
 This page is basically a backup of my browser's bookmarks list.
 
-## Blogs
+<!-- -------------------------------------------------------------------------------------------- -->
+<!-- -------------------------------------------------------------------------------------------- -->
+{% capture books %}
+- [Mobile Security Testing Guide](https://mobile-security.gitbook.io/mobile-security-testing-guide/),
+- [Game Programming Patterns](https://gameprogrammingpatterns.com/contents.html).
+{% endcapture %}
+<!-- -------------------------------------------------------------------------------------------- -->
+<!-- -------------------------------------------------------------------------------------------- -->
+
+
+
+<!-- -------------------------------------------------------------------------------------------- -->
+<!-- -------------------------------------------------------------------------------------------- -->
+{% capture blogs %}
 
 ### Mac/iOS Development
 - [App Store Review Guidelines History](http://www.appstorereviewguidelineshistory.com) with
@@ -25,9 +38,15 @@ This page is basically a backup of my browser's bookmarks list.
 - [Yegor Bugayenko's Blog](http://www.yegor256.com), a personal, very opinionated programming-related
     blog. It often seems that the author is just trolling, and as a result, comment sections are
     pure gold.
+{% endcapture %}
+<!-- -------------------------------------------------------------------------------------------- -->
+<!-- -------------------------------------------------------------------------------------------- -->
 
-<hr/>
-## Gamedev
+
+
+<!-- -------------------------------------------------------------------------------------------- -->
+<!-- -------------------------------------------------------------------------------------------- -->
+{% capture gamedev %}
 
 - [GameDev.net forums](http://www.gamedev.net/index)
 - [NES emulation](http://wiki.nesdev.com/w/index.php/Nesdev_Wiki)
@@ -53,9 +72,15 @@ This page is basically a backup of my browser's bookmarks list.
     to make bad art"
 - [King's Bounty (1990)](http://shrines.rpgclassics.com/genesis/kingbounty/index.shtml), unit
     stats, villain stats, spell lists, manual, etc
+{% endcapture %}
+<!-- -------------------------------------------------------------------------------------------- -->
+<!-- -------------------------------------------------------------------------------------------- -->
 
-<hr/>
-## Programming Languages
+
+
+<!-- -------------------------------------------------------------------------------------------- -->
+<!-- -------------------------------------------------------------------------------------------- -->
+{% capture languages %}
 
 ### C/C++
 - [awesome-cpp](http://fffaraz.github.io/awesome-cpp/), a curated list of awesome C/C++
@@ -102,23 +127,54 @@ requirements of applications like video games.*
 - [Kitura (IBM)](https://github.com/IBM-Swift/Kitura) is a web framework and web server that is created for web services written in Swift. For more information, visit [www.kitura.io](www.kitura.io),
 - [Vapor](https://vapor.codes) is a web framework for Swift. It provides a beautifully expressive and easy to use foundation for your next website, API, or cloud project.
 
-<hr/>
-## Programming Problems
+{% endcapture %}
+<!-- -------------------------------------------------------------------------------------------- -->
+<!-- -------------------------------------------------------------------------------------------- -->
+
+
+
+<!-- -------------------------------------------------------------------------------------------- -->
+<!-- -------------------------------------------------------------------------------------------- -->
+{% capture problems %}
 
 - [LeetCode Online Judge](https://leetcode.com/)
 - [Project Euler](https://projecteuler.net/), features a lot of problems to solve, with lots of
     math-related problems. I [used to](https://github.com/wanderwaltz/erlang-project-euler) solve
     these in Erlang, but have not done that for a while now
 
-<hr/>
-## Various
+{% endcapture %}
+<!-- -------------------------------------------------------------------------------------------- -->
+<!-- -------------------------------------------------------------------------------------------- -->
 
+
+
+<!-- -------------------------------------------------------------------------------------------- -->
+<!-- -------------------------------------------------------------------------------------------- -->
+{% capture various %}
 - [Algorithmic Botany](http://algorithmicbotany.org/), a selection of articles and books on
     [Lindenmayer systems](http://en.wikipedia.org/wiki/L-system) and their applications in biological
     modeling and visualizations
+{% endcapture %}
+<!-- -------------------------------------------------------------------------------------------- -->
+<!-- -------------------------------------------------------------------------------------------- -->
 
-<hr/>
+
+
+<!-- -------------------------------------------------------------------------------------------- -->
+<!-- -------------------------------------------------------------------------------------------- -->
+{% capture web %}
 ## Web Design
 
 - [Codrops](http://tympanus.net/codrops), a lot of inspiring web-related articles, tutorials, free
     resources etc
+{% endcapture %}
+<!-- -------------------------------------------------------------------------------------------- -->
+<!-- -------------------------------------------------------------------------------------------- -->
+
+{% include collapsed.html summary="Books" content=books %}
+{% include collapsed.html summary="Blogs" content=blogs %}
+{% include collapsed.html summary="Programming Languages" content=languages %}
+{% include collapsed.html summary="Programming Problems" content=problems %}
+{% include collapsed.html summary="Gamedev" content=gamedev %}
+{% include collapsed.html summary="Web Design" content=web %}
+{% include collapsed.html summary="Various" content=various %}
