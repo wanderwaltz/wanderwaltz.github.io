@@ -4,7 +4,7 @@ description: >-
   So, you need a new repo using Ruby language. Just remember to follow
   these simple rules and everything is going to be OK.
 date: 2022-02-21 02:19:00 +0700
-tags: [Ruby, RVM, M1, Tips]
+tags: [Ruby, RVM, M1, Tips, New Mac setup]
 ---
 
 Keeping this as a note to myself. A cheatsheet, if you must.
