@@ -2,6 +2,7 @@
 ---
 
 @import "{{ site.theme }}";
+@import "navigation";
 
 $base-color : #252525;
 
@@ -28,6 +29,10 @@ a small {
 
 code {
   font-size:16px;
+}
+
+ul {
+  list-style-image:unset;
 }
 
 .post-date {
