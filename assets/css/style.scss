@@ -9,6 +9,7 @@ $color-link-normal: #f6d57a;
 
 body {
   font-size:18px;
+  background:$base-color;
 }
 
 h1 {
@@ -44,7 +45,11 @@ code {
 }
 
 blockquote {
+  border-left:10px solid lighten($base-color,5);
+  background:darken($base-color,2);
   font-size:14px;
+  padding: 20px 20px 1px 20px;
+  margin: 0px 0px 20px 0px;
   code {
     font-size:12px;
   }
