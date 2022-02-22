@@ -60,7 +60,7 @@ So, `sendAction` without a target starts with the first responder. `action` whic
 
 ----
 
-### _Followup to the previous question. How exactly `UITouch` events are processed in the responder chain? Each `UIResponder` can handle touches. Does this mean that touch handling always stops on the first responder object encountered? How does `pointInside` and `hitTest` fit into that scheme?_
+### _Follow-up to the previous question. How exactly `UITouch` events are processed in the responder chain? Each `UIResponder` can handle touches. Does this mean that touch handling always stops on the first responder object encountered? How does `pointInside` and `hitTest` fit into that scheme?_
 
 This is actually two separate questions for the price of one.
 
