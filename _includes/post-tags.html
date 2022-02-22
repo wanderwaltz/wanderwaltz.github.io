@@ -1,0 +1,15 @@
+{% if page.tags %}
+	{% assign tags_list = page.tags | sort %}
+	<ul class="inline-list">
+		{% for item in (0..tags_list.size) %}
+    		{% unless forloop.last %}
+      			{% capture this_word %}{{ tags_list[item] | strip_newlines }}{% endcapture %}
+      			<li>
+      				<a href="{{ site.url }}/tags/#{{this_word}}" class="tag">
+      					<span class="term">{{ this_word }}</span>
+      				</a>
+      			</li>
+    		{% endunless %}
+  		{% endfor %}
+  	</ul>
+{% endif %}
