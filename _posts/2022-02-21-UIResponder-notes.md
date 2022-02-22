@@ -11,7 +11,7 @@ This post is a collection of `UIResponder`-related facts[^why].
 
 ----
 
-### _`UIResponder` is a class, not a protocol_
+**UIResponder is a class, not a protocol**
 
 Just a fact to remember. For some reason I tend to think sometimes that `UIResponder` is a protocol and that `UIApplicatonDelegate` automatically conforms to it via protocol inheritance. This is not right though. [Documentation][UIResponder] clearly states that it is a class, although an abstract one.
 
@@ -38,7 +38,7 @@ This can be checked manually by following the [UIResponder.next][UIResponder.nex
 
 ----
 
-### _Once a responder becomes first via `becomeFirstResponder()`, does previous first responder automatically receive `resignFirstResponder()` call?_
+**Q: Once a responder becomes first via becomeFirstResponder, does previous first responder automatically receive resignFirstResponder call?**
 
 Yes, when another responder becomes first, the previous first responder receives [resignFirstResponder()][resignFirstResponder] and exits the responder chain.
 
@@ -48,7 +48,7 @@ This is explicitly stated in the [documentation][becomeFirstResponder]:
 
 ----
 
-### _If a responder in a responder chain receives an event, do all other responders receive this event, or event propagation stops?_
+**Q: If a responder in a responder chain receives an event, do all other responders receive this event, or event propagation stops?**
 
 The event propagation stops on the first object in the responder chain (not necessary the _first responder_) which can handle the event.
 
@@ -60,7 +60,7 @@ So, `sendAction` without a target starts with the first responder. `action` whic
 
 ----
 
-### _Follow-up to the previous question. How exactly `UITouch` events are processed in the responder chain? Each `UIResponder` can handle touches. Does this mean that touch handling always stops on the first responder object encountered? How does `pointInside` and `hitTest` fit into that scheme?_
+**Q: Follow-up to the previous question. How exactly UITouch events are processed in the responder chain? Each UIResponder can handle touches. Does this mean that touch handling always stops on the first responder object encountered? How does pointInside and hitTest fit into that scheme?**
 
 This is actually two separate questions for the price of one.
 
@@ -76,7 +76,9 @@ You can read about it for example in [touchesBegan][touchesBegan] documentation:
 
 > UIKit calls this method when a new touch is detected in a view or window. Many UIKit classes override this method and use it to handle the corresponding touch events. The default implementation of this method forwards the message up the responder chain. When creating your own subclasses, call super to forward any events that you do not handle yourself. For example,
 >
-> `[super touchesBegan:touches withEvent:event];`
+> ```objc
+> [super touchesBegan:touches withEvent:event];
+> ```
 >
 > If you override this method without calling super (a common use pattern), you must also override the other methods for handling touch events, even if your implementations do nothing.
 
