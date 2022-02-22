@@ -23,8 +23,18 @@ h3 {
   line-height: 26px;
 }
 
-a small {
-  font-size:14px;
+a {
+  color:#f6d57a;
+  font-weight:500;
+  text-decoration:none;
+
+  &:hover {
+    color: #ffeb9b;
+  }
+
+  small {
+    font-size:14px;
+  }
 }
 
 code {
