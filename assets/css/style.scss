@@ -4,7 +4,8 @@
 @import "{{ site.theme }}";
 @import "navigation";
 
-$base-color : #252525;
+$base-color: #252525;
+$color-link-normal: #f6d57a;
 
 body {
   font-size:18px;
@@ -59,7 +60,7 @@ ul {
 
 .post-date {
   font-size:11px;
-  color:#666;
+  color:darken($color-link-normal, 20);
 }
 
 .inline-list {
