@@ -1,5 +1,6 @@
 ---
 title: Links
+permalink: /links/
 ---
 Here I list websites, articles and books, which I find interesting and worth looking into. I was into
 gamedev a lot while studying in the university, but don't do it that much nowadays.
