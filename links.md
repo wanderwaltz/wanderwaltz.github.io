@@ -25,13 +25,15 @@ This page is basically a backup of my browser's bookmarks list.
 <!-- -------------------------------------------------------------------------------------------- -->
 {% capture blogs %}
 
-### Mac/iOS Development
+**Mac/iOS Development**
+
 - [App Store Review Guidelines History](http://www.appstorereviewguidelineshistory.com) with
     a nice diff interface
 - [NSBlog](https://mikeash.com/pyblog/) by Mike Ash
 - [NSHipster](http://nshipster.com/) by Mattt Thompson
 
-### Various
+**Various**
+
 - [c2.com](http://c2.com/cgi/wiki), _a wiki focused on people, projects and patterns in software
   development_. This was _the_ first wiki site on the web as far as I understand. It has its own
   style of writing which may require some getting used to, but the content is still relevant
@@ -56,17 +58,20 @@ This page is basically a backup of my browser's bookmarks list.
 
 - [NES emulation](http://wiki.nesdev.com/w/index.php/Nesdev_Wiki)
 
-### Blogs
+**Blogs**
+
 - [Red Blob Games](http://www.redblobgames.com/) by Amit Patel
 - [Three Hundred Mechanics](http://www.squidi.net/three/) by Sean Howard
 
-### Procedural Generation
+**Procedural Generation**
+
 - [Chris Pound's Language Machines](http://generators.christopherpound.com/), notably the Language
     Confluxer algorithm gives some neat results. I've actually implemented it [once](https://github.com/wanderwaltz/Blogdemos/blob/master/Language%20Confluxer/Ruby/language.rb) in Ruby, and the
     names generated based on the provided dataset were actually pretty nice. I think there is room
     for improvement and maybe I'll try to figure it out someday.
 
-### Resources
+**Resources**
+
 - [2d Game Art for Programmers](http://2dgameartforprogrammers.blogspot.com), "Life is too short
     to make bad art"
 - [King's Bounty (1990)](http://shrines.rpgclassics.com/genesis/kingbounty/index.shtml), unit
@@ -81,13 +86,15 @@ This page is basically a backup of my browser's bookmarks list.
 <!-- -------------------------------------------------------------------------------------------- -->
 {% capture languages %}
 
-### C/C++
+**C/C++**
+
 - [Cello](http://libcello.org), higher level programming in C.
 - [openFrameworks](http://www.openframeworks.cc), an open source C++ toolkit for creative coding.
 - [P99](http://p99.gforge.inria.fr/p99-html/index.html), preprocessor macros and functions
     for C99 and C11
 
-### Squirrel
+**Squirrel**
+
 *Squirrel is a high level imperative, object-oriented programming language, designed to be a
 lightweight scripting language that fits in the size, memory bandwidth, and real-time
 requirements of applications like video games.*
@@ -95,7 +102,7 @@ requirements of applications like video games.*
 - [Squirrel homepage](http://squirrel-lang.org/)
 - [SQRat](http://scrat.sourceforge.net/), Squirrel Binding Utility (C++)
 
-### Swift
+**Swift**
 
 - [Swift Community](https://swift.org),
 - [Swift Forums](https://forums.swift.org),
