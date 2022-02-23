@@ -4,7 +4,7 @@ description: "A practical setup of a GitHub Pages blog with custom deployment."
 date: 2016-03-28 01:11:00 +0600
 tags: [Meta]
 ---
-I've [mentioned]({% post_url 2016-03-27-web-design-with-a-coding-mentality %}) before that this blog is a custom deployed one. While GitHub Pages support some of the Jekyll plugins, I'd like to have more flexibility and freedom to use any other plugins, some of which I've made myself. As stated in the GitHub Pages
+I've [mentioned]({% post_url /2016/2016-03-27-web-design-with-a-coding-mentality %}) before that this blog is a custom deployed one. While GitHub Pages support some of the Jekyll plugins, I'd like to have more flexibility and freedom to use any other plugins, some of which I've made myself. As stated in the GitHub Pages
 [documentation](https://help.github.com/articles/adding-jekyll-plugins-to-a-github-pages-site/),
 
 >Other plugins are not supported, so the only way to incorporate them into your site is to generate your site locally and then push your site's static files to your GitHub Pages site.

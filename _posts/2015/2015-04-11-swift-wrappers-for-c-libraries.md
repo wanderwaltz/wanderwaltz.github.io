@@ -198,6 +198,6 @@ I've already had a couple more problems to scratch my head over, but I'll probab
 
 ### Followup posts
 
-- [Binding Swift funcs]({% post_url 2015-04-22-binding-swift-funcs %}) describes the non-trivial approach required to use Swift funcs as native Squirrel closures.
+- [Binding Swift funcs]({% post_url /2015/2015-04-22-binding-swift-funcs %}) describes the non-trivial approach required to use Swift funcs as native Squirrel closures.
 
 <br/>

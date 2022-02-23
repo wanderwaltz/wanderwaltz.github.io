@@ -23,7 +23,7 @@ One of the important principles of software engineering is *"Don't Repeat Yourse
 While trying to apply the DRY principle to this blog, I've stumbled upon a repeating sequence in my `index.html` and `post` template. When displaying the post title, a conditional logic is necessary to properly render link post titles.
 
 <span class="note">
-There a two general types of posts in this blog: a default and a link post. Link posts differ from the default posts in that they do not really have a lot of meaningful text written by me, they are a pair of an external URL and a short comment explaining why I'd find this particular page interesting enough to share here. As an example of link post, consider [Damn Cool Algorithms]({% post_url 2015-04-11-damn-cool-algorithms %}).
+There a two general types of posts in this blog: a default and a link post. Link posts differ from the default posts in that they do not really have a lot of meaningful text written by me, they are a pair of an external URL and a short comment explaining why I'd find this particular page interesting enough to share here. As an example of link post, consider [Damn Cool Algorithms]({% post_url /2015/2015-04-11-damn-cool-algorithms %}).
 </span>
 
 While usual post title looks like this:
