@@ -56,7 +56,9 @@ blockquote {
 }
 
 details {
-  padding-bottom:16px;
+  summary {
+    margin-bottom:20px;
+  }
 }
 
 ul {
