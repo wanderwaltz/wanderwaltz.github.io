@@ -83,6 +83,47 @@ You can read about it for example in [touchesBegan][touchesBegan] documentation:
 > If you override this method without calling super (a common use pattern), you must also override the other methods for handling touch events, even if your implementations do nothing.
 
 ----
+**Q: How do you find the current first responder?**
+
+AFAIK there is no public API in UIKit which returns the first responder. But it is possible using this code snippet:
+
+```swift
+extension UIResponder {
+    static func findFirst() -> UIResponder? {
+        UIResponder._first = nil
+        defer { UIResponder._first = nil }
+
+        // sendAction without a target dispaches
+        // event to the first responder, and it
+        // will store itself into the
+        // UIResponder._first var
+        UIApplication.shared.sendAction(
+            #selector(_findFirstResponder),
+            to: nil,
+            from: nil,
+            for: nil
+        )
+
+        return UIResponder._first
+    }
+
+    private static weak var _first: UIResponder?
+
+    @objc private func _findFirstResponder() {
+        UIResponder._first = self
+    }
+}
+```
+
+<small>I've known this trick for years now, but initially I've read it in [this SO answer](https://stackoverflow.com/a/21330810) by Jakob Egger.</small>
+
+----
+
+**Q: Do you really ever need to find the current first responder?**
+
+I've definitely thought I needed it at some point and even used the snippet above in production. Thinking about it now, I cannot recall the reason. After carefully reading the docs while writing these notes, I've started to think that knowing the exact first responder object is not really necessary. UIKit handles responder chain automatically and dispaches events to the first responder when appropriate.
+
+----
 
 <!-- links -->
 [UIResponder]: https://developer.apple.com/documentation/uikit/uiresponder
