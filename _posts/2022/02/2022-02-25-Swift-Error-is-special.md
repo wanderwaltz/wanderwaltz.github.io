@@ -2,7 +2,7 @@
 title: How special is Swift.Error anyway?
 description: "It seems that Swift.Error can do things no other protocols are allowed to."
 date: 2022-02-25 09:35:00 +0700
-tags: [Swift, protocols, existentials, generics]
+tags: [Swift, Protocols, Existentials, Generics]
 ---
 
 Consider the [Result][Swift.Result] generic in Swift:
